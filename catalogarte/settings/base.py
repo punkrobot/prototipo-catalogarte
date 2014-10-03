@@ -14,6 +14,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'webapp',
+    'bootstrap3',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -46,3 +47,6 @@ STATIC_URL = '/static/'
 MEDIA_ROOT = root("media")
 MEDIA_URL = '/media/'
 
+BOOTSTRAP3 = {
+    'theme_url': '/static/webapp/css/material.min.css',
+}

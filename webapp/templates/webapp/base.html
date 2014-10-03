@@ -1,0 +1,37 @@
+{% load bootstrap3 %}
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>{% block title %}CatalogARTE{% endblock %}</title>
+
+    {% bootstrap_css %}
+    <link href="{% static "webapp/css/style.css" %}" rel="stylesheet">
+</head>
+
+<body>
+    <div class="navbar navbar-default" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">CatalogARTE</a>
+            </div>
+        </div>
+    </div>
+
+    {% bootstrap_messages %}
+
+    <div class="container">
+        {% block container %}{% endblock %}
+    </div>
+
+    {% bootstrap_javascript %}
+    <script src="{% static "webapp/js/script.js" %}"></script>
+</body>
+</html>

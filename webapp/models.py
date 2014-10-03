@@ -7,10 +7,12 @@ class Museo(models.Model):
 
     nombre = models.CharField(max_length=100)
     direccion = models.TextField()
-    logotipo = models.ImageField()
-    telefono = models.CharField(max_length=100)
-    horarios = models.CharField(max_length=100)
-    website = models.URLField(max_length=100)
-    twitter = models.URLField(max_length=100)
-    facebook = models.URLField(max_length=100)
+    #email = models.EmailField(blank=True)
+    telefono = models.CharField(max_length=100, blank=True)
+    horarios = models.CharField(max_length=100, blank=True)
 
+    website = models.URLField(max_length=100)
+    twitter = models.URLField(max_length=100, blank=True)
+    facebook = models.URLField(max_length=100, blank=True)
+
+    logotipo = models.ImageField()
