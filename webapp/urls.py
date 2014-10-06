@@ -1,5 +1,4 @@
 from django.conf.urls import patterns, url
-from django.contrib.auth.decorators import login_required
 
 from webapp import views
 
@@ -9,8 +8,8 @@ urlpatterns = patterns('',
     url(r'^logout$', 'django.contrib.auth.views.logout', {'next_page': '/admin'}),
 
     # admin urls:
-    url(r'^admin$', login_required(views.CatalogoList.as_view())),
-    url(r'^admin/catalogo/nuevo$', login_required(views.CatalogoCreate.as_view())),
+    url(r'^admin$', views.CatalogoList.as_view()),
+    url(r'^admin/catalogo/nuevo$', views.CatalogoCreate.as_view()),
 
     # public urls:
     url(r'^$', views.index, name='index'),
