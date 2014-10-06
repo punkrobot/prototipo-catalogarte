@@ -1,9 +1,23 @@
 from django.shortcuts import render
+from django.core.urlresolvers import reverse
+from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 
-from webapp.models import Museo
+from .models import Museo, Catalogo
 
 def index(request):
     return render(request, 'webapp/index.html')
+
+class CatalogoList(ListView):
+    context_object_name = 'catalogo_list'
+    template_name = 'webapp/catalogo_list.html'
+
+    def get_queryset(self):
+        return Catalogo.objects.filter(museo__id=self.request.user.museo.id)
+
+class CatalogoCreate(CreateView):
+    model = Catalogo
+    success_url = '/admin'
+
 
 def listado_museos(request):
     museos_list = Museo.objects.all()[:5]

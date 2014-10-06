@@ -1,0 +1,16 @@
+{% extends "webapp/base.html" %}
+{% load bootstrap3 %}
+
+{% block container %}
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2 well">
+            <h2>Nuevo catálogo</h2>
+            <hr>
+            <form action="" method="post" class="form">
+                {% csrf_token %}
+                {% bootstrap_form form %}
+                <input type="submit">
+            </form>
+        </div>
+    </div>
+{% endblock %}

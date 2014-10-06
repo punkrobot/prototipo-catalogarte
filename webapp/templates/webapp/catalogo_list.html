@@ -1,0 +1,10 @@
+{% extends "webapp/base.html" %}
+
+{% block container %}
+    <h2>Catalogos</h2>
+    <ul>
+        {% for cat in catalogo_list %}
+            <li>{{ cat.titulo }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

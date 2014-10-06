@@ -50,3 +50,5 @@ MEDIA_URL = '/media/'
 BOOTSTRAP3 = {
     'theme_url': '/static/webapp/css/material.min.css',
 }
+
+LOGIN_URL = "/login/"

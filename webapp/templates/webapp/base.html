@@ -31,7 +31,8 @@
         {% block container %}{% endblock %}
     </div>
 
-    {% bootstrap_javascript %}
+    <script src="{% static "webapp/js/jquery-2.1.1.min.js" %}"></script>
     <script src="{% static "webapp/js/script.js" %}"></script>
+    {% bootstrap_javascript %}
 </body>
 </html>
