@@ -1,3 +1,85 @@
+.navbar{
+    margin-bottom: 0px;
+}
+.sub-header{
+    background-color: #FFF;
+    padding: 10px 0;
+}
+
+#filters{
+    padding: 0;
+}
+.affix{
+    top: 0;
+    z-index: 10;
+    width: 100%;
+}
+.btn-filter{
+    padding: 5px 10px;
+    color: #000;
+    background-color: #FFF;
+}
+.btn-filter:hover{
+    color: #FFF;
+    background-color: #009688;
+}
+.btn-filter i{
+    margin: 0 5px;
+}
+#filters h4{
+    padding-top: 4px;
+    margin-right: 30px;
+}
+#filters .input-group{
+    margin-top: 10px;
+}
+#filters .input-group-addon{
+    background-color: #FFF;
+}
+.dropdown-menu{
+    margin-top: -5px;
+    min-width: 200px;
+}
+
 #login-form{
     margin-top:80px;
+}
+
+.catalogo-card{
+    float: left;
+    margin: 15px;
+    width: 360px;
+}
+.catalogo-card .portada{
+    width: 360px;
+    height: 200px;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    margin-top: -19px;
+    margin-left: -19px;
+}
+
+.item:hover .button{
+    visibility: visible;
+}
+
+.button{
+    color: #000;
+    cursor: pointer;
+    margin: 5px;
+    padding: 5px;
+    visibility: hidden;
+}
+
+.avatar{
+    padding: 10px !important;
+}
+.avatar img{
+    width: 40px;
+    height: 40px;
+
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
 }

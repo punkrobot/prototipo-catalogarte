@@ -14,25 +14,35 @@
 
     {% bootstrap_css %}
     <link href="{% static "webapp/css/style.css" %}" rel="stylesheet">
+    <link href="{% static "webapp/css/font-awesome.min.css" %}" rel="stylesheet">
+
+    <script src="{% static "webapp/js/jquery-2.1.1.min.js" %}"></script>
+    {% bootstrap_javascript %}
+    {{ form.media }}
 </head>
 
 <body>
-    <div class="navbar navbar-default" role="navigation">
+    <div class="navbar navbar-material-teal" role="navigation">
         <div class="container">
             <div class="navbar-header">
                 <a class="navbar-brand" href="#">CatalogARTE</a>
+            </div>
+            <div class="navbar-collapse collapse navbar-responsive-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    {% block navbar %}
+                        <li><a href="javascript:void(0)"><i class="fa fa-twitter"></i></a></li>
+                        <li><a href="javascript:void(0)"><i class="fa fa-facebook"></i></a></li>
+                    {% endblock %}
+                </ul>
             </div>
         </div>
     </div>
 
     {% bootstrap_messages %}
 
-    <div class="container">
-        {% block container %}{% endblock %}
-    </div>
+    {% block content %}{% endblock %}
 
-    <script src="{% static "webapp/js/jquery-2.1.1.min.js" %}"></script>
+    <script src="{% static "webapp/js/isotope.pkgd.min.js" %}"></script>
     <script src="{% static "webapp/js/script.js" %}"></script>
-    {% bootstrap_javascript %}
 </body>
 </html>

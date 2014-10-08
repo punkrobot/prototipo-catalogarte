@@ -39,6 +39,17 @@ class Migration(migrations.Migration):
             bases=(models.Model,),
         ),
         migrations.CreateModel(
+            name='Categoria',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('nombre', models.CharField(max_length=50)),
+                ('slug', autoslug.fields.AutoSlugField(editable=False)),
+            ],
+            options={
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
             name='Museo',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
@@ -58,6 +69,12 @@ class Migration(migrations.Migration):
             options={
             },
             bases=(models.Model,),
+        ),
+        migrations.AddField(
+            model_name='catalogo',
+            name='categorias',
+            field=models.ManyToManyField(to='webapp.Categoria'),
+            preserve_default=True,
         ),
         migrations.AddField(
             model_name='catalogo',

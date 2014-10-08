@@ -1,10 +1,73 @@
 {% extends "webapp/base.html" %}
+{% load staticfiles %}
 
-{% block container %}
-    <h2>Catalogos</h2>
-    <ul>
-        {% for cat in catalogo_list %}
-            <li>{{ cat.titulo }}</li>
-        {% endfor %}
-    </ul>
+{% block content %}
+    <div class="container-fluid sub-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h3>Catálogos digitales de las exposiciones del INBA</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="filters" class="container-fluid well" data-spy="affix" data-offset-top="136">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-9">
+                    <h4 class="pull-left text-muted"><i class="fa fa-filter"></i>&nbsp;Filtrar</h4>
+                    <div class="dropdown pull-left">
+                        <a class="btn btn-filter" data-toggle="dropdown">
+                            <i class="fa fa-list"></i>Todas las categorías<i class="fa fa-caret-down"></i>
+                        </a>
+                        <ul class="dropdown-menu filters-menu">
+                            <li class="filter" data-filter="*"><a href="javascript:void(0)">Todo</a></li>
+                            <li class="filter" data-filter=".artes-plasticas"><a href="javascript:void(0)">Artes Plásticas</a></li>
+                            <li class="filter" data-filter=".artes-visuales"><a href="javascript:void(0)">Artes Visuales</a></li>
+                            <li class="filter" data-filter=".fotografia"><a href="javascript:void(0)">Fotografía</a></li>
+                            <li class="filter" data-filter=".ciencias"><a href="javascript:void(0)">Ciencia</a></li>
+                            <li class="filter" data-filter=".infantil"><a href="javascript:void(0)">Infantil</a></li>
+                        </ul>
+                    </div>
+                    <div class="dropdown pull-left">
+                        <a class="btn btn-filter" data-toggle="dropdown">
+                            <i class="fa fa-building"></i>Todos los museos<i class="fa fa-caret-down"></i>
+                        </a>
+                        <ul class="dropdown-menu filters-menu">
+                            <li><a href="javascript:void(0)">Museo Franz Mayer</a></li>
+                            <li><a href="javascript:void(0)">Antiguo Colegio de San Ildefonso</a></li>
+                            <li><a href="javascript:void(0)">Museo de la Ciudad de México</a></li>
+                        </ul>
+                    </div>
+                    <div class="dropdown pull-left">
+                        <a class="btn btn-filter" data-toggle="dropdown">
+                            <i class="fa fa-calendar"></i>Todas las fechas<i class="fa fa-caret-down"></i>
+                        </a>
+                        <div class="dropdown-menu filters-menu">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="input-group">
+                      <span class="input-group-addon"><i class="fa fa-search pull-left"></i></span>
+                      <input type="text" class="form-control" placeholder="Buscar"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div id="container" class="row">
+            {% for cat in catalogo_list %}
+                <div class="well catalogo-card item {{ cat.get_categorias }}">
+                    <div style="background-image:url({{cat.portada.url}});" class="portada"></div>
+                    <h3>{{ cat.titulo }}</h3>
+                    <div>{{ cat.descripcion }}</div>
+                    <hr>
+                    <a class="pull-left">{{ cat.museo.nombre }}</a>
+                    <span class="pull-right">Hasta el 31 de octubre</span>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}

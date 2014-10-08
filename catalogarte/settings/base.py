@@ -15,6 +15,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'webapp',
     'bootstrap3',
+    'datetimewidget',
+    'ckeditor',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -46,6 +48,21 @@ STATIC_URL = '/static/'
 
 MEDIA_ROOT = root("media")
 MEDIA_URL = '/media/'
+
+CKEDITOR_UPLOAD_PATH = "uploads/"
+CKEDITOR_IMAGE_BACKEND = 'pillow'
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': [
+            [ 'Bold','Italic','Underline','Strike','Subscript','Superscript','-','RemoveFormat','-','Link','Unlink','-','Table','HorizontalRule' ],
+            [ 'NumberedList','BulletedList','-','Outdent','Indent','-','Blockquote','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock' ],
+            [ 'Styles','Format','Font','FontSize','TextColor','BGColor' ],
+        ],
+        'height': 300,
+        'width': 550,
+        'skin': 'bootstrapck',
+    },
+}
 
 BOOTSTRAP3 = {
     'theme_url': '/static/webapp/css/material.min.css',

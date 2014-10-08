@@ -1,13 +1,13 @@
 {% extends "webapp/base.html" %}
 
-{% block container %}
+{% block content %}
 
 <div class="row">
     <div id="login-form" class="col-md-6 col-md-offset-3 well">
         <form method="post" action="{% url 'django.contrib.auth.views.login' %}" class="form-horizontal">
         {% csrf_token %}
-        <fieldset>
-            <legend>Iniciar sesión</legend>
+            <h2>Iniciar sesión</h2>
+            <hr>
             {% if form.errors %}
                 <div class="alert alert-danger">
                     <strong>Error.</strong> El nombre de usuario y la contraseña no coinciden.
@@ -26,8 +26,9 @@
                     <input type="password" class="form-control" name="password" id="inputPassword">
                 </div>
             </div>
+            <hr>
             <input type="hidden" name="next" value="{{ next }}" />
-            <button type="submit" class="btn btn-primary btn-raised pull-right" value="login">Acceder</button>
+            <button type="submit" class="btn btn-material-teal btn-raised pull-right" value="login">Acceder</button>
         </form>
     </div>
 </div>

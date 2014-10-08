@@ -2,10 +2,10 @@
 
 from django.contrib.auth.models import User
 from django.db import models
-from django.forms import MultipleChoiceField
 
 from autoslug import AutoSlugField
 from jsonfield import JSONField
+from datetimewidget.widgets import DateTimeWidget
 
 class Museo(models.Model):
     user = models.OneToOneField(User)
@@ -25,6 +25,9 @@ class Museo(models.Model):
     logotipo = models.ImageField()
     portada = models.ImageField(blank=True)
 
+    def __unicode__(self):
+        return u'%s' % (self.nombre)
+
 class Catalogo(models.Model):
     museo = models.ForeignKey(Museo)
 
@@ -34,21 +37,14 @@ class Catalogo(models.Model):
     titulo = models.CharField(max_length=100)
     autor = models.CharField(max_length=100, blank=True)
     creditos = models.TextField(blank=True)
+    descripcion = models.TextField(blank=True)
     informacion = models.TextField(blank=True)
     actividades = models.TextField(blank=True)
     website = models.URLField(max_length=100, blank=True)
 
     slug = AutoSlugField(populate_from='titulo')
+    categorias = models.ManyToManyField("Categoria")
     portada = models.ImageField()
-
-    CATEGORIAS_CHOICES = (
-        ('AP', 'Artes plásticas'),
-        ('AV', 'Artes visuales'),
-        ('F', 'Fotografía'),
-        ('C', 'Ciencia'),
-        ('I', 'Infantil'),
-    )
-    categorias = MultipleChoiceField(choices=CATEGORIAS_CHOICES)
 
     num_paginas = models.IntegerField(null=True, blank=True)
     fecha_publicacion = models.DateTimeField(null=True, blank=True)
@@ -56,3 +52,18 @@ class Catalogo(models.Model):
     publicado = models.NullBooleanField()
 
     contenido = JSONField(blank=True)
+
+    def __unicode__(self):
+        return u'%s - %s' % (self.museo.nombre, self.titulo)
+
+    def get_categorias(self):
+        categorias_list = self.categorias.values_list('slug', flat=True)
+        return " ".join(categorias_list)
+
+class Categoria(models.Model):
+    nombre = models.CharField(max_length=50)
+    slug = AutoSlugField(populate_from='nombre')
+
+    def __unicode__(self):
+        return u'%s' % (self.nombre)
+

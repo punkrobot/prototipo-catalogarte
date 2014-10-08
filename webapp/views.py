@@ -4,28 +4,31 @@ from django.views.generic import CreateView, DeleteView, DetailView, ListView, U
 
 from braces.views import LoginRequiredMixin
 
-from .models import Museo, Catalogo
+from webapp.models import Museo, Catalogo
+from webapp.forms import CatalogoForm
 
-def index(request):
-    return render(request, 'webapp/index.html')
-
-class CatalogoList(LoginRequiredMixin, ListView):
+class CatalogoList(ListView):
     context_object_name = 'catalogo_list'
     template_name = 'webapp/catalogo_list.html'
 
     def get_queryset(self):
+        return Catalogo.objects.all()
+
+
+class CatalogoAdmin(LoginRequiredMixin, ListView):
+    context_object_name = 'catalogo_list'
+    template_name = 'webapp/admin/catalogo_admin.html'
+
+    def get_queryset(self):
         return Catalogo.objects.filter(museo__id=self.request.user.museo.id)
 
+
 class CatalogoCreate(LoginRequiredMixin, CreateView):
-    model = Catalogo
+    form_class = CatalogoForm
+    template_name = 'webapp/admin/catalogo_form.html'
     success_url = '/admin'
 
-def listado_museos(request):
-    museos_list = Museo.objects.all()[:5]
-    context = {'museos_list': museos_list}
-    return render(request, 'webapp/museos.html', context)
+    def form_valid(self, form):
+        form.instance.museo = self.request.user.museo
+        return super(CatalogoCreate, self).form_valid(form)
 
-def detalle_museo(request, museo_id):
-    museo = get_object_or_404(Museo, pk = museo_id)
-    context = {'museo': museo}
-    return render(request, 'webapp/museo.html', context)

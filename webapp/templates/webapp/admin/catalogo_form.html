@@ -1,0 +1,25 @@
+{% extends "webapp/base.html" %}
+{% load bootstrap3 %}
+
+{% block navbar %}
+    <li><a class="avatar" href="javascript:void(0)">{{user.museo.nombre}}<img src="{{user.museo.logotipo.url}}"></a></li>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2 well">
+            <h2>Nuevo catálogo</h2>
+            <h4 class="text-muted">Información sobre la exposición</h4>
+            <hr>
+            <form action="" enctype="multipart/form-data" method="post" class="form-horizontal">
+                {% csrf_token %}
+                {% bootstrap_form form layout="horizontal" label_class='col-md-2' field_class='col-md-8' %}
+                {% buttons%}
+                    <div class="col-md-10">
+                        <button type="submit" class="btn btn-teal pull-right">Guardar y continuar</button>
+                    </div>
+                {% endbuttons %}
+            </form>
+        </div>
+    </div>
+{% endblock %}
