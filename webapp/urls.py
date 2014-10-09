@@ -13,4 +13,5 @@ urlpatterns = patterns('',
 
     # public urls:
     url(r'^$', views.CatalogoList.as_view(), name='catalogo_lista'),
+    url(r'^catalogo/(?P<slug>[\w-]+)/$', views.CatalogoDetail.as_view(), name='catalogo_detalle'),
 )

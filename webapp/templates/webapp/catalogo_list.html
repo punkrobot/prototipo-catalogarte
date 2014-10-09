@@ -18,7 +18,7 @@
                     <h4 class="pull-left text-muted"><i class="fa fa-filter"></i>&nbsp;Filtrar</h4>
                     <div class="dropdown pull-left">
                         <a class="btn btn-filter" data-toggle="dropdown">
-                            <i class="fa fa-list"></i>Todas las categorías<i class="fa fa-caret-down"></i>
+                            <i class="fa fa-tags"></i>Todas las categorías<i class="fa fa-caret-down"></i>
                         </a>
                         <ul class="dropdown-menu filters-menu">
                             <li class="filter" data-filter="*"><a href="javascript:void(0)">Todo</a></li>
@@ -59,9 +59,9 @@
     <div class="container">
         <div id="container" class="row">
             {% for cat in catalogo_list %}
-                <div class="well catalogo-card item {{ cat.get_categorias }}">
+                <div class="well catalogo-card item {{ cat.get_categorias_slugs }}">
                     <div style="background-image:url({{cat.portada.url}});" class="portada"></div>
-                    <h3>{{ cat.titulo }}</h3>
+                    <a href="{% url 'catalogo_detalle' cat.slug %}"><h3>{{ cat.titulo }}</h3></a>
                     <div>{{ cat.descripcion }}</div>
                     <hr>
                     <a class="pull-left">{{ cat.museo.nombre }}</a>

@@ -42,7 +42,7 @@ class Catalogo(models.Model):
     actividades = models.TextField(blank=True)
     website = models.URLField(max_length=100, blank=True)
 
-    slug = AutoSlugField(populate_from='titulo')
+    slug = AutoSlugField(unique=True, populate_from='titulo')
     categorias = models.ManyToManyField("Categoria")
     portada = models.ImageField()
 
@@ -57,6 +57,10 @@ class Catalogo(models.Model):
         return u'%s - %s' % (self.museo.nombre, self.titulo)
 
     def get_categorias(self):
+        categorias_list = self.categorias.values_list('nombre', flat=True)
+        return ", ".join(categorias_list)
+
+    def get_categorias_slugs(self):
         categorias_list = self.categorias.values_list('slug', flat=True)
         return " ".join(categorias_list)
 

@@ -83,3 +83,40 @@
     -moz-border-radius: 50%;
     border-radius: 50%;
 }
+
+.catalogo{
+    margin-top: 30px;
+}
+.catalogo .portada{
+    width: 100%;
+    height: 200px;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    margin-top: -19px;
+    margin-left: -19px;
+}
+.catalogo .desc{
+    margin-top: 20px;
+}
+.catalogo h2{
+    margin-top: 0;
+}
+.catalogo .detalle{
+    padding-left: 10px;
+    margin-bottom: 20px;
+}
+.catalogo li{
+    list-style-type: none;
+}
+.catalogo i{
+    margin-right: 5px;
+}
+
+.nav-tabs{
+    background-color: #4db6ac;
+    margin-bottom: 15px;
+}
+.nav-tabs .active{
+    background-color: #009688;
+}

@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.core.urlresolvers import reverse
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 
@@ -13,6 +13,15 @@ class CatalogoList(ListView):
 
     def get_queryset(self):
         return Catalogo.objects.all()
+
+
+class CatalogoDetail(DetailView):
+    model = Catalogo
+    context_object_name = 'catalogo'
+    template_name = 'webapp/catalogo_detail.html'
+
+    def get_object(self):
+        return get_object_or_404(Catalogo, slug=self.kwargs.get('slug', None))
 
 
 class CatalogoAdmin(LoginRequiredMixin, ListView):
