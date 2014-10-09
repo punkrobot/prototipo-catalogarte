@@ -10,6 +10,7 @@ urlpatterns = patterns('',
     # admin urls:
     url(r'^admin$', views.CatalogoAdmin.as_view(), name='catalogo_admin'),
     url(r'^admin/catalogo/nuevo$', views.CatalogoCreate.as_view(), name='catalogo_nuevo'),
+    url(r'admin/catalogo/(?P<slug>[\w-]+)/$', views.CatalogoUpdate.as_view(), name='catalogo_actualizar'),
 
     # public urls:
     url(r'^$', views.CatalogoList.as_view(), name='catalogo_lista'),

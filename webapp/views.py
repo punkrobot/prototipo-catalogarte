@@ -41,3 +41,11 @@ class CatalogoCreate(LoginRequiredMixin, CreateView):
         form.instance.museo = self.request.user.museo
         return super(CatalogoCreate, self).form_valid(form)
 
+
+class CatalogoUpdate(UpdateView):
+    model = Catalogo
+    form_class = CatalogoForm
+    template_name = 'webapp/admin/catalogo_form.html'
+    success_url = '/admin'
+
+

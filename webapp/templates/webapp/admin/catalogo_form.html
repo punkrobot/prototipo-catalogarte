@@ -8,14 +8,20 @@
 {% block content %}
     <div class="row">
         <div class="col-md-8 col-md-offset-2 well">
-            <h2>Nuevo catálogo</h2>
+            {% if object.pk %}
+                <h2>Actualizar catálogo</h2>
+            {% else %}
+                <h2>Nuevo catálogo</h2>
+            {% endif %}
             <h4 class="text-muted">Información sobre la exposición</h4>
             <hr>
             <form action="" enctype="multipart/form-data" method="post" class="form-horizontal">
                 {% csrf_token %}
                 {% bootstrap_form form layout="horizontal" label_class='col-md-2' field_class='col-md-8' %}
                 {% buttons%}
-                    <div class="col-md-10">
+                    <div class="col-md-8 col-md-offset-2">
+                        <hr>
+                        <a href="{% url 'catalogo_admin' %}" class="btn btn-default pull-left">Cancelar</a>
                         <button type="submit" class="btn btn-material-teal pull-right">Guardar y continuar</button>
                     </div>
                 {% endbuttons %}

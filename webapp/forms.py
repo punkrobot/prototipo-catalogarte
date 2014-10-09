@@ -23,7 +23,7 @@ class CatalogoForm(forms.ModelForm):
         self.fields['autor'].widget.attrs = {'placeholder': ''}
         self.fields['fecha_inicial'].widget = DateTimeWidget(usel10n=True, bootstrap_version=3)
         self.fields['fecha_final'].widget = DateTimeWidget(usel10n=True, bootstrap_version=3)
-        self.fields['descripcion'].widget.attrs = {'placeholder': 'Descripciónn corta de la exposición...', 'rows': 3}
+        self.fields['descripcion'].widget.attrs = {'placeholder': 'Descripciónn corta de la exposición...', 'rows': 4}
         self.fields['creditos'].widget = CKEditorWidget()
         self.fields['creditos'].initial = '<h3>Curaduría</h3><ul><li></li></ul>'
         self.fields['informacion'].widget = CKEditorWidget()
