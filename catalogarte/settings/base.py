@@ -17,6 +17,7 @@ INSTALLED_APPS = (
     'bootstrap3',
     'datetimewidget',
     'ckeditor',
+    "ajaxuploader",
 )
 
 MIDDLEWARE_CLASSES = (

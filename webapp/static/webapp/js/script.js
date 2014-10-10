@@ -15,3 +15,4 @@ $('#filters').on('affixed-top.bs.affix', function (e) {
 $('#filters').on('affixed.bs.affix', function (e) {
     $('body').css("padding-top", "55px");
 })
+

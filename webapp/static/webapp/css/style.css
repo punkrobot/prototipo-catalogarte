@@ -9,11 +9,6 @@
 #filters{
     padding: 0;
 }
-.affix{
-    top: 0;
-    z-index: 10;
-    width: 100%;
-}
 .btn-filter{
     padding: 5px 10px;
     color: #000;
@@ -35,6 +30,11 @@
 }
 #filters .input-group-addon{
     background-color: #FFF;
+}
+#filters.affix{
+    top: 0;
+    z-index: 10;
+    width: 100%;
 }
 .dropdown-menu{
     margin-top: -5px;
@@ -76,6 +76,8 @@
     padding: 10px !important;
 }
 .avatar img{
+    background-color: #FFF;
+    margin-left: 10px;
     width: 40px;
     height: 40px;
 
@@ -119,4 +121,228 @@
 }
 .nav-tabs .active{
     background-color: #009688;
+}
+
+.workspace{
+    margin: 20px 0;
+}
+
+
+.qq-upload-drop-area{
+    border: 2px dashed #AAA;
+    text-align: center;
+    padding: 60px;
+    font-size: 1.5em;
+    color: #999;
+    min-height: 200px;
+    width: 100%;
+}
+.qq-upload-drop-area-active{
+    border: 2px solid #5DA30C;
+    background-color: #EEE;
+}
+.qq-hide {
+    display: none;
+}
+.qq-upload-list{
+    margin: 20px;
+}
+.qq-upload-size{
+    color: #999;
+    font-size: .7em;
+}
+.qq-upload-list li{
+    list-style-type: none;
+}
+.qq-upload-list li:before {
+    font-family: 'FontAwesome';
+    content: '\f03e';
+    margin:0 5px 0 -15px;
+}
+.qq-upload-list li.qq-upload-success{
+    color: #5DA30C;
+}
+.qq-upload-list li.qq-upload-success:before {
+    font-family: 'FontAwesome';
+    content: '\f00c';
+    margin:0 5px 0 -15px;
+    color: #5DA30C;
+}
+.list-group{
+    margin-top: 5px;
+}
+.toolbar h4{
+    padding: 15px 20px;
+    margin: 0;
+    border-bottom: 1px solid #EEE;
+}
+.list-group .list-group-item{
+    padding: 10px 20px;
+    cursor: pointer;
+}
+.list-group .list-group-item i{
+    margin-right: 15px;
+}
+
+.toolbar-container{
+    padding: 0;
+}
+.toolbar-images{
+    padding: 0;
+    margin-left: 10px;
+}
+.toolbar{
+    background: #FEFEFE;
+    /*box-shadow: 0 1px 2px rgba(34, 25, 25, 0.4);*/
+    box-shadow: 0 3px 6px rgba(0,0,0,.16),0 3px 6px rgba(0,0,0,.23);
+    border-radius: 2px;
+    height: 600px;
+    float: left;
+    width: 180px;
+    overflow-y: auto;
+}
+.toolbar.affix{
+    top: 20px;
+}
+
+.page{
+    background: #FEFEFE;
+    box-shadow: 0 1px 2px rgba(34, 25, 25, 0.4);
+    margin-bottom: 5px;
+    padding: 20px 20px 0 20px;
+    float: left;
+
+    height: 900px;
+    width: 750px;
+}
+
+.layout{
+    height: 100%;
+}
+.col{
+    height: 100%;
+}
+
+.content{
+    height: 100%;
+}
+.area{
+    border: 2px dashed #CCC;
+}
+.area:hover{
+    background-color: #EEE;
+}
+
+.photo{
+    background-size: cover;
+}
+.photo:hover {
+    filter: brightness(80%);
+    -webkit-filter: brightness(80%);
+    -moz-filter: brightness(80%);
+    -o-filter: brightness(80%);
+    -ms-filter: brightness(80%);
+}
+
+.editable{
+    border: 2px dashed #CCC;
+    height: 100%;
+    padding: 5px;
+}
+.editable:hover{
+    background-color: #EEE;
+}
+
+.area .edit,
+.area .delete,
+.text .edit,
+.text .delete,
+.photo .edit,
+.photo .delete {
+    display: none;
+}
+.area:hover .edit,
+.text:hover .delete,
+.photo:hover .delete{
+    display: block;
+}
+
+.photo:hover .delete:hover,
+.text:hover .delete:hover,
+.area:hover .edit:hover{
+    cursor: pointer;
+    color: #999;
+}
+
+.edit{
+    position: absolute;
+    top: 10px;
+    right: 25px;
+    color: #BBB;
+    height: 20px;
+    width: 20px;
+}
+.delete{
+    position: absolute;
+    top: 10px;
+    right: 25px;
+    color: #FFF;
+    height: 20px;
+    width: 20px;
+}
+
+.r{
+    padding-bottom: 20px;
+}
+.h100{
+    height: 100%;
+}
+.h75{
+    height: 75%;
+}
+.h50{
+    height: 50%;
+}
+.h25{
+    height: 25%;
+}
+.h33{
+    height: 33%;
+}
+
+.placeholder{
+    border: 4px dashed #CCC;
+    text-align: center;
+    padding-top: 100px;
+    font-size: 2em;
+    color: #AAA;
+    height: 800px;
+    width: 100%;
+}
+
+.image img{
+    width: 140px;
+    margin: 10px;
+}
+.draggable{
+    width: 140px;
+}
+
+.button{
+    display: block;
+    padding: 15px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.button:hover{
+    text-decoration: none;
+}
+
+.template-preview{
+    height: 200px;
+}
+
+.layout-radio{
+    margin-left: 82px !important;
 }
