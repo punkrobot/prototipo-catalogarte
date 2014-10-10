@@ -1,3 +1,14 @@
+::-webkit-scrollbar{
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track{
+  background: rgba(0, 0, 0, 0.1);
+}
+::-webkit-scrollbar-thumb{
+  background: rgba(0, 0, 0, 0.2);
+}
+
 .navbar{
     margin-bottom: 0px;
 }
@@ -131,11 +142,15 @@
 .qq-upload-drop-area{
     border: 2px dashed #AAA;
     text-align: center;
-    padding: 60px;
+    padding: 80px 60px;
     font-size: 1.5em;
     color: #999;
-    min-height: 200px;
+    min-height: 410px;
     width: 100%;
+    margin-bottom: 10px;
+}
+.qq-upload-button-selector{
+    margin-top: 30px;
 }
 .qq-upload-drop-area-active{
     border: 2px solid #5DA30C;
@@ -170,6 +185,7 @@
 }
 .list-group{
     margin-top: 5px;
+    margin-bottom: 0;
 }
 .toolbar h4{
     padding: 15px 20px;
@@ -180,7 +196,7 @@
     padding: 10px 20px;
     cursor: pointer;
 }
-.list-group .list-group-item i{
+.list-group .list-group-item i.list-item{
     margin-right: 15px;
 }
 
@@ -196,14 +212,34 @@
     /*box-shadow: 0 1px 2px rgba(34, 25, 25, 0.4);*/
     box-shadow: 0 3px 6px rgba(0,0,0,.16),0 3px 6px rgba(0,0,0,.23);
     border-radius: 2px;
-    height: 600px;
     float: left;
     width: 180px;
-    overflow-y: auto;
 }
 .toolbar.affix{
     top: 20px;
 }
+.toolbar .nav>li{
+    text-align: center;
+    width: 33%;
+}
+.toolbar .tab-content{
+    height: 530px;
+    overflow-y: auto;
+}
+.toolbar .nav-tabs{
+    margin-bottom: 0;
+}
+.toolbar-btn{
+    color: #666;
+    cursor: pointer;
+}
+.toolbar-btn:hover{
+    color: #222;
+}
+.toolbar-help{
+    padding: 20px;
+}
+
 
 .page{
     background: #FEFEFE;
@@ -320,9 +356,12 @@
     width: 100%;
 }
 
-.image img{
-    width: 140px;
+.image{
+    width: 90%;
+    height: 100px;
     margin: 10px;
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 .draggable{
     width: 140px;
@@ -346,3 +385,21 @@
 .layout-radio{
     margin-left: 82px !important;
 }
+
+
+#multimediaModal .nav-tabs>li{
+  float: none;
+}
+#multimediaModal .nav-tabs>li i{
+  margin-top: 10px;
+}
+#multimediaModal .pane{
+    border: 1px solid #009688;
+    text-align: center;
+    padding: 80px 60px;
+    font-size: 1.5em;
+    min-height: 466px;
+    width: 100%;
+}
+
+

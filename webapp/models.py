@@ -86,11 +86,27 @@ class Categoria(models.Model):
         return u'%s' % (self.nombre)
 
 
+class Media(models.Model):
+    ruta = models.CharField(max_length = 255)
+    catalogo = models.ForeignKey(Catalogo)
+
+    IMAGEN = 'IMG'
+    VIDEO = 'VID'
+    AUDIO = 'AUD'
+    TIPOS = ( (IMAGEN, 'Imagen'), (VIDEO, 'Video'), (AUDIO, 'Audio') )
+    tipo = models.CharField(max_length=3, choices=TIPOS, default=IMAGEN)
+
+    def es_imagen(self):
+        return self.tipo == self.IMAGEN
+
+    def es_video(self):
+        return self.tipo == self.VIDEO
+
+    def es_audio(self):
+        return self.tipo == self.AUDIO
+
+
 @receiver(file_uploaded, sender=AjaxFileUploader)
 def on_upload(sender, backend, request, **kwargs):
-    print("path: " + backend.path)
-    print("filename: " + str(request.GET['qqfilename']))
-    print("cat: " + str(request.GET['catalogo']))
-    #MyModel.objects.create(user=request.user, document=backend.path)
-
+    Media.objects.create(archivo=request.GET['qqfilename'], catalogo_id=request.GET['catalogo_id'])
 

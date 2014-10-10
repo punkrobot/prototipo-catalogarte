@@ -13,13 +13,13 @@
                     <h4 class="text-center">Herramientas</h4>
                     <div class="list-group">
                         <a class="list-group-item" data-toggle="modal" data-target="#addPageModal">
-                            <i class="fa fa-file-o"></i>Agregar hoja
+                            <i class="fa fa-file-o list-item"></i>Agregar hoja
                         </a>
                         <a class="list-group-item">
-                            <i class="fa fa-search"></i>Vista previa
+                            <i class="fa fa-search list-item"></i>Vista previa
                         </a>
                         <a class="list-group-item" onclick="exportDocument();">
-                            <i class="fa fa-upload"></i>Exportar
+                            <i class="fa fa-upload list-item"></i>Exportar
                         </a>
                     </div>
                 </div>
@@ -29,41 +29,110 @@
             </div>
             <div class="col-md-2 images-container">
                 <div class="toolbar" data-spy="affix" data-offset-top="65">
-                    <h4 class="text-center">Imágenes</h4>
-                    <div class="list-group">
-                        <a class="list-group-item" data-toggle="modal" data-target="#addImagesModal"><i class="fa fa-picture-o"></i>
-                            Agregar
+                    <h4 class="text-center">Multimedia
+                        <a class="toolbar-btn pull-right" data-toggle="modal" data-target="#multimediaModal">
+                            <i class="fa fa-plus list-item"></i>
                         </a>
-                    </div>
+                    </h4>
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="active"><a href="#img-toolbar" role="tab" data-toggle="tab"><i class="fa fa-picture-o"></i></a></li>
+                        <li><a href="#video-toolbar" role="tab" data-toggle="tab"><i class="fa fa-film"></i></a></li>
+                        <li><a href="#audio-toolbar" role="tab" data-toggle="tab"><i class="fa fa-music"></i></a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="img-toolbar">
+                            {% for item in catalogo.media_set.all %}
+                                <div class="image" style="background-image:url(/media/uploads/{{item.archivo}});"></div>
+                            {% empty %}
+                                <p class="text-muted text-center toolbar-help">
+                                    Agrega imágenes dando clic en el botón "+" de la esquina derecha.
+                                </p>
+                            {% endfor %}
+                        </div>
+                        <div class="tab-pane" id="video-toolbar">
+                            {% for item in catalogo.medias_set.all %}
 
-                    <div class="image"><img class="draggable" src="{% static "www/img/franzmayer1.jpg" %}"></div>
+                            {% empty %}
+                                <p class="text-muted text-center toolbar-help">
+                                    Agrega videos dando clic en el botón "+" de la esquina derecha.
+                                </p>
+                            {% endfor %}
+                        </div>
+                        <div class="tab-pane" id="audio-toolbar">
+                            {% for item in catalogo.medias_set.all %}
+
+                            {% empty %}
+                                <p class="text-muted text-center toolbar-help">
+                                    Agrega clips de audio dando clic en el botón "+" de la esquina derecha.
+                                </p>
+                            {% endfor %}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="addImagesModal" tabindex="-1" role="dialog">
+    <div class="modal fade" id="multimediaModal" tabindex="-1" role="dialog">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-            <h4 class="modal-title" id="myModalLabel">Agrega imágenes</h4>
+            <h3 class="modal-title" id="myModalLabel">Recursos multimedia</h3>
           </div>
           <div class="modal-body">
             <div class="row">
-                <div class="col-md-12">
-                     <div id="file-uploader">
-                     </div>
-                     <form action="{% url 'ajax_upload' %}" id="qq-form">
-                        <input type="hidden" name="catalogo" value="{{ slug }}">
-                        <button class="btn btn-default btn-raised btn-material-teal pull-right" type="submit">Cargar</button>
-                    </form>
+                <div class="col-md-2">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="text-center active"><a href="#img" role="tab" data-toggle="tab">
+                            <i class="fa fa-picture-o fa-2x"></i>
+                            <h5>Imágenes</h5>
+                        </a></li>
+                        <li class="text-center"><a href="#video" role="tab" data-toggle="tab">
+                            <i class="fa fa-film fa-2x"></i>
+                            <h5>Video</h5>
+                        </a></li>
+                        <li class="text-center"><a href="#audio" role="tab" data-toggle="tab">
+                            <i class="fa fa-music fa-2x"></i>
+                            <h5>Audio</h5>
+                        </a></li>
+                        <li class="text-center"><a href="#dropbox" role="tab" data-toggle="tab">
+                            <i class="fa fa-dropbox fa-2x"></i>
+                            <h5>Dropbox</h5>
+                        </a></li>
+                        <li class="text-center"><a href="#googledrive" role="tab" data-toggle="tab">
+                            <i class="fa fa-google fa-2x"></i>
+                            <h5>Google Drive</h5>
+                        </a></li>
+                    </ul>
+                </div>
+                <div class="col-md-10 tab-content">
+                    <div class="tab-pane fade in active" id="img">
+                        <div id="file-uploader"></div>
+                        <form action="{% url 'ajax_upload' %}" id="qq-form">
+                            <input type="hidden" name="catalogo_id" value="{{ catalogo.pk }}">
+                            <button class="btn btn-raised btn-material-teal pull-right" type="submit">Cargar</button>
+                        </form>
+                    </div>
+                    <div class="tab-pane pane fade" id="video">
+                        <h3>Video</h3>
+                    </div>
+                    <div class="tab-pane pane fade" id="audio">
+                        <h3>Audio</h3>
+                    </div>
+                    <div class="tab-pane pane fade" id="dropbox">
+                        <h3>Dropbox</h3>
+                        <p class="text-muted">Carga archivos desde tu cuenta de Dropbox.</p>
+                        <a class="btn btn-material-teal">Conecta tu cuenta</a>
+                    </div>
+                    <div class="tab-pane pane fade" id="googledrive">
+                        <h3>Google Drive</h3>
+                        <p class="text-muted">Carga archivos desde tu cuenta de Google Drive.</p>
+                        <a class="btn btn-material-teal">Conecta tu cuenta</a>
+                    </div>
                 </div>
             </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
           </div>
         </div>
       </div>
@@ -213,7 +282,7 @@
     <script type="text/template" id="qq-template">
         <div class="qq-uploader-selector">
             <div class="qq-upload-drop-area-selector qq-upload-drop-area">
-                <span>Arrastra archivos aquí para cargarlos o da clic en el botón de abajo.</span>
+                <span>Arrastra archivos aquí o da clic en el botón de abajo.</span>
                 <div class="qq-upload-button-selector btn btn-default btn-raised">
                     <div>Abrir explorador</div>
                 </div>

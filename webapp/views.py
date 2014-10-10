@@ -50,7 +50,7 @@ class CatalogoCreateContent(LoginRequiredMixin, View):
     def get(self, request, slug):
         context = {
             'csrf_token': get_token(request),
-            'slug': slug
+            'catalogo': get_object_or_404(Catalogo, slug=slug)
         }
         return render(request, 'webapp/admin/catalogo_content.html', context)
 
