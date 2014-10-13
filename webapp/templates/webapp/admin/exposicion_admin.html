@@ -10,8 +10,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <h2 class="pull-left">Administración de catalogos</h2>
-                    <a href="{% url 'catalogo_nuevo' %}" class="btn btn-material-teal pull-right"><i class="fa fa-plus"></i> Nuevo</a>
+                    <h2 class="pull-left">Administración</h2>
+                    <a href="{% url 'exposicion_nueva' %}" class="btn btn-material-teal pull-right"><i class="fa fa-plus"></i> Nueva exposición</a>
                 </div>
             </div>
         </div>
@@ -27,13 +27,13 @@
                         <th>Publicado</th>
                     </thead>
                     <tbody>
-                        {% for cat in catalogo_list %}
+                        {% for expo in exposicion_list %}
                             <tr class="item">
-                                <td>{{ cat.titulo }}</td>
-                                <td>{{ cat.autor }}</td>
-                                <td>{{ cat.fecha_modificacion }}</td>
+                                <td>{{ expo.titulo }}</td>
+                                <td>{{ expo.autor }}</td>
+                                <td>{{ expo.fecha_modificacion }}</td>
                                 <td>
-                                    {% if cat.publicado %}
+                                    {% if expo.publicado %}
                                         <i class="fa fa-check"></i>
                                     {% else %}
                                         <i class="fa fa-remove"></i>
@@ -43,7 +43,7 @@
                                     <div>
                                         <a class="button" title="Ver detalles"><i class="fa fa-eye"></i></a>
                                         <a class="button" title="Exportar"><i class="fa fa-upload"></i></a>
-                                        <a href="{% url 'catalogo_actualizar' cat.slug %}" class="button" title="Editar"><i class="fa fa-pencil"></i></a>
+                                        <a href="{% url 'exposicion_actualizar' expo.slug %}" class="button" title="Editar"><i class="fa fa-pencil"></i></a>
                                         <a class="button" title="Eliminar"><i class="fa fa-trash"></i></a>
                                     </div>
                                 </td>

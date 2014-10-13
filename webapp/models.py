@@ -14,8 +14,7 @@ from ajaxuploader.signals import file_uploaded
 def get_museo_file_path(instance, filename):
     return '/'.join([instance.slug, filename])
 
-
-def get_catalogo_file_path(instance, filename):
+def get_exposicion_file_path(instance, filename):
     return '/'.join([instance.museo.slug, instance.slug, filename])
 
 
@@ -33,7 +32,7 @@ class Museo(models.Model):
     youtube = models.URLField(max_length=100, blank=True)
     instagram = models.URLField(max_length=100, blank=True)
 
-    slug = AutoSlugField(populate_from='nombre')
+    slug = AutoSlugField(unique=True, populate_from='nombre')
     logotipo = models.ImageField(upload_to=get_museo_file_path)
     portada = models.ImageField(upload_to=get_museo_file_path, blank=True)
 
@@ -41,7 +40,7 @@ class Museo(models.Model):
         return u'%s' % (self.nombre)
 
 
-class Catalogo(models.Model):
+class Exposicion(models.Model):
     museo = models.ForeignKey(Museo)
 
     fecha_inicial = models.DateTimeField()
@@ -57,14 +56,7 @@ class Catalogo(models.Model):
 
     slug = AutoSlugField(unique=True, populate_from='titulo')
     categorias = models.ManyToManyField("Categoria")
-    portada = models.ImageField(upload_to=get_catalogo_file_path)
-
-    num_paginas = models.IntegerField(null=True, blank=True)
-    fecha_publicacion = models.DateTimeField(null=True, blank=True)
-    fecha_modificacion = models.DateTimeField(null=True, blank=True)
-    publicado = models.NullBooleanField()
-
-    contenido = JSONField(blank=True)
+    portada = models.ImageField(upload_to=get_exposicion_file_path)
 
     def __unicode__(self):
         return u'%s - %s' % (self.museo.nombre, self.titulo)
@@ -78,6 +70,22 @@ class Catalogo(models.Model):
         return " ".join(categorias_list)
 
 
+class Catalogo(models.Model):
+    exposicion = models.ForeignKey(Exposicion)
+
+    alto = models.PositiveIntegerField(null=True, blank=True)
+    ancho = models.PositiveIntegerField(null=True, blank=True)
+    num_paginas = models.PositiveIntegerField(null=True, blank=True)
+    fecha_publicacion = models.DateTimeField(null=True, blank=True)
+    fecha_modificacion = models.DateTimeField(null=True, blank=True)
+    publicado = models.NullBooleanField()
+
+    contenido = JSONField(blank=True)
+
+    def __unicode__(self):
+        return u'%s - %s' % (self.museo.nombre, self.titulo)
+
+
 class Categoria(models.Model):
     nombre = models.CharField(max_length=50)
     slug = AutoSlugField(populate_from='nombre')
@@ -87,13 +95,14 @@ class Categoria(models.Model):
 
 
 class Media(models.Model):
-    ruta = models.CharField(max_length = 255)
-    catalogo = models.ForeignKey(Catalogo)
-
     IMAGEN = 'IMG'
     VIDEO = 'VID'
     AUDIO = 'AUD'
     TIPOS = ( (IMAGEN, 'Imagen'), (VIDEO, 'Video'), (AUDIO, 'Audio') )
+
+    ruta = models.CharField(max_length=255)
+    nombre = models.CharField(max_length=100, blank=True)
+    exposicion = models.ForeignKey(Exposicion)
     tipo = models.CharField(max_length=3, choices=TIPOS, default=IMAGEN)
 
     def es_imagen(self):
@@ -108,5 +117,5 @@ class Media(models.Model):
 
 @receiver(file_uploaded, sender=AjaxFileUploader)
 def on_upload(sender, backend, request, **kwargs):
-    Media.objects.create(archivo=request.GET['qqfilename'], catalogo_id=request.GET['catalogo_id'])
+    Media.objects.create(ruta=request.GET['qqfilename'], exposicion_id=request.GET['exposicion_id'], tipo=Media.IMAGEN)
 

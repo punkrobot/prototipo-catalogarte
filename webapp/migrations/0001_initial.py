@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from django.db import models, migrations
 import autoslug.fields
 import jsonfield.fields
+import webapp.models
 from django.conf import settings
 
 
@@ -18,16 +19,6 @@ class Migration(migrations.Migration):
             name='Catalogo',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('fecha_inicial', models.DateTimeField()),
-                ('fecha_final', models.DateTimeField(null=True, blank=True)),
-                ('titulo', models.CharField(max_length=100)),
-                ('autor', models.CharField(max_length=100, blank=True)),
-                ('creditos', models.TextField(blank=True)),
-                ('informacion', models.TextField(blank=True)),
-                ('actividades', models.TextField(blank=True)),
-                ('website', models.URLField(max_length=100, blank=True)),
-                ('slug', autoslug.fields.AutoSlugField(editable=False)),
-                ('portada', models.ImageField(upload_to=b'')),
                 ('num_paginas', models.IntegerField(null=True, blank=True)),
                 ('fecha_publicacion', models.DateTimeField(null=True, blank=True)),
                 ('fecha_modificacion', models.DateTimeField(null=True, blank=True)),
@@ -50,6 +41,39 @@ class Migration(migrations.Migration):
             bases=(models.Model,),
         ),
         migrations.CreateModel(
+            name='Exposicion',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('fecha_inicial', models.DateTimeField()),
+                ('fecha_final', models.DateTimeField(null=True, blank=True)),
+                ('titulo', models.CharField(max_length=100)),
+                ('autor', models.CharField(max_length=100, blank=True)),
+                ('creditos', models.TextField(blank=True)),
+                ('descripcion', models.TextField(blank=True)),
+                ('informacion', models.TextField(blank=True)),
+                ('actividades', models.TextField(blank=True)),
+                ('website', models.URLField(max_length=100, blank=True)),
+                ('slug', autoslug.fields.AutoSlugField(unique=True, editable=False)),
+                ('portada', models.ImageField(upload_to=webapp.models.get_exposicion_file_path)),
+                ('categorias', models.ManyToManyField(to='webapp.Categoria')),
+            ],
+            options={
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='Media',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('ruta', models.CharField(max_length=255)),
+                ('tipo', models.CharField(default=b'IMG', max_length=3, choices=[(b'IMG', b'Imagen'), (b'VID', b'Video'), (b'AUD', b'Audio')])),
+                ('exposicion', models.ForeignKey(to='webapp.Exposicion')),
+            ],
+            options={
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
             name='Museo',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
@@ -61,9 +85,9 @@ class Migration(migrations.Migration):
                 ('facebook', models.URLField(max_length=100, blank=True)),
                 ('youtube', models.URLField(max_length=100, blank=True)),
                 ('instagram', models.URLField(max_length=100, blank=True)),
-                ('slug', autoslug.fields.AutoSlugField(editable=False)),
-                ('logotipo', models.ImageField(upload_to=b'')),
-                ('portada', models.ImageField(upload_to=b'', blank=True)),
+                ('slug', autoslug.fields.AutoSlugField(unique=True, editable=False)),
+                ('logotipo', models.ImageField(upload_to=webapp.models.get_museo_file_path)),
+                ('portada', models.ImageField(upload_to=webapp.models.get_museo_file_path, blank=True)),
                 ('user', models.OneToOneField(to=settings.AUTH_USER_MODEL)),
             ],
             options={
@@ -71,15 +95,15 @@ class Migration(migrations.Migration):
             bases=(models.Model,),
         ),
         migrations.AddField(
-            model_name='catalogo',
-            name='categorias',
-            field=models.ManyToManyField(to='webapp.Categoria'),
+            model_name='exposicion',
+            name='museo',
+            field=models.ForeignKey(to='webapp.Museo'),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='catalogo',
-            name='museo',
-            field=models.ForeignKey(to='webapp.Museo'),
+            name='exposicion',
+            field=models.ForeignKey(to='webapp.Exposicion'),
             preserve_default=True,
         ),
     ]

@@ -58,13 +58,13 @@
     </div>
     <div class="container">
         <div id="container" class="row">
-            {% for cat in catalogo_list %}
-                <div class="well catalogo-card item {{ cat.get_categorias_slugs }}">
-                    <div style="background-image:url({{cat.portada.url}});" class="portada"></div>
-                    <a href="{% url 'catalogo_detalle' cat.slug %}"><h3>{{ cat.titulo }}</h3></a>
-                    <div>{{ cat.descripcion }}</div>
+            {% for expo in exposicion_list %}
+                <div class="well catalogo-card item {{ expo.get_categorias_slugs }}">
+                    <div style="background-image:url({{expo.portada.url}});" class="portada"></div>
+                    <a href="{% url 'exposicion_detalle' expo.slug %}"><h3>{{ expo.titulo }}</h3></a>
+                    <div>{{ expo.descripcion }}</div>
                     <hr>
-                    <a class="pull-left">{{ cat.museo.nombre }}</a>
+                    <a class="pull-left">{{ expo.museo.nombre }}</a>
                     <span class="pull-right">Hasta el 31 de octubre</span>
                 </div>
             {% endfor %}

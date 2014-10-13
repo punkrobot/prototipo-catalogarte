@@ -9,14 +9,14 @@ urlpatterns = patterns('',
     url(r'^logout$', 'django.contrib.auth.views.logout', {'next_page': '/admin'}),
 
     # admin urls:
-    url(r'^admin$', views.CatalogoAdmin.as_view(), name='catalogo_admin'),
-    url(r'^admin/catalogo/nuevo$', views.CatalogoCreate.as_view(), name='catalogo_nuevo'),
-    url(r'^admin/catalogo/contenido/(?P<slug>[\w-]+)/$', views.CatalogoCreateContent.as_view(), name='catalogo_contenido'),
-    url(r'^admin/catalogo/(?P<slug>[\w-]+)/$', views.CatalogoUpdate.as_view(), name='catalogo_actualizar'),
+    url(r'^admin$', views.ExposicionAdmin.as_view(), name='exposicion_admin'),
+    url(r'^admin/exposicion/nueva$', views.ExposicionCreate.as_view(), name='exposicion_nueva'),
+    url(r'^admin/exposicion/catalogo/(?P<slug>[\w-]+)/$', views.CatalogoCreate.as_view(), name='catalogo_create'),
+    url(r'^admin/exposicion/(?P<slug>[\w-]+)/$', views.ExposicionUpdate.as_view(), name='exposicion_actualizar'),
+    url(r'^admin/catalogo/save/(?P<slug>[\w-]+)/$', views.CatalogoSave.as_view(), name='catalogo_save'),
 
     # public urls:
-    url(r'^$', views.CatalogoList.as_view(), name='catalogo_lista'),
-    url(r'^catalogo/(?P<slug>[\w-]+)/$', views.CatalogoDetail.as_view(), name='catalogo_detalle'),
-
-    url(r'^ajax-upload$', AjaxFileUploader(), name="ajax_upload"),
+    url(r'^$', views.ExposicionList.as_view(), name='exposicion_lista'),
+    url(r'^exposicion/(?P<slug>[\w-]+)/$', views.ExposicionDetail.as_view(), name='exposicion_detalle'),
+    url(r'^media_upload$', AjaxFileUploader(), name="ajax_upload"),
 )

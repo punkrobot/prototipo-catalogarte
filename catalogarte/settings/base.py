@@ -62,7 +62,7 @@ CKEDITOR_CONFIGS = {
         'height': 300,
         'width': 550,
         'skin': 'bootstrapck',
-    },
+    }
 }
 
 BOOTSTRAP3 = {

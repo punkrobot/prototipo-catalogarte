@@ -1,64 +1,97 @@
+import json
+from datetime import datetime
+
+from django.conf import settings
+from django.http import HttpResponse
 from django.middleware.csrf import get_token
 from django.shortcuts import get_object_or_404, render
 from django.core.urlresolvers import reverse
 from django.views.generic import View, CreateView, DeleteView, DetailView, ListView, UpdateView
 
-from braces.views import LoginRequiredMixin
+from braces.views import LoginRequiredMixin, CsrfExemptMixin
 
-from webapp.models import Museo, Catalogo
-from webapp.forms import CatalogoForm
+from webapp.models import Museo, Exposicion, Catalogo
+from webapp.forms import ExposicionForm
 
 
-class CatalogoList(ListView):
-    context_object_name = 'catalogo_list'
-    template_name = 'webapp/catalogo_list.html'
+class ExposicionList(ListView):
+    context_object_name = 'exposicion_list'
+    template_name = 'webapp/exposicion_list.html'
 
     def get_queryset(self):
-        return Catalogo.objects.all()
+        return Exposicion.objects.all()
 
 
-class CatalogoDetail(DetailView):
-    model = Catalogo
-    context_object_name = 'catalogo'
-    template_name = 'webapp/catalogo_detail.html'
+class ExposicionDetail(DetailView):
+    model = Exposicion
+    context_object_name = 'exposicion'
+    template_name = 'webapp/exposicion_detail.html'
 
     def get_object(self):
-        return get_object_or_404(Catalogo, slug=self.kwargs.get('slug', None))
+        return get_object_or_404(Exposicion, slug=self.kwargs.get('slug', None))
 
 
-class CatalogoAdmin(LoginRequiredMixin, ListView):
-    context_object_name = 'catalogo_list'
-    template_name = 'webapp/admin/catalogo_admin.html'
+class ExposicionAdmin(LoginRequiredMixin, ListView):
+    context_object_name = 'exposicion_list'
+    template_name = 'webapp/admin/exposicion_admin.html'
 
     def get_queryset(self):
-        return Catalogo.objects.filter(museo__id=self.request.user.museo.id)
+        return Exposicion.objects.filter(museo__id=self.request.user.museo.id)
 
 
-class CatalogoCreate(LoginRequiredMixin, CreateView):
-    form_class = CatalogoForm
-    template_name = 'webapp/admin/catalogo_form.html'
+class ExposicionCreate(LoginRequiredMixin, CreateView):
+    form_class = ExposicionForm
+    template_name = 'webapp/admin/exposicion_form.html'
 
     def form_valid(self, form):
         form.instance.museo = self.request.user.museo
-        return super(CatalogoCreate, self).form_valid(form)
+        return super(ExposicionCreate, self).form_valid(form)
 
     def get_success_url(self):
-        return reverse('catalogo_contenido', args=(self.object.slug))
+        # TODO: Revisar error
+        return reverse('catalogo_create', args=(self.object.slug))
 
 
-class CatalogoCreateContent(LoginRequiredMixin, View):
+class CatalogoCreate(LoginRequiredMixin, View):
     def get(self, request, slug):
+        exposicion = get_object_or_404(Exposicion, slug=slug)
+        catalogos = Catalogo.objects.filter(exposicion__id=exposicion.id)
+        if catalogos.exists():
+            catalogo = catalogos.first()
+        else:
+            catalogo = Catalogo(
+                exposicion=exposicion,
+                ancho=710, alto=580,
+                num_paginas=0,
+                publicado=False,
+                fecha_modificacion=datetime.now() )
+            catalogo.save()
+
         context = {
             'csrf_token': get_token(request),
-            'catalogo': get_object_or_404(Catalogo, slug=slug)
+            'ckeditor_configs': settings.CKEDITOR_CONFIGS,
+            'exposicion': exposicion,
+            'catalogo': catalogo
         }
-        return render(request, 'webapp/admin/catalogo_content.html', context)
+        return render(request, 'webapp/admin/catalogo_create.html', context)
 
 
-class CatalogoUpdate(UpdateView):
-    model = Catalogo
-    form_class = CatalogoForm
-    template_name = 'webapp/admin/catalogo_form.html'
+class CatalogoSave(CsrfExemptMixin, View):
+    def post(self, request, slug):
+        if request.is_ajax():
+            if request.method == 'POST':
+                exposicion = get_object_or_404(Exposicion, slug=slug)
+                catalogo = exposicion.catalogo_set.first()
+                catalogo.contenido = json.loads(request.body)
+                catalogo.save()
+
+                return HttpResponse('ok')
+
+
+class ExposicionUpdate(UpdateView):
+    model = Exposicion
+    form_class = ExposicionForm
+    template_name = 'webapp/admin/exposicion_form.html'
     success_url = '/admin'
 
 

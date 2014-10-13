@@ -6,6 +6,13 @@
 {% endblock %}
 
 {% block content %}
+    <script src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
+    <script>
+        var ckeditor_configs = eval("("+"{{ ckeditor_configs | safe }}"+")");
+        var save_url = "{% url 'catalogo_save' exposicion.slug %}";
+        var doc = { numPages : {{ catalogo.contenido.numPages|default:"0" }} };
+    </script>
+
     <div class="container">
         <div class="row workspace">
             <div class="col-md-2 toolbar-container">
@@ -18,14 +25,54 @@
                         <a class="list-group-item">
                             <i class="fa fa-search list-item"></i>Vista previa
                         </a>
+                        <a class="list-group-item">
+                            <i class="fa fa-gear list-item"></i>Configuración
+                        </a>
                         <a class="list-group-item" onclick="exportDocument();">
                             <i class="fa fa-upload list-item"></i>Exportar
+                        </a>
+                        <a class="list-group-item" onclick="save();">
+                            <i class="fa fa-save list-item"></i>Guardar
                         </a>
                     </div>
                 </div>
             </div>
             <div class="col-md-8" id="workspace">
-                <div class="placeholder center-block">Agrega una hoja para comenzar a crear el catálogo.</div>
+                {% if catalogo.contenido %}
+                    {% for page in catalogo.contenido.pages %}
+                        <div class="page">
+                            {% for row in page.rows %}
+                                <div class="{{row.class}}">
+                                    {% for col in row.cols %}
+                                        <div class="{{col.class}}">
+                                            {% if col.content.type == 'photo' %}
+                                                <div class="content droppable photo" style="background-image:{{col.content.src}};">
+                                                    <i class="fa fa-edit fa-2x edit"></i>
+                                                    <i class="fa fa-times-circle fa-2x delete"></i>
+                                                </div>
+                                            {% elif col.content.type == 'text' %}
+                                                <div class="content droppable text">
+                                                    <i class="fa fa-edit fa-2x edit"></i>
+                                                    <i class="fa fa-times-circle fa-2x delete"></i>
+                                                    <div class="editable" contenteditable="true">
+                                                        {{col.content.html | safe}}
+                                                    </div>
+                                                </div>
+                                            {% else %}
+                                                <div class="content area droppable">
+                                                    <i class="fa fa-edit fa-2x edit"></i>
+                                                    <i class="fa fa-times-circle fa-2x delete"></i>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="placeholder center-block">Agrega una hoja para comenzar a crear el catálogo.</div>
+                {% endif %}
             </div>
             <div class="col-md-2 images-container">
                 <div class="toolbar" data-spy="affix" data-offset-top="65">
@@ -41,8 +88,8 @@
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane active" id="img-toolbar">
-                            {% for item in catalogo.media_set.all %}
-                                <div class="image" style="background-image:url(/media/uploads/{{item.archivo}});"></div>
+                            {% for item in exposicion.media_set.all %}
+                                <div class="image draggable" style="background-image:url(/media/uploads/{{item.ruta}});"></div>
                             {% empty %}
                                 <p class="text-muted text-center toolbar-help">
                                     Agrega imágenes dando clic en el botón "+" de la esquina derecha.
@@ -50,7 +97,7 @@
                             {% endfor %}
                         </div>
                         <div class="tab-pane" id="video-toolbar">
-                            {% for item in catalogo.medias_set.all %}
+                            {% for item in exposicion.medias_set.all %}
 
                             {% empty %}
                                 <p class="text-muted text-center toolbar-help">
@@ -59,7 +106,7 @@
                             {% endfor %}
                         </div>
                         <div class="tab-pane" id="audio-toolbar">
-                            {% for item in catalogo.medias_set.all %}
+                            {% for item in exposicion.medias_set.all %}
 
                             {% empty %}
                                 <p class="text-muted text-center toolbar-help">
@@ -111,7 +158,7 @@
                     <div class="tab-pane fade in active" id="img">
                         <div id="file-uploader"></div>
                         <form action="{% url 'ajax_upload' %}" id="qq-form">
-                            <input type="hidden" name="catalogo_id" value="{{ catalogo.pk }}">
+                            <input type="hidden" name="exposicion_id" value="{{ exposicion.pk }}">
                             <button class="btn btn-raised btn-material-teal pull-right" type="submit">Cargar</button>
                         </form>
                     </div>
@@ -149,16 +196,16 @@
           <div class="modal-body">
             <div class="row">
                 <div class="col-md-3">
-                    <label for="layout-sel1"><img class="template-preview center-block" src="{% static "www/img/1.jpg" %}"></label>
+                    <label for="layout-sel1"><img class="template-preview center-block" src="{% static "webapp/img/1.jpg" %}"></label>
                 </div>
                 <div class="col-md-3">
-                    <label for="layout-sel2"><img class="template-preview center-block" src="{% static "www/img/2.jpg" %}"></label>
+                    <label for="layout-sel2"><img class="template-preview center-block" src="{% static "webapp/img/2.jpg" %}"></label>
                 </div>
                 <div class="col-md-3">
-                    <label for="layout-sel3"><img class="template-preview center-block" src="{% static "www/img/3.jpg" %}"></label>
+                    <label for="layout-sel3"><img class="template-preview center-block" src="{% static "webapp/img/3.jpg" %}"></label>
                 </div>
                 <div class="col-md-3">
-                    <label for="layout-sel4"><img class="template-preview center-block" src="{% static "www/img/4.jpg" %}"></label>
+                    <label for="layout-sel4"><img class="template-preview center-block" src="{% static "webapp/img/4.jpg" %}"></label>
                 </div>
             </div>
             <div class="row">
@@ -188,7 +235,7 @@
     <div style="display:none;">
         <div id="layout1" class="layout">
             <div class="r h100">
-                <div class="col col-xs-12">
+                <div class="c col-xs-12">
                     <div class="content area droppable">
                         <i class="fa fa-edit fa-2x edit"></i>
                         <i class="fa fa-times-circle fa-2x delete"></i>
@@ -199,7 +246,7 @@
 
         <div id="layout2" class="layout">
             <div class="r h25">
-                <div class="col col-xs-12">
+                <div class="c col-xs-12">
                     <div class="content area droppable">
                         <i class="fa fa-edit fa-2x edit"></i>
                         <i class="fa fa-times-circle fa-2x delete"></i>
@@ -207,7 +254,7 @@
                 </div>
             </div>
             <div class="r h75">
-                <div class="col col-xs-12">
+                <div class="c col-xs-12">
                     <div class="content area droppable">
                         <i class="fa fa-edit fa-2x edit"></i>
                         <i class="fa fa-times-circle fa-2x delete"></i>
@@ -218,13 +265,13 @@
 
         <div id="layout3" class="layout">
             <div class="r h100">
-                <div class="col col-xs-8">
+                <div class="c col-xs-8">
                     <div class="content area droppable">
                         <i class="fa fa-edit fa-2x edit"></i>
                         <i class="fa fa-times-circle fa-2x delete"></i>
                     </div>
                 </div>
-                <div class="col col-xs-4">
+                <div class="c col-xs-4">
                     <div class="content area droppable">
                         <i class="fa fa-edit fa-2x edit"></i>
                         <i class="fa fa-times-circle fa-2x delete"></i>
@@ -235,7 +282,7 @@
 
         <div id="layout4" class="layout">
             <div class="r h50">
-                <div class="col col-xs-12">
+                <div class="c col-xs-12">
                     <div class="content area droppable">
                         <i class="fa fa-edit fa-2x edit"></i>
                         <i class="fa fa-times-circle fa-2x delete"></i>
@@ -243,13 +290,13 @@
                 </div>
             </div>
             <div class="r h50">
-                <div class="col col-xs-6">
+                <div class="c col-xs-6">
                     <div class="content area droppable">
                         <i class="fa fa-edit fa-2x edit"></i>
                         <i class="fa fa-times-circle fa-2x delete"></i>
                     </div>
                 </div>
-                <div class="col col-xs-6">
+                <div class="c col-xs-6">
                     <div class="content area droppable">
                         <i class="fa fa-edit fa-2x edit"></i>
                         <i class="fa fa-times-circle fa-2x delete"></i>

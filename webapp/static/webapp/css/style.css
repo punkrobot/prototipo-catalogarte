@@ -16,21 +16,21 @@
     background-color: #FFF;
     padding: 10px 0;
 }
+.avatar{
+    padding: 10px !important;
+}
+.avatar img{
+    background-color: #FFF;
+    margin-left: 10px;
+    width: 40px;
+    height: 40px;
 
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+}
 #filters{
     padding: 0;
-}
-.btn-filter{
-    padding: 5px 10px;
-    color: #000;
-    background-color: #FFF;
-}
-.btn-filter:hover{
-    color: #FFF;
-    background-color: #009688;
-}
-.btn-filter i{
-    margin: 0 5px;
 }
 #filters h4{
     padding-top: 4px;
@@ -47,6 +47,19 @@
     z-index: 10;
     width: 100%;
 }
+.btn-filter{
+    padding: 5px 10px;
+    color: #000;
+    background-color: #FFF;
+}
+.btn-filter:hover{
+    color: #FFF;
+    background-color: #009688;
+}
+.btn-filter i{
+    margin: 0 5px;
+}
+
 .dropdown-menu{
     margin-top: -5px;
     min-width: 200px;
@@ -81,20 +94,6 @@
     margin: 5px;
     padding: 5px;
     visibility: hidden;
-}
-
-.avatar{
-    padding: 10px !important;
-}
-.avatar img{
-    background-color: #FFF;
-    margin-left: 10px;
-    width: 40px;
-    height: 40px;
-
-    -webkit-border-radius: 50%;
-    -moz-border-radius: 50%;
-    border-radius: 50%;
 }
 
 .catalogo{
@@ -137,7 +136,6 @@
 .workspace{
     margin: 20px 0;
 }
-
 
 .qq-upload-drop-area{
     border: 2px dashed #AAA;
@@ -209,7 +207,6 @@
 }
 .toolbar{
     background: #FEFEFE;
-    /*box-shadow: 0 1px 2px rgba(34, 25, 25, 0.4);*/
     box-shadow: 0 3px 6px rgba(0,0,0,.16),0 3px 6px rgba(0,0,0,.23);
     border-radius: 2px;
     float: left;
@@ -240,25 +237,28 @@
     padding: 20px;
 }
 
-
+.placeholder{
+    border: 4px dashed #CCC;
+    text-align: center;
+    padding-top: 100px;
+    font-size: 2em;
+    color: #AAA;
+    height: 620px;
+    width: 100%;
+}
 .page{
     background: #FEFEFE;
-    box-shadow: 0 1px 2px rgba(34, 25, 25, 0.4);
+    box-shadow: 0 3px 6px rgba(0,0,0,.16),0 3px 6px rgba(0,0,0,.23);
     margin-bottom: 5px;
-    padding: 20px 20px 0 20px;
+    padding: 20px 0 0 20px;
     float: left;
 
-    height: 900px;
-    width: 750px;
+    height: 620px;
+    width: 730px;
 }
-
 .layout{
     height: 100%;
 }
-.col{
-    height: 100%;
-}
-
 .content{
     height: 100%;
 }
@@ -268,7 +268,6 @@
 .area:hover{
     background-color: #EEE;
 }
-
 .photo{
     background-size: cover;
 }
@@ -279,7 +278,6 @@
     -o-filter: brightness(80%);
     -ms-filter: brightness(80%);
 }
-
 .editable{
     border: 2px dashed #CCC;
     height: 100%;
@@ -288,7 +286,6 @@
 .editable:hover{
     background-color: #EEE;
 }
-
 .area .edit,
 .area .delete,
 .text .edit,
@@ -302,14 +299,12 @@
 .photo:hover .delete{
     display: block;
 }
-
 .photo:hover .delete:hover,
 .text:hover .delete:hover,
 .area:hover .edit:hover{
     cursor: pointer;
     color: #999;
 }
-
 .edit{
     position: absolute;
     top: 10px;
@@ -317,6 +312,10 @@
     color: #BBB;
     height: 20px;
     width: 20px;
+    margin-right: 10px;
+}
+.cke_inner{
+    width: 540px !important;
 }
 .delete{
     position: absolute;
@@ -325,8 +324,12 @@
     color: #FFF;
     height: 20px;
     width: 20px;
+    margin-right: 10px;
 }
-
+.c{
+    height: 100%;
+    padding: 0 20px 0 0;
+}
 .r{
     padding-bottom: 20px;
 }
@@ -346,15 +349,6 @@
     height: 33%;
 }
 
-.placeholder{
-    border: 4px dashed #CCC;
-    text-align: center;
-    padding-top: 100px;
-    font-size: 2em;
-    color: #AAA;
-    height: 800px;
-    width: 100%;
-}
 
 .image{
     width: 90%;
@@ -363,19 +357,8 @@
     background-size: cover;
     background-repeat: no-repeat;
 }
-.draggable{
-    width: 140px;
-}
-
-.button{
-    display: block;
-    padding: 15px;
-    text-align: center;
-    cursor: pointer;
-}
-
-.button:hover{
-    text-decoration: none;
+.ui-draggable-dragging{
+    width: 160px !important;
 }
 
 .template-preview{
@@ -385,7 +368,6 @@
 .layout-radio{
     margin-left: 82px !important;
 }
-
 
 #multimediaModal .nav-tabs>li{
   float: none;

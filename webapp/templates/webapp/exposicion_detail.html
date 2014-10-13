@@ -7,22 +7,22 @@
             <div class="col-md-12 well catalogo">
                 <div class="row">
                     <div class="col-md-12">
-                        <h1>{{catalogo.titulo}}<small>&nbsp;{{catalogo.autor}}</small></h1>
+                        <h1>{{exposicion.titulo}}<small>&nbsp;{{exposicion.autor}}</small></h1>
                         <hr>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <img src="{{catalogo.portada.url}}" class="img-thumbnail img-responsive">
-                        <p class="desc lead">{{catalogo.descripcion}}</p>
+                        <img src="{{exposicion.portada.url}}" class="img-thumbnail img-responsive">
+                        <p class="desc lead">{{exposicion.descripcion}}</p>
                     </div>
                     <div class="col-md-6">
-                        <img class="pull-right" height="90" src="{{catalogo.museo.logotipo.url}}">
-                        <h2>{{catalogo.museo.nombre}}</h2>
+                        <img class="pull-right" height="90" src="{{exposicion.museo.logotipo.url}}">
+                        <h2>{{exposicion.museo.nombre}}</h2>
                         <ul class="detalle">
                             <li><i class="fa fa-calendar"></i>Hasta el 5 de octubre</li>
-                            <li><i class="fa fa-tags"></i>{{catalogo.get_categorias}}</li>
-                            <li><i class="fa fa-globe"></i><a href="{{catalogo.website}}" target="_blank">Sitio web</a></li>
+                            <li><i class="fa fa-tags"></i>{{exposicion.get_categorias}}</li>
+                            <li><i class="fa fa-globe"></i><a href="{{exposicion.website}}" target="_blank">Sitio web</a></li>
                         </ul>
                         <ul class="nav nav-tabs" role="tablist">
                           <li class="active"><a href="#info" role="tab" data-toggle="tab">Información</a></li>
@@ -31,13 +31,13 @@
                         </ul>
                         <div class="tab-content">
                           <div class="tab-pane fade in active" id="info">
-                              <p>{{catalogo.informacion | safe}}</p>
+                              <p>{{exposicion.informacion | safe}}</p>
                           </div>
                           <div class="tab-pane fade" id="actividades">
-                              <p>{{catalogo.actividades | safe}}</p>
+                              <p>{{exposicion.actividades | safe}}</p>
                           </div>
                           <div class="tab-pane fade" id="creditos">
-                              <p>{{catalogo.creditos | safe}}</p>
+                              <p>{{exposicion.creditos | safe}}</p>
                           </div>
                         </div>
                     </div>

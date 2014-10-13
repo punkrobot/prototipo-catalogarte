@@ -5,25 +5,25 @@ from django import forms
 from datetimewidget.widgets import DateTimeWidget
 from ckeditor.widgets import CKEditorWidget
 
-from webapp.models import Catalogo
+from webapp.models import Exposicion
 
-class CatalogoForm(forms.ModelForm):
+class ExposicionForm(forms.ModelForm):
 
     class Meta:
-        model = Catalogo
+        model = Exposicion
         fields = ['titulo', 'autor', 'fecha_inicial', 'fecha_final', 'descripcion', 'creditos', \
                   'informacion', 'actividades', 'categorias', 'website', 'portada']
 
         success_url = '/admin'
 
     def __init__(self, *args, **kwargs):
-        super(CatalogoForm, self).__init__(*args, **kwargs)
+        super(ExposicionForm, self).__init__(*args, **kwargs)
 
         self.fields['titulo'].widget.attrs = {'placeholder': ''}
         self.fields['autor'].widget.attrs = {'placeholder': ''}
         self.fields['fecha_inicial'].widget = DateTimeWidget(usel10n=True, bootstrap_version=3)
         self.fields['fecha_final'].widget = DateTimeWidget(usel10n=True, bootstrap_version=3)
-        self.fields['descripcion'].widget.attrs = {'placeholder': 'Descripciónn corta de la exposición...', 'rows': 4}
+        self.fields['descripcion'].widget.attrs = {'placeholder': 'Descripción corta de la exposición...', 'rows': 4}
         self.fields['creditos'].widget = CKEditorWidget()
         self.fields['creditos'].initial = '<h3>Curaduría</h3><ul><li></li></ul>'
         self.fields['informacion'].widget = CKEditorWidget()
