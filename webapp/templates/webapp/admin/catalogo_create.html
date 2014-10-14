@@ -2,352 +2,355 @@
 {% load staticfiles %}
 
 {% block navbar %}
-    <li><a class="avatar" href="javascript:void(0)">{{user.museo.nombre}}<img src="{{user.museo.logotipo.url}}"></a></li>
+<li>
+	<a class="avatar" href="javascript:void(0)">
+		{{user.museo.nombre}}<img src="{{user.museo.logotipo.url}}">
+	</a>
+</li>
 {% endblock %}
 
 {% block content %}
-    <script src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
-    <script>
-        var ckeditor_configs = eval("("+"{{ ckeditor_configs | safe }}"+")");
-        var save_url = "{% url 'catalogo_save' exposicion.slug %}";
-        var doc = { numPages : {{ catalogo.contenido.numPages|default:"0" }} };
-    </script>
+<script src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
+<script>
+	var ckeditor_configs = eval("("+"{{ ckeditor_configs | safe }}"+")");
+	var save_url = "{% url 'catalogo_save' exposicion.slug %}";
+	var doc = { numPages : {{ catalogo.contenido.numPages|default:"0" }} };
+</script>
 
-    <div class="container">
-        <div class="row workspace">
-            <div class="col-md-2 toolbar-container">
-                <div class="toolbar" data-spy="affix" data-offset-top="65">
-                    <h4 class="text-center">Herramientas</h4>
-                    <div class="list-group">
-                        <a class="list-group-item" data-toggle="modal" data-target="#addPageModal">
-                            <i class="fa fa-file-o list-item"></i>Agregar hoja
-                        </a>
-                        <a class="list-group-item">
-                            <i class="fa fa-search list-item"></i>Vista previa
-                        </a>
-                        <a class="list-group-item">
-                            <i class="fa fa-gear list-item"></i>Configuración
-                        </a>
-                        <a class="list-group-item" onclick="exportDocument();">
-                            <i class="fa fa-upload list-item"></i>Exportar
-                        </a>
-                        <a class="list-group-item" onclick="save();">
-                            <i class="fa fa-save list-item"></i>Guardar
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-8" id="workspace">
-                {% if catalogo.contenido %}
-                    {% for page in catalogo.contenido.pages %}
-                        <div class="page">
-                            {% for row in page.rows %}
-                                <div class="{{row.class}}">
-                                    {% for col in row.cols %}
-                                        <div class="{{col.class}}">
-                                            {% if col.content.type == 'photo' %}
-                                                <div class="content droppable photo" style="background-image:{{col.content.src}};">
-                                                    <i class="fa fa-edit fa-2x edit"></i>
-                                                    <i class="fa fa-times-circle fa-2x delete"></i>
-                                                </div>
-                                            {% elif col.content.type == 'text' %}
-                                                <div class="content droppable text">
-                                                    <i class="fa fa-edit fa-2x edit"></i>
-                                                    <i class="fa fa-times-circle fa-2x delete"></i>
-                                                    <div class="editable" contenteditable="true">
-                                                        {{col.content.html | safe}}
-                                                    </div>
-                                                </div>
-                                            {% else %}
-                                                <div class="content area droppable">
-                                                    <i class="fa fa-edit fa-2x edit"></i>
-                                                    <i class="fa fa-times-circle fa-2x delete"></i>
-                                                </div>
-                                            {% endif %}
-                                        </div>
-                                    {% endfor %}
-                                </div>
-                            {% endfor %}
-                        </div>
-                    {% endfor %}
-                {% else %}
-                    <div class="placeholder center-block">Agrega una hoja para comenzar a crear el catálogo.</div>
-                {% endif %}
-            </div>
-            <div class="col-md-2 images-container">
-                <div class="toolbar" data-spy="affix" data-offset-top="65">
-                    <h4 class="text-center">Multimedia
-                        <a class="toolbar-btn pull-right" data-toggle="modal" data-target="#multimediaModal">
-                            <i class="fa fa-plus list-item"></i>
-                        </a>
-                    </h4>
-                    <ul class="nav nav-tabs" role="tablist">
-                        <li class="active"><a href="#img-toolbar" role="tab" data-toggle="tab"><i class="fa fa-picture-o"></i></a></li>
-                        <li><a href="#video-toolbar" role="tab" data-toggle="tab"><i class="fa fa-film"></i></a></li>
-                        <li><a href="#audio-toolbar" role="tab" data-toggle="tab"><i class="fa fa-music"></i></a></li>
-                    </ul>
-                    <div class="tab-content">
-                        <div class="tab-pane active" id="img-toolbar">
-                            {% for item in exposicion.media_set.all %}
-                                <div class="image draggable" style="background-image:url(/media/uploads/{{item.ruta}});"></div>
-                            {% empty %}
-                                <p class="text-muted text-center toolbar-help">
-                                    Agrega imágenes dando clic en el botón "+" de la esquina derecha.
-                                </p>
-                            {% endfor %}
-                        </div>
-                        <div class="tab-pane" id="video-toolbar">
-                            {% for item in exposicion.medias_set.all %}
+<div class="container">
+	<div class="row workspace">
+		<div class="col-md-2 toolbar-container">
+			<div class="toolbar" data-spy="affix" data-offset-top="65">
+				<h4 class="text-center">Herramientas</h4>
+				<div class="list-group">
+					<a class="list-group-item" data-toggle="modal" data-target="#addPageModal">
+						<i class="fa fa-file-o list-item"></i>Agregar hoja
+					</a>
+					<a class="list-group-item">
+						<i class="fa fa-search list-item"></i>Vista previa
+					</a>
+					<a class="list-group-item">
+						<i class="fa fa-gear list-item"></i>Configuración
+					</a>
+					<a class="list-group-item" onclick="exportDocument();">
+						<i class="fa fa-upload list-item"></i>Exportar
+					</a>
+					<a class="list-group-item" onclick="save();">
+						<i class="fa fa-save list-item"></i>Guardar
+					</a>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-8" id="workspace">
+			{% if catalogo.contenido %}
+				{% for page in catalogo.contenido.pages %}
+					<div class="page">
+						{% for row in page.rows %}
+							<div class="{{row.class}}">
+								{% for col in row.cols %}
+									<div class="{{col.class}}">
+										{% if col.content.type == 'photo' %}
+											<div class="content droppable photo" style="background-image:{{col.content.src}};">
+												<i class="fa fa-edit fa-2x edit"></i>
+												<i class="fa fa-times-circle fa-2x delete"></i>
+											</div>
+										{% elif col.content.type == 'text' %}
+											<div class="content droppable text">
+												<i class="fa fa-edit fa-2x edit"></i>
+												<i class="fa fa-times-circle fa-2x delete"></i>
+												<div class="editable" contenteditable="true">
+													{{col.content.html | safe}}
+												</div>
+											</div>
+										{% else %}
+											<div class="content area droppable">
+												<i class="fa fa-edit fa-2x edit"></i>
+												<i class="fa fa-times-circle fa-2x delete"></i>
+											</div>
+										{% endif %}
+									</div>
+								{% endfor %}
+							</div>
+						{% endfor %}
+					</div>
+				{% endfor %}
+			{% else %}
+				<div class="placeholder center-block">Agrega una hoja para comenzar a crear el catálogo.</div>
+			{% endif %}
+		</div>
+		<div class="col-md-2 images-container">
+			<div class="toolbar" data-spy="affix" data-offset-top="65">
+				<h4 class="text-center">Multimedia
+					<a class="toolbar-btn pull-right" data-toggle="modal" data-target="#multimediaModal">
+						<i class="fa fa-plus list-item"></i>
+					</a>
+				</h4>
+				<ul class="nav nav-tabs" role="tablist">
+					<li class="active"><a href="#img-toolbar" role="tab" data-toggle="tab"><i class="fa fa-picture-o"></i></a></li>
+					<li><a href="#video-toolbar" role="tab" data-toggle="tab"><i class="fa fa-film"></i></a></li>
+					<li><a href="#audio-toolbar" role="tab" data-toggle="tab"><i class="fa fa-music"></i></a></li>
+				</ul>
+				<div class="tab-content">
+					<div class="tab-pane active" id="img-toolbar">
+						{% for item in exposicion.media_set.all %}
+							<div class="image draggable" style="background-image:url(/media/uploads/{{item.ruta}});"></div>
+						{% empty %}
+							<p class="text-muted text-center toolbar-help">
+								Agrega imágenes dando clic en el botón "+" de la esquina derecha.
+							</p>
+						{% endfor %}
+					</div>
+					<div class="tab-pane" id="video-toolbar">
+						{% for item in exposicion.medias_set.all %}
+						{% empty %}
+							<p class="text-muted text-center toolbar-help">
+								Agrega videos dando clic en el botón "+" de la esquina derecha.
+							</p>
+						{% endfor %}
+					</div>
+					<div class="tab-pane" id="audio-toolbar">
+						{% for item in exposicion.medias_set.all %}
 
-                            {% empty %}
-                                <p class="text-muted text-center toolbar-help">
-                                    Agrega videos dando clic en el botón "+" de la esquina derecha.
-                                </p>
-                            {% endfor %}
-                        </div>
-                        <div class="tab-pane" id="audio-toolbar">
-                            {% for item in exposicion.medias_set.all %}
+						{% empty %}
+							<p class="text-muted text-center toolbar-help">
+								Agrega clips de audio dando clic en el botón "+" de la esquina derecha.
+							</p>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 
-                            {% empty %}
-                                <p class="text-muted text-center toolbar-help">
-                                    Agrega clips de audio dando clic en el botón "+" de la esquina derecha.
-                                </p>
-                            {% endfor %}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<!-- Modal -->
+<div class="modal fade" id="multimediaModal" tabindex="-1" role="dialog">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				<h3 class="modal-title" id="myModalLabel">Recursos multimedia</h3>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-2">
+						<ul class="nav nav-tabs" role="tablist">
+							<li class="text-center active"><a href="#img" role="tab" data-toggle="tab">
+								<i class="fa fa-picture-o fa-2x"></i>
+								<h5>Imágenes</h5>
+							</a></li>
+							<li class="text-center"><a href="#video" role="tab" data-toggle="tab">
+								<i class="fa fa-film fa-2x"></i>
+								<h5>Video</h5>
+							</a></li>
+							<li class="text-center"><a href="#audio" role="tab" data-toggle="tab">
+								<i class="fa fa-music fa-2x"></i>
+								<h5>Audio</h5>
+							</a></li>
+							<li class="text-center"><a href="#dropbox" role="tab" data-toggle="tab">
+								<i class="fa fa-dropbox fa-2x"></i>
+								<h5>Dropbox</h5>
+							</a></li>
+							<li class="text-center"><a href="#googledrive" role="tab" data-toggle="tab">
+								<i class="fa fa-google fa-2x"></i>
+								<h5>Google Drive</h5>
+							</a></li>
+						</ul>
+					</div>
+					<div class="col-md-10 tab-content">
+						<div class="tab-pane fade in active" id="img">
+							<div id="file-uploader"></div>
+							<form action="{% url 'ajax_upload' %}" id="qq-form">
+								<input type="hidden" name="exposicion_id" value="{{ exposicion.pk }}">
+								<button class="btn btn-raised btn-material-teal pull-right" type="submit">Cargar</button>
+							</form>
+						</div>
+						<div class="tab-pane pane fade" id="video">
+							<h3>Video</h3>
+						</div>
+						<div class="tab-pane pane fade" id="audio">
+							<h3>Audio</h3>
+						</div>
+						<div class="tab-pane pane fade" id="dropbox">
+							<h3>Dropbox</h3>
+							<p class="text-muted">Carga archivos desde tu cuenta de Dropbox.</p>
+							<a class="btn btn-material-teal">Conecta tu cuenta</a>
+						</div>
+						<div class="tab-pane pane fade" id="googledrive">
+							<h3>Google Drive</h3>
+							<p class="text-muted">Carga archivos desde tu cuenta de Google Drive.</p>
+							<a class="btn btn-material-teal">Conecta tu cuenta</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="multimediaModal" tabindex="-1" role="dialog">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-            <h3 class="modal-title" id="myModalLabel">Recursos multimedia</h3>
-          </div>
-          <div class="modal-body">
-            <div class="row">
-                <div class="col-md-2">
-                    <ul class="nav nav-tabs" role="tablist">
-                        <li class="text-center active"><a href="#img" role="tab" data-toggle="tab">
-                            <i class="fa fa-picture-o fa-2x"></i>
-                            <h5>Imágenes</h5>
-                        </a></li>
-                        <li class="text-center"><a href="#video" role="tab" data-toggle="tab">
-                            <i class="fa fa-film fa-2x"></i>
-                            <h5>Video</h5>
-                        </a></li>
-                        <li class="text-center"><a href="#audio" role="tab" data-toggle="tab">
-                            <i class="fa fa-music fa-2x"></i>
-                            <h5>Audio</h5>
-                        </a></li>
-                        <li class="text-center"><a href="#dropbox" role="tab" data-toggle="tab">
-                            <i class="fa fa-dropbox fa-2x"></i>
-                            <h5>Dropbox</h5>
-                        </a></li>
-                        <li class="text-center"><a href="#googledrive" role="tab" data-toggle="tab">
-                            <i class="fa fa-google fa-2x"></i>
-                            <h5>Google Drive</h5>
-                        </a></li>
-                    </ul>
-                </div>
-                <div class="col-md-10 tab-content">
-                    <div class="tab-pane fade in active" id="img">
-                        <div id="file-uploader"></div>
-                        <form action="{% url 'ajax_upload' %}" id="qq-form">
-                            <input type="hidden" name="exposicion_id" value="{{ exposicion.pk }}">
-                            <button class="btn btn-raised btn-material-teal pull-right" type="submit">Cargar</button>
-                        </form>
-                    </div>
-                    <div class="tab-pane pane fade" id="video">
-                        <h3>Video</h3>
-                    </div>
-                    <div class="tab-pane pane fade" id="audio">
-                        <h3>Audio</h3>
-                    </div>
-                    <div class="tab-pane pane fade" id="dropbox">
-                        <h3>Dropbox</h3>
-                        <p class="text-muted">Carga archivos desde tu cuenta de Dropbox.</p>
-                        <a class="btn btn-material-teal">Conecta tu cuenta</a>
-                    </div>
-                    <div class="tab-pane pane fade" id="googledrive">
-                        <h3>Google Drive</h3>
-                        <p class="text-muted">Carga archivos desde tu cuenta de Google Drive.</p>
-                        <a class="btn btn-material-teal">Conecta tu cuenta</a>
-                    </div>
-                </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Modal -->
-    <div class="modal fade" id="addPageModal" tabindex="-1" role="dialog">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-            <h4 class="modal-title" id="myModalLabel">Selecciona una plantilla</h4>
-          </div>
-          <div class="modal-body">
-            <div class="row">
-                <div class="col-md-3">
-                    <label for="layout-sel1"><img class="template-preview center-block" src="{% static "webapp/img/1.jpg" %}"></label>
-                </div>
-                <div class="col-md-3">
-                    <label for="layout-sel2"><img class="template-preview center-block" src="{% static "webapp/img/2.jpg" %}"></label>
-                </div>
-                <div class="col-md-3">
-                    <label for="layout-sel3"><img class="template-preview center-block" src="{% static "webapp/img/3.jpg" %}"></label>
-                </div>
-                <div class="col-md-3">
-                    <label for="layout-sel4"><img class="template-preview center-block" src="{% static "webapp/img/4.jpg" %}"></label>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-3">
-                    <input class="layout-radio" type="radio" name="layout-sel" id="layout-sel1" value="1" checked>
-                </div>
-                <div class="col-md-3">
-                    <input class="layout-radio" type="radio" name="layout-sel" id="layout-sel2" value="2">
-                </div>
-                <div class="col-md-3">
-                    <input class="layout-radio" type="radio" name="layout-sel" id="layout-sel3" value="3">
-                </div>
-                <div class="col-md-3">
-                    <input class="layout-radio" type="radio" name="layout-sel" id="layout-sel4" value="4">
-                </div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-material-teal" data-dismiss="modal" onclick="addPage();">Agregar</button>
-          </div>
-        </div>
-      </div>
-    </div>
+<!-- Modal -->
+<div class="modal fade" id="addPageModal" tabindex="-1" role="dialog">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				<h4 class="modal-title" id="myModalLabel">Selecciona una plantilla</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-3">
+						<label for="layout-sel1"><img class="template-preview center-block" src="{% static "webapp/img/1.jpg" %}"></label>
+					</div>
+					<div class="col-md-3">
+						<label for="layout-sel2"><img class="template-preview center-block" src="{% static "webapp/img/2.jpg" %}"></label>
+					</div>
+					<div class="col-md-3">
+						<label for="layout-sel3"><img class="template-preview center-block" src="{% static "webapp/img/3.jpg" %}"></label>
+					</div>
+					<div class="col-md-3">
+						<label for="layout-sel4"><img class="template-preview center-block" src="{% static "webapp/img/4.jpg" %}"></label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-3">
+						<input class="layout-radio" type="radio" name="layout-sel" id="layout-sel1" value="1" checked>
+					</div>
+					<div class="col-md-3">
+						<input class="layout-radio" type="radio" name="layout-sel" id="layout-sel2" value="2">
+					</div>
+					<div class="col-md-3">
+						<input class="layout-radio" type="radio" name="layout-sel" id="layout-sel3" value="3">
+					</div>
+					<div class="col-md-3">
+						<input class="layout-radio" type="radio" name="layout-sel" id="layout-sel4" value="4">
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-material-teal" data-dismiss="modal" onclick="addPage();">Agregar</button>
+			</div>
+		</div>
+	</div>
+</div>
 
 
-    <!-- Layouts -->
-    <div style="display:none;">
-        <div id="layout1" class="layout">
-            <div class="r h100">
-                <div class="c col-xs-12">
-                    <div class="content area droppable">
-                        <i class="fa fa-edit fa-2x edit"></i>
-                        <i class="fa fa-times-circle fa-2x delete"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
+<!-- Layouts -->
+<div style="display:none;">
+	<div id="layout1" class="layout">
+		<div class="r h100">
+			<div class="c col-xs-12">
+				<div class="content area droppable">
+					<i class="fa fa-edit fa-2x edit"></i>
+					<i class="fa fa-times-circle fa-2x delete"></i>
+				</div>
+			</div>
+		</div>
+	</div>
 
-        <div id="layout2" class="layout">
-            <div class="r h25">
-                <div class="c col-xs-12">
-                    <div class="content area droppable">
-                        <i class="fa fa-edit fa-2x edit"></i>
-                        <i class="fa fa-times-circle fa-2x delete"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="r h75">
-                <div class="c col-xs-12">
-                    <div class="content area droppable">
-                        <i class="fa fa-edit fa-2x edit"></i>
-                        <i class="fa fa-times-circle fa-2x delete"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
+	<div id="layout2" class="layout">
+		<div class="r h25">
+			<div class="c col-xs-12">
+				<div class="content area droppable">
+					<i class="fa fa-edit fa-2x edit"></i>
+					<i class="fa fa-times-circle fa-2x delete"></i>
+				</div>
+			</div>
+		</div>
+		<div class="r h75">
+			<div class="c col-xs-12">
+				<div class="content area droppable">
+					<i class="fa fa-edit fa-2x edit"></i>
+					<i class="fa fa-times-circle fa-2x delete"></i>
+				</div>
+			</div>
+		</div>
+	</div>
 
-        <div id="layout3" class="layout">
-            <div class="r h100">
-                <div class="c col-xs-8">
-                    <div class="content area droppable">
-                        <i class="fa fa-edit fa-2x edit"></i>
-                        <i class="fa fa-times-circle fa-2x delete"></i>
-                    </div>
-                </div>
-                <div class="c col-xs-4">
-                    <div class="content area droppable">
-                        <i class="fa fa-edit fa-2x edit"></i>
-                        <i class="fa fa-times-circle fa-2x delete"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
+	<div id="layout3" class="layout">
+		<div class="r h100">
+			<div class="c col-xs-8">
+				<div class="content area droppable">
+					<i class="fa fa-edit fa-2x edit"></i>
+					<i class="fa fa-times-circle fa-2x delete"></i>
+				</div>
+			</div>
+			<div class="c col-xs-4">
+				<div class="content area droppable">
+					<i class="fa fa-edit fa-2x edit"></i>
+					<i class="fa fa-times-circle fa-2x delete"></i>
+				</div>
+			</div>
+		</div>
+	</div>
 
-        <div id="layout4" class="layout">
-            <div class="r h50">
-                <div class="c col-xs-12">
-                    <div class="content area droppable">
-                        <i class="fa fa-edit fa-2x edit"></i>
-                        <i class="fa fa-times-circle fa-2x delete"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="r h50">
-                <div class="c col-xs-6">
-                    <div class="content area droppable">
-                        <i class="fa fa-edit fa-2x edit"></i>
-                        <i class="fa fa-times-circle fa-2x delete"></i>
-                    </div>
-                </div>
-                <div class="c col-xs-6">
-                    <div class="content area droppable">
-                        <i class="fa fa-edit fa-2x edit"></i>
-                        <i class="fa fa-times-circle fa-2x delete"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+	<div id="layout4" class="layout">
+		<div class="r h50">
+			<div class="c col-xs-12">
+				<div class="content area droppable">
+					<i class="fa fa-edit fa-2x edit"></i>
+					<i class="fa fa-times-circle fa-2x delete"></i>
+				</div>
+			</div>
+		</div>
+		<div class="r h50">
+			<div class="c col-xs-6">
+				<div class="content area droppable">
+					<i class="fa fa-edit fa-2x edit"></i>
+					<i class="fa fa-times-circle fa-2x delete"></i>
+				</div>
+			</div>
+			<div class="c col-xs-6">
+				<div class="content area droppable">
+					<i class="fa fa-edit fa-2x edit"></i>
+					<i class="fa fa-times-circle fa-2x delete"></i>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 
-    <script>
-        $(document).ready(function () {
-            $("#file-uploader").fineUploader({
-                request: {
-                    endpoint: "{% url 'ajax_upload' %}",
-                    forceMultipart: false,
-                    paramsInBody: false,
-                    customHeaders: {
-                        'X-CSRFToken': '{{ csrf_token }}',
-                    }
-                }
-            });
-            $("#file-uploader").on("complete", function(event, id, name, response) {
-                if (response.success) {
+<script>
+	$(document).ready(function () {
+		$("#file-uploader").fineUploader({
+			request: {
+				endpoint: "{% url 'ajax_upload' %}",
+				forceMultipart: false,
+				paramsInBody: false,
+				customHeaders: {
+					'X-CSRFToken': '{{ csrf_token }}',
+				}
+			}
+		});
+		$("#file-uploader").on("complete", function(event, id, name, response) {
+			if (response.success) {
 
-                }
-            });
-        });
-    </script>
+			}
+		});
+	});
+</script>
 
-    <script type="text/template" id="qq-template">
-        <div class="qq-uploader-selector">
-            <div class="qq-upload-drop-area-selector qq-upload-drop-area">
-                <span>Arrastra archivos aquí o da clic en el botón de abajo.</span>
-                <div class="qq-upload-button-selector btn btn-default btn-raised">
-                    <div>Abrir explorador</div>
-                </div>
-                <span class="qq-drop-processing-selector qq-drop-processing">
-                    <span>Cargando archivos</span>
-                    <span class="qq-drop-processing-spinner-selector qq-drop-processing-spinner"></span>
-                </span>
-                <ul class="qq-upload-list-selector qq-upload-list">
-                    <li>
-                      <div class="qq-progress-bar-container-selector progress">
-                          <div class="qq-progress-bar-selector progress-bar progress-bar-info"></div>
-                      </div>
-                      <span class="qq-upload-file-selector qq-upload-file"></span>
-                      <span class="qq-upload-size-selector qq-upload-size"></span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </script>
+<script type="text/template" id="qq-template">
+	<div class="qq-uploader-selector">
+		<div class="qq-upload-drop-area-selector qq-upload-drop-area">
+			<span>Arrastra archivos aquí o da clic en el botón de abajo.</span>
+			<div class="qq-upload-button-selector btn btn-default btn-raised">
+				<div>Abrir explorador</div>
+			</div>
+			<span class="qq-drop-processing-selector qq-drop-processing">
+				<span>Cargando archivos</span>
+				<span class="qq-drop-processing-spinner-selector qq-drop-processing-spinner"></span>
+			</span>
+			<ul class="qq-upload-list-selector qq-upload-list">
+				<li>
+					<div class="qq-progress-bar-container-selector progress">
+						<div class="qq-progress-bar-selector progress-bar progress-bar-info"></div>
+					</div>
+					<span class="qq-upload-file-selector qq-upload-file"></span>
+					<span class="qq-upload-size-selector qq-upload-size"></span>
+				</li>
+			</ul>
+		</div>
+	</div>
+</script>
 
 {% endblock %}

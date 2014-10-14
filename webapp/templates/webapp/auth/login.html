@@ -3,34 +3,33 @@
 {% block content %}
 
 <div class="row">
-    <div id="login-form" class="col-md-6 col-md-offset-3 well">
-        <form method="post" action="{% url 'django.contrib.auth.views.login' %}" class="form-horizontal">
-        {% csrf_token %}
-            <h2>Iniciar sesión</h2>
-            <hr>
-            {% if form.errors %}
-                <div class="alert alert-danger">
-                    <strong>Error.</strong> El nombre de usuario y la contraseña no coinciden.
-                    </ol>
-                </div>
-            {% endif %}
-            <div class="form-group">
-                <label for="inputUsername" class="col-lg-4 control-label">Nombre de usuario</label>
-                <div class="col-lg-8">
-                    <input type="text" class="form-control" name="username" id="inputUsername">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="inputPassword" class="col-lg-4 control-label">Password</label>
-                <div class="col-lg-8">
-                    <input type="password" class="form-control" name="password" id="inputPassword">
-                </div>
-            </div>
-            <hr>
-            <input type="hidden" name="next" value="{{ next }}" />
-            <button type="submit" class="btn btn-material-teal btn-raised pull-right" value="login">Acceder</button>
-        </form>
-    </div>
+	<div id="login-form" class="col-md-6 col-md-offset-3 well">
+		<form method="post" action="{% url 'django.contrib.auth.views.login' %}" class="form-horizontal">
+			{% csrf_token %}
+			<h2>Iniciar sesión</h2>
+			<hr>
+			{% if form.errors %}
+				<div class="alert alert-danger">
+					<strong>Error.</strong> El nombre de usuario y la contraseña no coinciden.
+				</div>
+			{% endif %}
+			<div class="form-group">
+				<label for="inputUsername" class="col-lg-4 control-label">Nombre de usuario</label>
+				<div class="col-lg-8">
+					<input type="text" class="form-control" name="username" id="inputUsername">
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="inputPassword" class="col-lg-4 control-label">Password</label>
+				<div class="col-lg-8">
+					<input type="password" class="form-control" name="password" id="inputPassword">
+				</div>
+			</div>
+			<hr>
+			<input type="hidden" name="next" value="{{ next }}" />
+			<button type="submit" class="btn btn-material-teal btn-raised pull-right" value="login">Acceder</button>
+		</form>
+	</div>
 </div>
 
 {% endblock %}

@@ -2,41 +2,47 @@
 {% load bootstrap3 %}
 
 {% block navbar %}
-    <li><a class="avatar" href="javascript:void(0)">{{user.museo.nombre}}<img src="{{user.museo.logotipo.url}}"></a></li>
+<li>
+	<a class="avatar" href="javascript:void(0)">
+		{{user.museo.nombre}}<img src="{{user.museo.logotipo.url}}">
+	</a>
+</li>
 {% endblock %}
 
 {% block content %}
-    <div class="container-fluid well">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    {% if object.pk %}
-                        <h2 class="pull-left">Actualizar exposición</h2>
-                        <a href="{% url 'catalogo_create' object.slug %}" class="btn btn-material-teal pull-right">Editar Catálogo</a>
-                    {% else %}
-                        <h2>Nueva exposición</h2>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2 well">
-            <form action="" enctype="multipart/form-data" method="post" class="form-horizontal">
-                {% csrf_token %}
-                {% bootstrap_form form layout="horizontal" label_class='col-md-2' field_class='col-md-8' %}
-                {% buttons%}
-                    <div class="col-md-8 col-md-offset-2">
-                        <hr>
-                        <a href="{% url 'exposicion_admin' %}" class="btn btn-default pull-left">Cancelar</a>
-                        {% if object.pk %}
-                            <button type="submit" class="btn btn-material-teal pull-right">Guardar</button>
-                        {% else %}
-                            <button type="submit" class="btn btn-material-teal pull-right">Guardar y continuar</button>
-                        {% endif %}
-                    </div>
-                {% endbuttons %}
-            </form>
-        </div>
-    </div>
+<div class="container-fluid well">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				{% if object.pk %}
+					<h2 class="pull-left">Actualizar exposición</h2>
+					<a href="{% url 'catalogo_create' object.slug %}" class="btn btn-material-teal pull-right">
+						Editar Catálogo
+					</a>
+				{% else %}
+					<h2>Nueva exposición</h2>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-8 col-md-offset-2 well">
+		<form action="" enctype="multipart/form-data" method="post" class="form-horizontal">
+			{% csrf_token %}
+			{% bootstrap_form form layout="horizontal" label_class='col-md-2' field_class='col-md-8' %}
+			{% buttons%}
+				<div class="col-md-8 col-md-offset-2">
+					<hr>
+					<a href="{% url 'exposicion_admin' %}" class="btn btn-default pull-left">Cancelar</a>
+						{% if object.pk %}
+					<button type="submit" class="btn btn-material-teal pull-right">Guardar</button>
+						{% else %}
+					<button type="submit" class="btn btn-material-teal pull-right">Guardar y continuar</button>
+						{% endif %}
+				</div>
+			{% endbuttons %}
+		</form>
+	</div>
+</div>
 {% endblock %}

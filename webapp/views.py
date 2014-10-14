@@ -52,6 +52,16 @@ class ExposicionCreate(LoginRequiredMixin, CreateView):
         return reverse('catalogo_create', args=(self.object.slug))
 
 
+class CatalogoDetail(DetailView):
+    model = Catalogo
+    context_object_name = 'catalogo'
+    template_name = 'webapp/catalogo_detail.html'
+
+    def get_object(self):
+        exposicion = get_object_or_404(Exposicion, slug=self.kwargs.get('slug', None))
+        return exposicion.catalogo_set.first()
+
+
 class CatalogoCreate(LoginRequiredMixin, View):
     def get(self, request, slug):
         exposicion = get_object_or_404(Exposicion, slug=slug)

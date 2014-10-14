@@ -1,0 +1,38 @@
+{% extends "webapp/base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+<div id="galeria">
+	{% if catalogo.contenido %}
+		{% for page in catalogo.contenido.pages %}
+			<div class="galeria-item">
+				{% for row in page.rows %}
+					<div class="{{row.class}}">
+						{% for col in row.cols %}
+							<div class="{{col.class}}">
+								{% if col.content.type == 'photo' %}
+									<div class="contenido img" style="background-image:{{col.content.src}};"></div>
+								{% elif col.content.type == 'text' %}
+									<div class="contenido text">
+										{{col.content.html | safe}}
+									</div>
+								{% endif %}
+							</div>
+						{% endfor %}
+					</div>
+				{% endfor %}
+			</div>
+		{% endfor %}
+	{% endif %}
+</div>
+
+<script>
+	$('.navbar').css(
+		{'position': 'fixed',
+		 'width': '100%',
+		 'top': '0px',
+		 'left': '0px'});
+
+	$.jInvertScroll(['#galeria']);
+</script>
+{% endblock %}

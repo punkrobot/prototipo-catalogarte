@@ -1,290 +1,293 @@
 ::-webkit-scrollbar{
-  width: 8px;
-  height: 8px;
+	width: 8px;
+	height: 8px;
 }
 ::-webkit-scrollbar-track{
-  background: rgba(0, 0, 0, 0.1);
+	background: rgba(0, 0, 0, 0.1);
 }
 ::-webkit-scrollbar-thumb{
-  background: rgba(0, 0, 0, 0.2);
+	background: rgba(0, 0, 0, 0.2);
 }
 
 .navbar{
-    margin-bottom: 0px;
+	margin-bottom: 0px;
 }
 .sub-header{
-    background-color: #FFF;
-    padding: 10px 0;
+	background-color: #FFF;
+	padding: 10px 0;
 }
 .avatar{
-    padding: 10px !important;
+	padding: 10px !important;
 }
 .avatar img{
-    background-color: #FFF;
-    margin-left: 10px;
-    width: 40px;
-    height: 40px;
+	background-color: #FFF;
+	margin-left: 10px;
+	width: 40px;
+	height: 40px;
 
-    -webkit-border-radius: 50%;
-    -moz-border-radius: 50%;
-    border-radius: 50%;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	border-radius: 50%;
 }
 #filters{
-    padding: 0;
+	padding: 0;
 }
 #filters h4{
-    padding-top: 4px;
-    margin-right: 30px;
+	padding-top: 4px;
+	margin-right: 30px;
 }
 #filters .input-group{
-    margin-top: 10px;
+	margin-top: 10px;
 }
 #filters .input-group-addon{
-    background-color: #FFF;
+	background-color: #FFF;
 }
 #filters.affix{
-    top: 0;
-    z-index: 10;
-    width: 100%;
+	top: 0;
+	z-index: 10;
+	width: 100%;
 }
 .btn-filter{
-    padding: 5px 10px;
-    color: #000;
-    background-color: #FFF;
+	padding: 5px 10px;
+	color: #000;
+	background-color: #FFF;
 }
 .btn-filter:hover{
-    color: #FFF;
-    background-color: #009688;
+	color: #FFF;
+	background-color: #009688;
 }
 .btn-filter i{
-    margin: 0 5px;
+	margin: 0 5px;
 }
 
 .dropdown-menu{
-    margin-top: -5px;
-    min-width: 200px;
+	margin-top: -5px;
+	min-width: 200px;
 }
 
 #login-form{
-    margin-top:80px;
+	margin-top:80px;
 }
 
 .catalogo-card{
-    float: left;
-    margin: 15px;
-    width: 360px;
+	float: left;
+	margin: 15px;
+	width: 360px;
 }
 .catalogo-card .portada{
-    width: 360px;
-    height: 200px;
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    margin-top: -19px;
-    margin-left: -19px;
+	width: 360px;
+	height: 200px;
+	background-position: center;
+	background-size: cover;
+	background-repeat: no-repeat;
+	margin-top: -19px;
+	margin-left: -19px;
 }
 
 .item:hover .button{
-    visibility: visible;
+	visibility: visible;
 }
 
 .button{
-    color: #000;
-    cursor: pointer;
-    margin: 5px;
-    padding: 5px;
-    visibility: hidden;
+	color: #000;
+	cursor: pointer;
+	margin: 5px;
+	padding: 5px;
+	visibility: hidden;
 }
 
 .catalogo{
-    margin-top: 30px;
+	margin-top: 30px;
 }
 .catalogo .portada{
-    width: 100%;
-    height: 200px;
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    margin-top: -19px;
-    margin-left: -19px;
+	width: 100%;
+	height: 200px;
+	background-position: center;
+	background-size: cover;
+	background-repeat: no-repeat;
+	margin-top: -19px;
+	margin-left: -19px;
 }
 .catalogo .desc{
-    margin-top: 20px;
+	margin-top: 20px;
 }
 .catalogo h2{
-    margin-top: 0;
+	margin-top: 0;
 }
 .catalogo .detalle{
-    padding-left: 10px;
-    margin-bottom: 20px;
+	padding-left: 10px;
+	margin-bottom: 20px;
 }
 .catalogo li{
-    list-style-type: none;
+	list-style-type: none;
 }
 .catalogo i{
-    margin-right: 5px;
+	margin-right: 5px;
 }
 
 .nav-tabs{
-    background-color: #4db6ac;
-    margin-bottom: 15px;
+	background-color: #4db6ac;
+	margin-bottom: 15px;
 }
 .nav-tabs .active{
-    background-color: #009688;
+	background-color: #009688;
 }
 
 .workspace{
-    margin: 20px 0;
+	margin: 20px 0;
 }
 
 .qq-upload-drop-area{
-    border: 2px dashed #AAA;
-    text-align: center;
-    padding: 80px 60px;
-    font-size: 1.5em;
-    color: #999;
-    min-height: 410px;
-    width: 100%;
-    margin-bottom: 10px;
+	border: 2px dashed #AAA;
+	text-align: center;
+	padding: 80px 60px;
+	font-size: 1.5em;
+	color: #999;
+	min-height: 410px;
+	width: 100%;
+	margin-bottom: 10px;
 }
 .qq-upload-button-selector{
-    margin-top: 30px;
+	margin-top: 30px;
 }
 .qq-upload-drop-area-active{
-    border: 2px solid #5DA30C;
-    background-color: #EEE;
+	border: 2px solid #5DA30C;
+	background-color: #EEE;
 }
 .qq-hide {
-    display: none;
+	display: none;
 }
 .qq-upload-list{
-    margin: 20px;
+	margin: 20px;
 }
 .qq-upload-size{
-    color: #999;
-    font-size: .7em;
+	color: #999;
+	font-size: .7em;
 }
 .qq-upload-list li{
-    list-style-type: none;
+	list-style-type: none;
 }
 .qq-upload-list li:before {
-    font-family: 'FontAwesome';
-    content: '\f03e';
-    margin:0 5px 0 -15px;
+	font-family: 'FontAwesome';
+	content: '\f03e';
+	margin:0 5px 0 -15px;
 }
 .qq-upload-list li.qq-upload-success{
-    color: #5DA30C;
+	color: #5DA30C;
 }
 .qq-upload-list li.qq-upload-success:before {
-    font-family: 'FontAwesome';
-    content: '\f00c';
-    margin:0 5px 0 -15px;
-    color: #5DA30C;
+	font-family: 'FontAwesome';
+	content: '\f00c';
+	margin:0 5px 0 -15px;
+	color: #5DA30C;
 }
 .list-group{
-    margin-top: 5px;
-    margin-bottom: 0;
+	margin-top: 5px;
+	margin-bottom: 0;
 }
 .toolbar h4{
-    padding: 15px 20px;
-    margin: 0;
-    border-bottom: 1px solid #EEE;
+	padding: 15px 20px;
+	margin: 0;
+	border-bottom: 1px solid #EEE;
 }
 .list-group .list-group-item{
-    padding: 10px 20px;
-    cursor: pointer;
+	padding: 10px 20px;
+	cursor: pointer;
 }
 .list-group .list-group-item i.list-item{
-    margin-right: 15px;
+	margin-right: 15px;
 }
 
 .toolbar-container{
-    padding: 0;
+	padding: 0;
 }
 .toolbar-images{
-    padding: 0;
-    margin-left: 10px;
+	padding: 0;
+	margin-left: 10px;
 }
 .toolbar{
-    background: #FEFEFE;
-    box-shadow: 0 3px 6px rgba(0,0,0,.16),0 3px 6px rgba(0,0,0,.23);
-    border-radius: 2px;
-    float: left;
-    width: 180px;
+	background: #FEFEFE;
+	box-shadow: 0 3px 6px rgba(0,0,0,.16),0 3px 6px rgba(0,0,0,.23);
+	border-radius: 2px;
+	float: left;
+	width: 180px;
 }
 .toolbar.affix{
-    top: 20px;
+	top: 20px;
 }
 .toolbar .nav>li{
-    text-align: center;
-    width: 33%;
+	text-align: center;
+	width: 33%;
 }
 .toolbar .tab-content{
-    height: 530px;
-    overflow-y: auto;
+	height: 530px;
+	overflow-y: auto;
 }
 .toolbar .nav-tabs{
-    margin-bottom: 0;
+	margin-bottom: 0;
 }
 .toolbar-btn{
-    color: #666;
-    cursor: pointer;
+	color: #666;
+	cursor: pointer;
 }
 .toolbar-btn:hover{
-    color: #222;
+	color: #222;
 }
 .toolbar-help{
-    padding: 20px;
+	padding: 20px;
 }
 
 .placeholder{
-    border: 4px dashed #CCC;
-    text-align: center;
-    padding-top: 100px;
-    font-size: 2em;
-    color: #AAA;
-    height: 620px;
-    width: 100%;
+	border: 4px dashed #CCC;
+	text-align: center;
+	padding-top: 100px;
+	font-size: 2em;
+	color: #AAA;
+	height: 620px;
+	width: 100%;
 }
 .page{
-    background: #FEFEFE;
-    box-shadow: 0 3px 6px rgba(0,0,0,.16),0 3px 6px rgba(0,0,0,.23);
-    margin-bottom: 5px;
-    padding: 20px 0 0 20px;
-    float: left;
+	background: #FEFEFE;
+	box-shadow: 0 3px 6px rgba(0,0,0,.16),0 3px 6px rgba(0,0,0,.23);
+	margin-bottom: 5px;
+	padding: 20px 0 0 20px;
+	float: left;
 
-    height: 620px;
-    width: 730px;
+	height: 600px;
+	width: 730px;
 }
 .layout{
-    height: 100%;
+	height: 100%;
 }
 .content{
-    height: 100%;
+	height: 100%;
 }
 .area{
-    border: 2px dashed #CCC;
+	border: 2px dashed #CCC;
 }
 .area:hover{
-    background-color: #EEE;
+	background-color: #EEE;
+}
+.img{
+	background-size: cover;
 }
 .photo{
-    background-size: cover;
+	background-size: cover;
 }
 .photo:hover {
-    filter: brightness(80%);
-    -webkit-filter: brightness(80%);
-    -moz-filter: brightness(80%);
-    -o-filter: brightness(80%);
-    -ms-filter: brightness(80%);
+	filter: brightness(80%);
+	-webkit-filter: brightness(80%);
+	-moz-filter: brightness(80%);
+	-o-filter: brightness(80%);
+	-ms-filter: brightness(80%);
 }
 .editable{
-    border: 2px dashed #CCC;
-    height: 100%;
-    padding: 5px;
+	border: 2px dashed #CCC;
+	height: 100%;
+	padding: 5px;
 }
 .editable:hover{
-    background-color: #EEE;
+	background-color: #EEE;
 }
 .area .edit,
 .area .delete,
@@ -292,96 +295,113 @@
 .text .delete,
 .photo .edit,
 .photo .delete {
-    display: none;
+	display: none;
 }
 .area:hover .edit,
 .text:hover .delete,
 .photo:hover .delete{
-    display: block;
+	display: block;
 }
 .photo:hover .delete:hover,
 .text:hover .delete:hover,
 .area:hover .edit:hover{
-    cursor: pointer;
-    color: #999;
+	cursor: pointer;
+	color: #999;
 }
 .edit{
-    position: absolute;
-    top: 10px;
-    right: 25px;
-    color: #BBB;
-    height: 20px;
-    width: 20px;
-    margin-right: 10px;
+	position: absolute;
+	top: 10px;
+	right: 25px;
+	color: #BBB;
+	height: 20px;
+	width: 20px;
+	margin-right: 10px;
 }
 .cke_inner{
-    width: 540px !important;
+	width: 540px !important;
 }
 .delete{
-    position: absolute;
-    top: 10px;
-    right: 25px;
-    color: #FFF;
-    height: 20px;
-    width: 20px;
-    margin-right: 10px;
+	position: absolute;
+	top: 10px;
+	right: 25px;
+	color: #FFF;
+	height: 20px;
+	width: 20px;
+	margin-right: 10px;
 }
 .c{
-    height: 100%;
-    padding: 0 20px 0 0;
+	height: 100%;
+	padding: 0 20px 0 0;
 }
 .r{
-    padding-bottom: 20px;
+	padding-bottom: 20px;
 }
 .h100{
-    height: 100%;
+	height: 100%;
 }
 .h75{
-    height: 75%;
+	height: 75%;
 }
 .h50{
-    height: 50%;
+	height: 50%;
 }
 .h25{
-    height: 25%;
+	height: 25%;
 }
 .h33{
-    height: 33%;
+	height: 33%;
 }
 
 
 .image{
-    width: 90%;
-    height: 100px;
-    margin: 10px;
-    background-size: cover;
-    background-repeat: no-repeat;
+	width: 90%;
+	height: 100px;
+	margin: 10px;
+	background-size: cover;
+	background-repeat: no-repeat;
 }
 .ui-draggable-dragging{
-    width: 160px !important;
+	width: 160px !important;
 }
 
 .template-preview{
-    height: 200px;
+	height: 200px;
 }
 
 .layout-radio{
-    margin-left: 82px !important;
+	margin-left: 82px !important;
 }
 
 #multimediaModal .nav-tabs>li{
-  float: none;
+	float: none;
 }
 #multimediaModal .nav-tabs>li i{
-  margin-top: 10px;
+	margin-top: 10px;
 }
 #multimediaModal .pane{
-    border: 1px solid #009688;
-    text-align: center;
-    padding: 80px 60px;
-    font-size: 1.5em;
-    min-height: 466px;
-    width: 100%;
+	border: 1px solid #009688;
+	text-align: center;
+	padding: 80px 60px;
+	font-size: 1.5em;
+	min-height: 466px;
+	width: 100%;
 }
 
+#galeria{
+	position: fixed;
+	top: 50px;
+	width: 2000px;
+	padding: 20px;
+}
+.galeria-item{
+	float: left;
+	height: 600px;
+	width: 730px;
+}
+.contenido{
+	height: 100%;
+	padding: 10px;
+	background: #FEFEFE;
+	box-shadow: 0 3px 6px rgba(0,0,0,.16),0 3px 6px rgba(0,0,0,.23);
+}
 
