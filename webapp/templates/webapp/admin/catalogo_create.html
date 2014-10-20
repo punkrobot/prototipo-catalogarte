@@ -15,7 +15,7 @@
 	var ckeditor_configs = eval("("+"{{ ckeditor_configs | safe }}"+")");
 	var save_url = "{% url 'catalogo_save' exposicion.slug %}";
 	var media_url = "{% url 'media_agregar' exposicion.slug %}";
-	var doc = { numPages : {{ catalogo.contenido.numPages | default:"0" }} };
+	var doc = { numPaginas : {{ catalogo.contenido.numPaginas | default:"0" }}, paginas: [] };
 </script>
 
 <div class="container">
@@ -24,7 +24,7 @@
 			<div class="toolbar" data-spy="affix" data-offset-top="65">
 				<h4 class="text-center">Herramientas</h4>
 				<div class="list-group">
-					<a class="list-group-item" data-toggle="modal" data-target="#addPageModal">
+					<a class="list-group-item" data-toggle="modal" data-target="#agregaPaginaModal">
 						<i class="fa fa-file-o list-item"></i>Agregar hoja
 					</a>
 					<a class="list-group-item">
@@ -44,35 +44,9 @@
 		</div>
 		<div class="col-md-8" id="workspace">
 			{% if catalogo.contenido %}
-				{% for page in catalogo.contenido.pages %}
+				{% for pagina in catalogo.contenido.paginas %}
 					<div class="page">
-						{% for row in page.rows %}
-							<div class="{{row.class}}">
-								{% for col in row.cols %}
-									<div class="{{col.class}}">
-										{% if col.content.type == 'photo' %}
-											<div class="content droppable photo" style="background-image:{{col.content.src}};">
-												<i class="fa fa-edit fa-2x edit"></i>
-												<i class="fa fa-times-circle fa-2x delete"></i>
-											</div>
-										{% elif col.content.type == 'text' %}
-											<div class="content droppable text">
-												<i class="fa fa-edit fa-2x edit"></i>
-												<i class="fa fa-times-circle fa-2x delete"></i>
-												<div class="editable" contenteditable="true">
-													{{col.content.html | safe}}
-												</div>
-											</div>
-										{% else %}
-											<div class="content area droppable">
-												<i class="fa fa-edit fa-2x edit"></i>
-												<i class="fa fa-times-circle fa-2x delete"></i>
-											</div>
-										{% endif %}
-									</div>
-								{% endfor %}
-							</div>
-						{% endfor %}
+            {{ pagina.html | safe }}
 					</div>
 				{% endfor %}
 			{% else %}
@@ -210,7 +184,7 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="addPageModal" tabindex="-1" role="dialog">
+<div class="modal fade" id="agregaPaginaModal" tabindex="-1" role="dialog">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -248,7 +222,7 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-material-teal" data-dismiss="modal" onclick="addPage();">Agregar</button>
+				<button type="button" class="btn btn-material-teal" data-dismiss="modal" onclick="agregaPagina();">Agregar</button>
 			</div>
 		</div>
 	</div>
@@ -260,10 +234,7 @@
 	<div id="layout1" class="layout">
 		<div class="r h100">
 			<div class="c col-xs-12">
-				<div class="content area droppable">
-					<i class="fa fa-edit fa-2x edit"></i>
-					<i class="fa fa-times-circle fa-2x delete"></i>
-				</div>
+				<div class="content area droppable"></div>
 			</div>
 		</div>
 	</div>
@@ -271,18 +242,12 @@
 	<div id="layout2" class="layout">
 		<div class="r h25">
 			<div class="c col-xs-12">
-				<div class="content area droppable">
-					<i class="fa fa-edit fa-2x edit"></i>
-					<i class="fa fa-times-circle fa-2x delete"></i>
-				</div>
+				<div class="content area droppable"></div>
 			</div>
 		</div>
 		<div class="r h75">
 			<div class="c col-xs-12">
-				<div class="content area droppable">
-					<i class="fa fa-edit fa-2x edit"></i>
-					<i class="fa fa-times-circle fa-2x delete"></i>
-				</div>
+				<div class="content area droppable"></div>
 			</div>
 		</div>
 	</div>
@@ -290,16 +255,10 @@
 	<div id="layout3" class="layout">
 		<div class="r h100">
 			<div class="c col-xs-8">
-				<div class="content area droppable">
-					<i class="fa fa-edit fa-2x edit"></i>
-					<i class="fa fa-times-circle fa-2x delete"></i>
-				</div>
+				<div class="content area droppable"></div>
 			</div>
 			<div class="c col-xs-4">
-				<div class="content area droppable">
-					<i class="fa fa-edit fa-2x edit"></i>
-					<i class="fa fa-times-circle fa-2x delete"></i>
-				</div>
+				<div class="content area droppable"></div>
 			</div>
 		</div>
 	</div>
@@ -307,24 +266,15 @@
 	<div id="layout4" class="layout">
 		<div class="r h50">
 			<div class="c col-xs-12">
-				<div class="content area droppable">
-					<i class="fa fa-edit fa-2x edit"></i>
-					<i class="fa fa-times-circle fa-2x delete"></i>
-				</div>
+				<div class="content area droppable"></div>
 			</div>
 		</div>
 		<div class="r h50">
 			<div class="c col-xs-6">
-				<div class="content area droppable">
-					<i class="fa fa-edit fa-2x edit"></i>
-					<i class="fa fa-times-circle fa-2x delete"></i>
-				</div>
+				<div class="content area droppable"></div>
 			</div>
 			<div class="c col-xs-6">
-				<div class="content area droppable">
-					<i class="fa fa-edit fa-2x edit"></i>
-					<i class="fa fa-times-circle fa-2x delete"></i>
-				</div>
+				<div class="content area droppable"></div>
 			</div>
 		</div>
 	</div>

@@ -21,13 +21,13 @@ $(function() {
     CKEDITOR.disableAutoInline = true;
 
     $( ".draggable" ).draggable({ opacity: 0.8, helper: "clone", appendTo:'body' });
-    activateContentAreas();
-    activateTextAreas();
+    activaAreasDeContenido();
+    activaAreasDeTexto();
 
     $(".audio-video").tooltip({container: 'body'});
 });
 
-function addPage(){
+function agregaPagina(){
     var page = $("<div>", {class: "page"});
 
     var sel = $('input[type=radio]:checked').val();
@@ -42,25 +42,26 @@ function addPage(){
     } else {
         layout = $('#layout4').clone();
     }
-    page.append(layout);
+    page.html(layout.html());
 
-    if(doc.numPages == 0){
+    if(doc.numPaginas == 0){
         $("#workspace").html(page);
     } else {
         $("#workspace").append(page);
     }
-    doc.numPages++;
+    doc.numPaginas++;
 
-    activateContentAreas();
+    activaAreasDeContenido();
 }
 
-function activateTextAreas(){
-    $('.editable').each(function() {
-        CKEDITOR.inline($(this).get(0), ckeditor_configs.default);
+function activaAreasDeTexto(){
+    $('.text').each(function() {
+        generaAreaEditable($(this), $(this).html());
+        agregaIconos($(this));
     });
 }
 
-function activateContentAreas(){
+function activaAreasDeContenido(){
     $(".droppable").droppable({
       drop: function( event, ui ) {
         if($(ui.draggable).hasClass("audio-video")){
@@ -88,52 +89,45 @@ function activateContentAreas(){
     $('.content').on("click", ".edit", function() {
         var area = $(this).parent();
         area.removeClass("area").addClass("text");
-
-        var editable = $('<div>', {id: 'editor1', class: 'editable', contenteditable: true});
-        editable.html('<h3>Encabezado</h3><p>Clic para editar el texto...</p>');
-        area.append(editable);
-
-        CKEDITOR.inline(editable.get(0), ckeditor_configs.default);
+        generaAreaEditable(area, '<h3>Encabezado</h3><p>Clic para editar el texto...</p>');
+        agregaIconos(area);
     });
+
+    $('.content:empty').each(function() {
+        agregaIconos($(this));
+    });
+}
+
+function agregaIconos(area){
+    area.append($("<i>", {class: "fa fa-edit fa-2x edit"}));
+    area.append($("<i>", {class: "fa fa-times-circle fa-2x delete"}));
+}
+function generaAreaEditable(area, contenido){
+    var editable = $('<div>', {class: 'editable', contenteditable: true});
+    editable.html(contenido);
+    area.html(editable);
+
+    CKEDITOR.inline(editable.get(0), ckeditor_configs.default);
 }
 
 function save(){
     $('.page').each(function(pageIndex) {
-        var page = {
-            'num': pageIndex,
-            rows: []
-        }
+        var page = $(this).clone();
+        page.hide();
 
-        $(this).find('.r').each(function(rowIndex) {
-            var row = {
-                'class': $(this).attr('class'),
-                cols: []
-            }
-
-            $(this).find('.c').each(function(colIndex) {
-                var col = {
-                    'class': $(this).attr('class')
-                };
-                var content = $(this).children('.content').first();
-                if(content.hasClass('photo')){
-                    col.content = {
-                        'type': 'photo',
-                        'src': content.css('background-image')
-                    }
-                } else if(content.hasClass('text')){
-                    var html = content.children('.editable').html();
-                    col.content = {
-                        'type': 'text',
-                        'html': html
-                    }
-                } else if(content.hasClass('area')){
-                    console.log("Empty area");
-                }
-                row.cols.push(col);
-            });
-            page.rows.push(row);
+        page.find('i').remove();
+        page.find('.text').each(function() {
+            var editor = $(this).children(":first");
+            $(this).html(editor.html());
         });
-        doc.pages.push(page);
+
+        var json = {
+            'num': pageIndex,
+            'html': page.html()
+        }
+        doc.paginas.push(json);
+
+        page.remove();
     });
 
     $.ajax({

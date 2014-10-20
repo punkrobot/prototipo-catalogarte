@@ -4,7 +4,7 @@
 {% block content %}
 <div class="content">
   <div class="col-md-2">
-  <a class="btn btn-default" onclick="prevPage();">Prev</a>
+  <a class="btn btn-default" onclick="prev();">Prev</a>
   </div>
   <div class="col-md-8 galeria">
     <div id="galeria-item" class="center-block">
@@ -12,28 +12,27 @@
     </div>
   </div>
   <div class="col-md-2">
-    <a class="btn btn-default" onclick="nextPage();">Next</a>
+    <a class="btn btn-default" onclick="next();">Next</a>
   </div>
 </div>
 
 <script>
-
-var numPage = 0;
+  var numPagina = 0;
 
   $(function() {
-    loadPage(numPage);
+    cargaPagina(numPagina);
   });
 
-  function prevPage(){
+  function prev(){
     var t = 350;
-    if(numPage > 0) numPage--;
+    if(numPagina > 0) numPagina--;
     $('#galeria-item').animate({
       left: "+=50px",
       opacity:"toggle"
     }, {
       duration: t,
       complete: function() {
-        loadPage(numPage);
+        cargaPagina(numPagina);
         $('#galeria-item').css('left', '-50px');
         $('#galeria-item').animate({
           left: "+=50px",
@@ -43,16 +42,16 @@ var numPage = 0;
     });
   }
 
-  function nextPage(){
+  function next(){
     var t = 350;
-    if(numPage < 1) numPage++;
+    if(numPagina < 1) numPagina++;
     $('#galeria-item').animate({
       left: "-=50px",
       opacity:"toggle"
     }, {
       duration: t,
       complete: function() {
-        loadPage(numPage);
+        cargaPagina(numPagina);
         $('#galeria-item').css('left', '50px');
         $('#galeria-item').animate({
           left: "-=50px",
@@ -62,29 +61,10 @@ var numPage = 0;
     });
   }
 
-  function loadPage(i){
-    var contenido = eval('('+'{{ contenido | safe }}'+')');
-
-  $('#galeria-item').empty();
-    var pagina = contenido.pages[i];
-    for(var r=0; r<pagina.rows.length; r++){
-      var row = $("<div>", {class: pagina.rows[r].class});
-      for(var c=0; c<pagina.rows[r].cols.length; c++){
-        var col = pagina.rows[r].cols[c];
-        var contenido = $("<div>", {class: 'contenido'});
-        if(col.content.type == 'photo'){
-          contenido.addClass('img');
-          contenido.css('background-image', col.content.src);
-        } else if (col.content.type == 'text'){
-          contenido.addClass('txt');
-          contenido.html(col.content.html);
-        }
-        var columna = $("<div>", {class: col.class});
-        columna.html(contenido);
-        row.append(columna);
-      }
-      $('#galeria-item').append(row);
-    }
+  function cargaPagina(i){
+    var contenido = {{ contenido | safe }};
+    var pagina = contenido.paginas[i];
+    $('#galeria-item').html(pagina.html);
   }
 </script>
 {% endblock %}
