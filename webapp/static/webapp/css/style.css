@@ -280,6 +280,8 @@
   background: #FEFEFE;
 }
 .photo:hover {
+  cursor: move;
+
 	filter: brightness(80%);
 	-webkit-filter: brightness(80%);
 	-moz-filter: brightness(80%);
