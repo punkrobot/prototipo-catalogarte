@@ -23,6 +23,8 @@ $(function() {
     $( ".draggable" ).draggable({ opacity: 0.8, helper: "clone", appendTo:'body' });
     activateContentAreas();
     activateTextAreas();
+
+    $(".audio-video").tooltip({container: 'body'});
 });
 
 function addPage(){
@@ -61,8 +63,14 @@ function activateTextAreas(){
 function activateContentAreas(){
     $(".droppable").droppable({
       drop: function( event, ui ) {
-        $(this).removeClass("area").addClass("photo");
-        $(this).css('background-image', $(ui.draggable).css('background-image'));
+        if($(ui.draggable).hasClass("audio-video")){
+            $(this).removeClass("area").addClass("photo");
+            $(this).css('background-image', $(ui.draggable).css('background-image'));
+            $(this).append('<div class="video-overlay"></div>');
+        } else {
+            $(this).removeClass("area").addClass("photo");
+            $(this).css('background-image', $(ui.draggable).css('background-image'));
+        }
       }
     });
 
@@ -143,3 +151,96 @@ function save(){
     });
 }
 
+function loadVideo(){
+	var url = $('#videoUrlInput').val();
+	if(url == ''){
+		$('#videoUrlInputForm').addClass("has-error");
+	} else {
+		$('#videoUrlInputForm').removeClass("has-error");
+		$('#videoLoadBtn').hide();
+		$('#video i').show();
+
+		var oembed = 'http://www.youtube.com/oembed?format=json&url=' + url;
+		$.ajax({
+			url: 'http://query.yahooapis.com/v1/public/yql',
+            data: {
+                q: "select * from json where url ='" + oembed + "'",
+                format: "json"
+            },
+            dataType: "jsonp",
+            success: function (data) {
+                $('#video i').hide();
+                $('#videoInsertBtn').show();
+                $('#videoPreview').data('title', data.query.results.json.title);
+                $('#videoPreview').data('thumbnail', data.query.results.json.thumbnail_url);
+                $('#videoPreview').html(data.query.results.json.html);
+                $('#videoPreview').show();
+            },
+            error: function (result) {
+                console.log("Error", result);
+            }
+    	});
+	}
+}
+
+function loadAudio(){
+    var url = $('#audioUrlInput').val();
+    if(url == ''){
+        $('#audioUrlInputForm').addClass("has-error");
+    } else {
+        $('#audioUrlInputForm').removeClass("has-error");
+        $('#audioLoadBtn').hide();
+        $('#audio i').show();
+
+        var oembed = 'https://soundcloud.com/oembed?format=json&url=' + url;
+        $.ajax({
+            url: oembed,
+            dataType: "json",
+            success: function (data) {
+                $('#audio i').hide();
+                $('#audioInsertBtn').show();
+                $('#audioPreview').data('title', data.title);
+                $('#audioPreview').data('thumbnail', data.thumbnail_url);
+                $('#audioPreview').html(data.html);
+                $('#audioPreview').show();
+            },
+            error: function (result) {
+                console.log("Error", result);
+            }
+        });
+    }
+}
+
+function saveAudio(){
+    saveMedia({
+        src : $('#audioPreview').html(),
+        nombre : $('#audioPreview').data('title'),
+        thumbnail : $('#audioPreview').data('thumbnail'),
+        tipo : 'AUD'
+    });
+}
+
+function saveVideo(){
+    saveMedia({
+        src : $('#videoPreview').html(),
+        nombre : $('#videoPreview').data('title'),
+        thumbnail : $('#videoPreview').data('thumbnail'),
+        tipo : 'VID'
+    });
+}
+
+function saveMedia(media){
+    $.ajax({
+        type: 'POST',
+        url: media_url,
+        contentType: 'application/json; charset=utf-8',
+        data: $.toJSON(media),
+        dataType: 'json',
+        success: function (data) {
+            console.log("Success");
+        },
+        error: function(data) {
+            console.log("Error");
+        }
+    });
+}

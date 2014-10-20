@@ -10,7 +10,7 @@ from django.views.generic import View, CreateView, DeleteView, DetailView, ListV
 
 from braces.views import LoginRequiredMixin, CsrfExemptMixin
 
-from webapp.models import Museo, Exposicion, Catalogo
+from webapp.models import Museo, Exposicion, Catalogo, Media
 from webapp.forms import ExposicionForm
 
 
@@ -52,14 +52,25 @@ class ExposicionCreate(LoginRequiredMixin, CreateView):
         return reverse('catalogo_create', args=(self.object.slug))
 
 
-class CatalogoDetail(DetailView):
-    model = Catalogo
-    context_object_name = 'catalogo'
-    template_name = 'webapp/catalogo_detail.html'
+class ExposicionUpdate(UpdateView):
+    model = Exposicion
+    form_class = ExposicionForm
+    template_name = 'webapp/admin/exposicion_form.html'
+    success_url = '/admin'
 
-    def get_object(self):
-        exposicion = get_object_or_404(Exposicion, slug=self.kwargs.get('slug', None))
-        return exposicion.catalogo_set.first()
+
+class CatalogoDetail(View):
+    def get(self, request, slug):
+        exposicion = get_object_or_404(Exposicion, slug=slug)
+        catalogo =  exposicion.catalogo_set.first()
+        contenido = json.dumps(catalogo.contenido)
+
+        context = {
+            'exposicion': exposicion,
+            'catalogo': catalogo,
+            'contenido': contenido
+        }
+        return render(request, 'webapp/catalogo_detail.html', context)
 
 
 class CatalogoCreate(LoginRequiredMixin, View):
@@ -98,10 +109,20 @@ class CatalogoSave(CsrfExemptMixin, View):
                 return HttpResponse('ok')
 
 
-class ExposicionUpdate(UpdateView):
-    model = Exposicion
-    form_class = ExposicionForm
-    template_name = 'webapp/admin/exposicion_form.html'
-    success_url = '/admin'
+class MediaCreate(CsrfExemptMixin, View):
+    def post(self, request, slug):
+        if request.is_ajax():
+            if request.method == 'POST':
+                exposicion = get_object_or_404(Exposicion, slug=slug)
+                media_json = json.loads(request.body)
 
+                media = Media(
+                    exposicion=exposicion,
+                    thumbnail=media_json['thumbnail'],
+                    nombre=media_json['nombre'],
+                    tipo=media_json['tipo'],
+                    src=media_json['src'] )
+                media.save()
+
+                return HttpResponse('ok')
 

@@ -26,11 +26,11 @@ class Museo(models.Model):
     #email = models.EmailField(blank=True)
     detalles = models.TextField(blank=True)
 
-    website = models.URLField(max_length=100, blank=True)
-    twitter = models.URLField(max_length=100, blank=True)
-    facebook = models.URLField(max_length=100, blank=True)
-    youtube = models.URLField(max_length=100, blank=True)
-    instagram = models.URLField(max_length=100, blank=True)
+    website = models.URLField(max_length=255, blank=True)
+    twitter = models.URLField(max_length=255, blank=True)
+    facebook = models.URLField(max_length=255, blank=True)
+    youtube = models.URLField(max_length=255, blank=True)
+    instagram = models.URLField(max_length=255, blank=True)
 
     slug = AutoSlugField(unique=True, populate_from='nombre')
     logotipo = models.ImageField(upload_to=get_museo_file_path)
@@ -52,7 +52,7 @@ class Exposicion(models.Model):
     descripcion = models.TextField(blank=True)
     informacion = models.TextField(blank=True)
     actividades = models.TextField(blank=True)
-    website = models.URLField(max_length=100, blank=True)
+    website = models.URLField(max_length=255, blank=True)
 
     slug = AutoSlugField(unique=True, populate_from='titulo')
     categorias = models.ManyToManyField("Categoria")
@@ -68,6 +68,15 @@ class Exposicion(models.Model):
     def get_categorias_slugs(self):
         categorias_list = self.categorias.values_list('slug', flat=True)
         return " ".join(categorias_list)
+
+    def get_imagenes(self):
+        return self.media_set.filter(tipo=Media.IMAGEN)
+
+    def get_videos(self):
+        return self.media_set.filter(tipo=Media.VIDEO)
+
+    def get_audios(self):
+        return self.media_set.filter(tipo=Media.AUDIO)
 
 
 class Catalogo(models.Model):
@@ -100,22 +109,15 @@ class Media(models.Model):
     AUDIO = 'AUD'
     TIPOS = ( (IMAGEN, 'Imagen'), (VIDEO, 'Video'), (AUDIO, 'Audio') )
 
-    ruta = models.CharField(max_length=255)
-    nombre = models.CharField(max_length=100, blank=True)
     exposicion = models.ForeignKey(Exposicion)
+
+    src = models.TextField()
+    thumbnail = models.URLField(max_length=255, blank=True)
+    nombre = models.CharField(max_length=100, blank=True)
     tipo = models.CharField(max_length=3, choices=TIPOS, default=IMAGEN)
-
-    def es_imagen(self):
-        return self.tipo == self.IMAGEN
-
-    def es_video(self):
-        return self.tipo == self.VIDEO
-
-    def es_audio(self):
-        return self.tipo == self.AUDIO
 
 
 @receiver(file_uploaded, sender=AjaxFileUploader)
 def on_upload(sender, backend, request, **kwargs):
-    Media.objects.create(ruta=request.GET['qqfilename'], exposicion_id=request.GET['exposicion_id'], tipo=Media.IMAGEN)
+    Media.objects.create(src=request.GET['qqfilename'], exposicion_id=request.GET['exposicion_id'], tipo=Media.IMAGEN)
 

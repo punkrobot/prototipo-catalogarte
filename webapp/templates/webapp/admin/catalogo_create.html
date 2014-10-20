@@ -14,7 +14,8 @@
 <script>
 	var ckeditor_configs = eval("("+"{{ ckeditor_configs | safe }}"+")");
 	var save_url = "{% url 'catalogo_save' exposicion.slug %}";
-	var doc = { numPages : {{ catalogo.contenido.numPages|default:"0" }} };
+	var media_url = "{% url 'media_agregar' exposicion.slug %}";
+	var doc = { numPages : {{ catalogo.contenido.numPages | default:"0" }} };
 </script>
 
 <div class="container">
@@ -87,13 +88,13 @@
 				</h4>
 				<ul class="nav nav-tabs" role="tablist">
 					<li class="active"><a href="#img-toolbar" role="tab" data-toggle="tab"><i class="fa fa-picture-o"></i></a></li>
-					<li><a href="#video-toolbar" role="tab" data-toggle="tab"><i class="fa fa-film"></i></a></li>
+					<li><a href="#video-toolbar" role="tab" data-toggle="tab"><i class="fa fa-video-camera"></i></a></li>
 					<li><a href="#audio-toolbar" role="tab" data-toggle="tab"><i class="fa fa-music"></i></a></li>
 				</ul>
 				<div class="tab-content">
 					<div class="tab-pane active" id="img-toolbar">
-						{% for item in exposicion.media_set.all %}
-							<div class="image draggable" style="background-image:url(/media/uploads/{{item.ruta}});"></div>
+						{% for item in exposicion.get_imagenes %}
+							<div class="thumb draggable" style="background-image:url(/media/uploads/{{item.src}});"></div>
 						{% empty %}
 							<p class="text-muted text-center toolbar-help">
 								Agrega imágenes dando clic en el botón "+" de la esquina derecha.
@@ -101,7 +102,8 @@
 						{% endfor %}
 					</div>
 					<div class="tab-pane" id="video-toolbar">
-						{% for item in exposicion.medias_set.all %}
+						{% for item in exposicion.get_videos %}
+							<div class="thumb draggable audio-video" style="background-image:url({{item.thumbnail}});" data-toggle="tooltip" data-placement="right" title="{{item.nombre}}"></div>
 						{% empty %}
 							<p class="text-muted text-center toolbar-help">
 								Agrega videos dando clic en el botón "+" de la esquina derecha.
@@ -109,8 +111,8 @@
 						{% endfor %}
 					</div>
 					<div class="tab-pane" id="audio-toolbar">
-						{% for item in exposicion.medias_set.all %}
-
+						{% for item in exposicion.get_audios %}
+              <div class="thumb draggable audio-video" style="background-image:url({{item.thumbnail}});" data-toggle="tooltip" data-placement="right" title="{{item.nombre}}"></div>
 						{% empty %}
 							<p class="text-muted text-center toolbar-help">
 								Agrega clips de audio dando clic en el botón "+" de la esquina derecha.
@@ -140,7 +142,7 @@
 								<h5>Imágenes</h5>
 							</a></li>
 							<li class="text-center"><a href="#video" role="tab" data-toggle="tab">
-								<i class="fa fa-film fa-2x"></i>
+								<i class="fa fa-video-camera fa-2x"></i>
 								<h5>Video</h5>
 							</a></li>
 							<li class="text-center"><a href="#audio" role="tab" data-toggle="tab">
@@ -166,10 +168,29 @@
 							</form>
 						</div>
 						<div class="tab-pane pane fade" id="video">
-							<h3>Video</h3>
+							<div id="videoUrlInputForm" class="form-group">
+						    <label class="control-label pull-left" for="videoUrlInput">Ingresa la url del video</label>
+						    <input type="text" class="form-control" id="videoUrlInput" placeholder="Por ejemplo: https://www.youtube.com/watch?v=pjkh14h8W2g">
+						  </div>
+						  <div class="form-group">
+								<button id="videoLoadBtn" class="btn btn-default pull-right" onclick="loadVideo();">Buscar</button>
+						  	<i class="fa fa-circle-o-notch fa-spin pull-right"></i>
+						  	<div class="center-block" id="videoPreview"></div>
+						  	<button id="videoInsertBtn" class="btn btn-material-teal pull-right" onclick="saveVideo();">Guardar</button>
+						  </div>
 						</div>
 						<div class="tab-pane pane fade" id="audio">
-							<h3>Audio</h3>
+							<div id="audioUrlInputForm" class="form-group">
+                <label class="control-label pull-left" for="audioUrlInput">Ingresa la url del clip de audio</label>
+                <input type="text" class="form-control" id="audioUrlInput" placeholder="Por ejemplo: https://soundcloud.com/inbamx/ciclos-de-musica-inba">
+              </div>
+              <div class="form-group">
+                <button id="audioLoadBtn" class="btn btn-default pull-right" onclick="loadAudio();">Buscar</button>
+                <i class="fa fa-circle-o-notch fa-spin pull-right"></i>
+                <div class="center-block" id="audioPreview"></div>
+                <button id="audioInsertBtn" class="btn btn-material-teal pull-right" onclick="saveAudio();">Guardar</button>
+              </div>
+              <br>
 						</div>
 						<div class="tab-pane pane fade" id="dropbox">
 							<h3>Dropbox</h3>

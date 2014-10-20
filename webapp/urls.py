@@ -16,9 +16,11 @@ urlpatterns = patterns('',
     url(r'^admin/catalogo/(?P<slug>[\w-]+)/$', views.CatalogoCreate.as_view(), name='catalogo_create'),
     url(r'^admin/catalogo/save/(?P<slug>[\w-]+)/$', views.CatalogoSave.as_view(), name='catalogo_save'),
 
+    url(r'^admin/exposicion/(?P<slug>[\w-]+)/media/agregar$', views.MediaCreate.as_view(), name='media_agregar'),
+    url(r'^media_upload$', AjaxFileUploader(), name='ajax_upload'),
+
     # public urls:
     url(r'^$', views.ExposicionList.as_view(), name='exposicion_lista'),
     url(r'^exposicion/(?P<slug>[\w-]+)/$', views.ExposicionDetail.as_view(), name='exposicion_detalle'),
     url(r'^exposicion/(?P<slug>[\w-]+)/catalogo/$', views.CatalogoDetail.as_view(), name='catalogo_detalle'),
-    url(r'^media_upload$', AjaxFileUploader(), name="ajax_upload"),
 )

@@ -2,37 +2,89 @@
 {% load staticfiles %}
 
 {% block content %}
-<div id="galeria">
-	{% if catalogo.contenido %}
-		{% for page in catalogo.contenido.pages %}
-			<div class="galeria-item">
-				{% for row in page.rows %}
-					<div class="{{row.class}}">
-						{% for col in row.cols %}
-							<div class="{{col.class}}">
-								{% if col.content.type == 'photo' %}
-									<div class="contenido img" style="background-image:{{col.content.src}};"></div>
-								{% elif col.content.type == 'text' %}
-									<div class="contenido text">
-										{{col.content.html | safe}}
-									</div>
-								{% endif %}
-							</div>
-						{% endfor %}
-					</div>
-				{% endfor %}
-			</div>
-		{% endfor %}
-	{% endif %}
+<div class="content">
+  <div class="col-md-2">
+  <a class="btn btn-default" onclick="prevPage();">Prev</a>
+  </div>
+  <div class="col-md-8 galeria">
+    <div id="galeria-item" class="center-block">
+
+    </div>
+  </div>
+  <div class="col-md-2">
+    <a class="btn btn-default" onclick="nextPage();">Next</a>
+  </div>
 </div>
 
 <script>
-	$('.navbar').css(
-		{'position': 'fixed',
-		 'width': '100%',
-		 'top': '0px',
-		 'left': '0px'});
 
-	$.jInvertScroll(['#galeria']);
+var numPage = 0;
+
+  $(function() {
+    loadPage(numPage);
+  });
+
+  function prevPage(){
+    var t = 350;
+    if(numPage > 0) numPage--;
+    $('#galeria-item').animate({
+      left: "+=50px",
+      opacity:"toggle"
+    }, {
+      duration: t,
+      complete: function() {
+        loadPage(numPage);
+        $('#galeria-item').css('left', '-50px');
+        $('#galeria-item').animate({
+          left: "+=50px",
+          opacity:"toggle"
+        }, t);
+      }
+    });
+  }
+
+  function nextPage(){
+    var t = 350;
+    if(numPage < 1) numPage++;
+    $('#galeria-item').animate({
+      left: "-=50px",
+      opacity:"toggle"
+    }, {
+      duration: t,
+      complete: function() {
+        loadPage(numPage);
+        $('#galeria-item').css('left', '50px');
+        $('#galeria-item').animate({
+          left: "-=50px",
+          opacity:"toggle"
+        }, t);
+      }
+    });
+  }
+
+  function loadPage(i){
+    var contenido = eval('('+'{{ contenido | safe }}'+')');
+
+  $('#galeria-item').empty();
+    var pagina = contenido.pages[i];
+    for(var r=0; r<pagina.rows.length; r++){
+      var row = $("<div>", {class: pagina.rows[r].class});
+      for(var c=0; c<pagina.rows[r].cols.length; c++){
+        var col = pagina.rows[r].cols[c];
+        var contenido = $("<div>", {class: 'contenido'});
+        if(col.content.type == 'photo'){
+          contenido.addClass('img');
+          contenido.css('background-image', col.content.src);
+        } else if (col.content.type == 'text'){
+          contenido.addClass('txt');
+          contenido.html(col.content.html);
+        }
+        var columna = $("<div>", {class: col.class});
+        columna.html(contenido);
+        row.append(columna);
+      }
+      $('#galeria-item').append(row);
+    }
+  }
 </script>
 {% endblock %}
