@@ -10,20 +10,11 @@ $(function() {
 
 function agregaPagina(){
     var page = $("<div>", {class: "page"});
-
     var sel = $('input[type=radio]:checked').val();
-    var layoutJson = {};
-    var layout;
-    if(sel == 1){
-        layout = $('#layout1').clone();
-    } else if(sel == 2){
-        layout = $('#layout2').clone();
-    } else if(sel == 3){
-        layout = $('#layout3').clone();
-    } else {
-        layout = $('#layout4').clone();
-    }
+    layout = $(sel).clone();
+    layout.find('.area').addClass('content droppable');
     page.html(layout.html());
+    layout.remove();
 
     if(doc.numPaginas == 0){
         $("#workspace").html(page);
@@ -44,6 +35,7 @@ function activaAreasDeTexto(){
 
 function activaAreasDeContenido(){
     $(".droppable").droppable({
+      hoverClass: "drop-active",
       drop: function( event, ui ) {
         if($(ui.draggable).hasClass("audio-video")){
             $(this).removeClass("area").addClass("photo");

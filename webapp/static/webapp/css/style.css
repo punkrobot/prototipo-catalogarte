@@ -250,7 +250,7 @@
 	background: #FEFEFE;
 	box-shadow: 0 3px 6px rgba(0,0,0,.16),0 3px 6px rgba(0,0,0,.23);
 	margin-bottom: 5px;
-	padding: 20px 0 0 20px;
+	padding: 10px;
 	float: left;
 
 	height: 600px;
@@ -263,6 +263,7 @@
 	height: 100%;
 }
 .area{
+  height: 100%;
 	border: 2px dashed #CCC;
 }
 .area:hover{
@@ -337,11 +338,11 @@
 	margin-right: 10px;
 }
 .c{
-	height: 100%;
-	padding: 0 20px 0 0;
+  height: 100%;
+  padding: 0 10px;
 }
 .r{
-	padding-bottom: 20px;
+	padding: 10px 0;
 }
 .h100{
 	height: 100%;
@@ -359,6 +360,35 @@
 	height: 33%;
 }
 
+#agregaPaginaModal .modal-body{
+  background: #F5F5F5;
+}
+#agregaPaginaModal label {
+  height:150px;
+  width:100%;
+
+  padding: 5px;
+  background: #FFF;
+  border: 1px solid #DDD;
+}
+#agregaPaginaModal label:hover{
+  background: #E5E5E5;
+  border: 1px solid #CCC;
+}
+#agregaPaginaModal .c{
+  height: 100%;
+  padding: 0 2px;
+}
+#agregaPaginaModal .r{
+  padding: 2px 0;
+}
+#agregaPaginaModal .area{
+  border: 1px solid #AAA;
+}
+#agregaPaginaModal .area:hover{
+  background-color: transparent;
+}
+
 
 .thumb{
 	width: 90%;
@@ -367,6 +397,12 @@
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
+}
+.draggable:hover{
+  cursor: pointer;
+}
+.drop-active{
+  border: 2px solid #009688;
 }
 .ui-draggable-dragging{
 	width: 160px !important;
@@ -377,7 +413,9 @@
 }
 
 .layout-radio{
-	margin-left: 82px !important;
+  display: block;
+	margin-left: auto !important;
+  margin-right: auto !important;
 }
 
 #multimediaModal .nav-tabs>li{
@@ -419,10 +457,21 @@
 	height: 560px;
 	width: 690px;
 }
-.contenido{
-	height: 100%;
+#galeria-item .photo:hover {
+  cursor: pointer;
+
+  filter: none;
+  -webkit-filter: none;
+  -moz-filter: none;
+  -o-filter: none;
+  -ms-filter: none;
+}
+.galeria .content{
 	padding: 10px;
 	box-shadow: 0 3px 6px rgba(0,0,0,.16),0 3px 6px rgba(0,0,0,.23);
+}
+.galeria .text{
+  background-color: #FFF;
 }
 
 #video i, #audio i{

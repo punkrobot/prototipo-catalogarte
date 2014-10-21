@@ -17,6 +17,7 @@
 </div>
 
 <script>
+  var contenido = {{ contenido | safe }};
   var numPagina = 0;
 
   $(function() {
@@ -44,7 +45,7 @@
 
   function next(){
     var t = 350;
-    if(numPagina < 1) numPagina++;
+    if(numPagina < contenido.numPaginas-1) numPagina++;
     $('#galeria-item').animate({
       left: "-=50px",
       opacity:"toggle"
@@ -62,7 +63,6 @@
   }
 
   function cargaPagina(i){
-    var contenido = {{ contenido | safe }};
     var pagina = contenido.paginas[i];
     $('#galeria-item').html(pagina.html);
   }
