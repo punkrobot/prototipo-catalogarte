@@ -2,8 +2,8 @@ $(function() {
     CKEDITOR.disableAutoInline = true;
 
     $( ".draggable" ).draggable({ opacity: 0.8, helper: "clone", appendTo:'body' });
-    activaAreasDeContenido();
     activaAreasDeTexto();
+    activaAreasDeContenido();
 
     $(".audio-video").tooltip({container: 'body'});
 });
@@ -12,7 +12,7 @@ function agregaPagina(){
     var page = $("<div>", {class: "page"});
     var sel = $('input[type=radio]:checked').val();
     layout = $(sel).clone();
-    layout.find('.area').addClass('content droppable');
+    layout.find('.area').addClass('content');
     page.html(layout.html());
     layout.remove();
 
@@ -29,18 +29,26 @@ function agregaPagina(){
 function activaAreasDeTexto(){
     $('.text').each(function() {
         generaAreaEditable($(this), $(this).html());
-        agregaIconos($(this));
     });
 }
 
 function activaAreasDeContenido(){
-    $(".droppable").droppable({
+    $(".content").droppable({
       hoverClass: "drop-active",
       drop: function( event, ui ) {
         if($(ui.draggable).hasClass("audio-video")){
-            $(this).removeClass("area").addClass("photo");
-            $(this).css('background-image', $(ui.draggable).css('background-image'));
-            $(this).append('<div class="video-overlay"></div>');
+            $(this).removeClass("area").addClass("video");
+
+            var thumbnail = $('<div>', {class: 'video-thumbnail'});
+            thumbnail.css('background-image', $(ui.draggable).css('background-image'));
+            thumbnail.append('<div class="video-overlay"></div>');
+
+            var footer = $('<div>', {class: 'footer'});
+            footer.append($('<i>', {class: 'fa fa-video-camera'}));
+            footer.append($(ui.draggable).attr("data-original-title"));
+
+            $(this).append(thumbnail);
+            $(this).append(footer);
         } else {
             $(this).removeClass("area").addClass("photo");
             $(this).css('background-image', $(ui.draggable).css('background-image'));
@@ -49,29 +57,37 @@ function activaAreasDeContenido(){
       }
     });
 
-    $('.content').on("click", ".delete", function() {
-        var content = $(this).parent();
-        if(content.hasClass('photo')){
-            content.css('background-image', 'none');
-            content.removeClass('photo').addClass('area');
-        } else if(content.hasClass('text')){
-            content.remove('.editable');
-            content.removeClass("text").addClass("area");
-        }
-    });
+    $('.content').on("click", ".delete", eliminarContenido);
+    $('.content').on("click", ".edit", editarContenido);
 
-    $('.content').on("click", ".edit", function() {
-        var area = $(this).parent();
-        area.removeClass("area").addClass("text");
-        generaAreaEditable(area, '<h3>Encabezado</h3><p>Clic para editar el texto...</p>');
-        agregaIconos(area);
-    });
-
-    $('.content:empty').each(function() {
+    $('.content').each(function() {
         agregaIconos($(this));
     });
 
     $('.photo').backgroundDraggable();
+}
+
+function eliminarContenido(){
+    var content = $(this).parent();
+    if(content.hasClass('photo')){
+        content.removeAttr('style');
+        content.removeClass('photo').addClass('area');
+        content.find('.video-overlay').remove();
+    } else if(content.hasClass('text')){
+        content.find('.editable').remove();
+        content.removeClass("text").addClass("area");
+    } else if(content.hasClass('video')){
+        content.find('.video-thumbnail').remove();
+        content.find('.footer').remove();
+        content.removeClass('video').addClass('area');
+    }
+}
+
+function editarContenido() {
+    var area = $(this).parent();
+    area.removeClass("area").addClass("text");
+    generaAreaEditable(area, '<h3>Encabezado</h3><p>Clic para editar el texto...</p>');
+    agregaIconos(area);
 }
 
 function agregaIconos(area){
@@ -91,7 +107,8 @@ function guardar(){
         var page = $(this).clone();
         page.hide();
 
-        page.find('i').remove();
+        page.find('.edit').remove();
+        page.find('.delete').remove();
         page.find('.text').each(function() {
             var editor = $(this).children(":first");
             $(this).html(editor.html());
@@ -162,7 +179,7 @@ function cargaAudio(){
         $('#audioLoadBtn').hide();
         $('#audio i').show();
 
-        var oembed = 'https://soundcloud.com/oembed?format=json&url=' + url;
+        var oembed = 'https://soundcloud.com/oembed?format=json&maxheight=200&maxwidth=300&url=' + url;
         $.ajax({
             url: oembed,
             dataType: "json",
