@@ -59,20 +59,8 @@
 			{% endif %}
 		</div>
 		<div class="col-md-2 images-container">
-			<div class="toolbar" data-spy="affix" data-offset-top="65">
-				<h4 class="text-center">Multimedia
-					<a class="toolbar-btn pull-right" data-toggle="modal" data-target="#multimediaModal">
-						<i class="fa fa-plus list-item"></i>
-					</a>
-				</h4>
-				<ul class="nav nav-tabs" role="tablist">
-					<li class="active"><a href="#img-toolbar" role="tab" data-toggle="tab"><i class="fa fa-picture-o"></i></a></li>
-					<li><a href="#video-toolbar" role="tab" data-toggle="tab"><i class="fa fa-video-camera"></i></a></li>
-					<li><a href="#audio-toolbar" role="tab" data-toggle="tab"><i class="fa fa-music"></i></a></li>
-				</ul>
-				<div id="multimediaToolbar" class="tab-content">
-					{% include "webapp/admin/multimedia_list.html" %}
-				</div>
+			<div id="multimediaToolbar" class="toolbar" data-spy="affix" data-offset-top="65">
+				{% include "webapp/admin/multimedia_toolbar.html" %}
 			</div>
 		</div>
 	</div>

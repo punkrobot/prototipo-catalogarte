@@ -1,0 +1,39 @@
+<h4 class="text-center">Multimedia
+  <a class="toolbar-btn pull-right" data-toggle="modal" data-target="#multimediaModal">
+    <i class="fa fa-plus list-item"></i>
+  </a>
+</h4>
+<ul class="nav nav-tabs" role="tablist">
+  <li class="active"><a href="#img-toolbar" role="tab" data-toggle="tab"><i class="fa fa-picture-o"></i></a></li>
+  <li><a href="#video-toolbar" role="tab" data-toggle="tab"><i class="fa fa-video-camera"></i></a></li>
+  <li><a href="#audio-toolbar" role="tab" data-toggle="tab"><i class="fa fa-music"></i></a></li>
+</ul>
+<div class="tab-content">
+  <div class="tab-pane active" id="img-toolbar">
+    {% for item in exposicion.get_imagenes %}
+      <div class="thumb draggable" style="background-image:url(/media/uploads/{{item.src}});"></div>
+    {% empty %}
+      <p class="text-muted text-center toolbar-help">
+        Agrega imágenes dando clic en el botón "+" de la esquina derecha.
+      </p>
+    {% endfor %}
+  </div>
+  <div class="tab-pane" id="video-toolbar">
+    {% for item in exposicion.get_videos %}
+      <div class="thumb draggable audio-video" style="background-image:url({{item.thumbnail}});" data-toggle="tooltip" data-placement="right" title="{{item.nombre}}"></div>
+    {% empty %}
+      <p class="text-muted text-center toolbar-help">
+        Agrega videos dando clic en el botón "+" de la esquina derecha.
+      </p>
+    {% endfor %}
+  </div>
+  <div class="tab-pane" id="audio-toolbar">
+    {% for item in exposicion.get_audios %}
+      <div class="thumb draggable audio-video" style="background-image:url({{item.thumbnail}});" data-toggle="tooltip" data-placement="right" title="{{item.nombre}}"></div>
+    {% empty %}
+      <p class="text-muted text-center toolbar-help">
+        Agrega clips de audio dando clic en el botón "+" de la esquina derecha.
+      </p>
+    {% endfor %}
+  </div>
+</div>

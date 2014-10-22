@@ -121,7 +121,7 @@ class MediaList(CsrfExemptMixin, AjaxResponseMixin, View):
         context = {
             'exposicion': get_object_or_404(Exposicion, slug=slug)
         }
-        return render(request, 'webapp/admin/multimedia_list.html', context)
+        return render(request, 'webapp/admin/multimedia_toolbar.html', context)
 
 class MediaCreate(CsrfExemptMixin, View):
     def post(self, request, slug):
@@ -142,5 +142,5 @@ class MediaCreate(CsrfExemptMixin, View):
                     'exposicion': get_object_or_404(Exposicion, slug=slug)
                 }
 
-                return render(request, 'webapp/admin/multimedia_list.html', context)
+                return render(request, 'webapp/admin/multimedia_toolbar.html', context)
 
