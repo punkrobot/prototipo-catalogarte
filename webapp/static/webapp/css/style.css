@@ -494,7 +494,7 @@
   background-color: #FFF;
 }
 
-#video i, #audio i{
+#video i, #audio i, #img i{
 	display: none;
 	margin-top: 18px;
 	margin-right: 18px;

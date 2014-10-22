@@ -1,14 +1,14 @@
 $(function() {
     CKEDITOR.disableAutoInline = true;
 
-    $( ".draggable" ).draggable({ opacity: 0.8, helper: "clone", appendTo:'body' });
-    activaAreasDeTexto();
-    activaAreasDeContenido();
+    activarToolbar();
+    activarAreasDeTexto();
+    activarAreasDeContenido();
 
-    $(".audio-video").tooltip({container: 'body'});
+    inicializarModalMultimedia();
 });
 
-function agregaPagina(){
+function agregarPagina(){
     var page = $("<div>", {class: "page"});
     var sel = $('input[type=radio]:checked').val();
     layout = $(sel).clone();
@@ -23,16 +23,16 @@ function agregaPagina(){
     }
     doc.numPaginas++;
 
-    activaAreasDeContenido();
+    activarAreasDeContenido();
 }
 
-function activaAreasDeTexto(){
+function activarAreasDeTexto(){
     $('.text').each(function() {
-        generaAreaEditable($(this), $(this).html());
+        generarAreaEditable($(this), $(this).html());
     });
 }
 
-function activaAreasDeContenido(){
+function activarAreasDeContenido(){
     $(".content").droppable({
       hoverClass: "drop-active",
       drop: function( event, ui ) {
@@ -61,7 +61,7 @@ function activaAreasDeContenido(){
     $('.content').on("click", ".edit", editarContenido);
 
     $('.content').each(function() {
-        agregaIconos($(this));
+        agregarIconos($(this));
     });
 
     $('.photo').backgroundDraggable();
@@ -86,20 +86,20 @@ function eliminarContenido(){
 function editarContenido() {
     var area = $(this).parent();
     area.removeClass("area").addClass("text");
-    generaAreaEditable(area, '<h3>Encabezado</h3><p>Clic para editar el texto...</p>');
-    agregaIconos(area);
+    generarAreaEditable(area, '<h3>Encabezado</h3><p>Clic para editar el texto...</p>');
+    agregarIconos(area);
 }
 
-function agregaIconos(area){
+function agregarIconos(area){
     area.append($("<i>", {class: "fa fa-edit fa-2x edit"}));
     area.append($("<i>", {class: "fa fa-times-circle fa-2x delete"}));
 }
-function generaAreaEditable(area, contenido){
+function generarAreaEditable(area, contenido){
     var editable = $('<div>', {class: 'editable', contenteditable: true});
     editable.html(contenido);
     area.html(editable);
 
-    CKEDITOR.inline(editable.get(0), ckeditor_configs.default);
+    CKEDITOR.inline(editable.get(0), ckeditorConfigs.default);
 }
 
 function guardar(){
@@ -125,7 +125,7 @@ function guardar(){
 
     $.ajax({
         type: 'POST',
-        url: save_url,
+        url: guardarUrl,
         contentType: 'application/json; charset=utf-8',
         data: $.toJSON(doc),
         dataType: 'text',
@@ -138,7 +138,7 @@ function guardar(){
     });
 }
 
-function cargaVideo(){
+function cargarVideo(){
     var url = $('#videoUrlInput').val();
     if(url == ''){
         $('#videoUrlInputForm').addClass("has-error");
@@ -170,7 +170,7 @@ function cargaVideo(){
     }
 }
 
-function cargaAudio(){
+function cargarAudio(){
     var url = $('#audioUrlInput').val();
     if(url == ''){
         $('#audioUrlInputForm').addClass("has-error");
@@ -198,8 +198,8 @@ function cargaAudio(){
     }
 }
 
-function guardaAudio(){
-    guardaRecurso({
+function guardarAudio(){
+    guardarRecurso({
         src : $('#audioPreview').html(),
         nombre : $('#audioPreview').data('title'),
         thumbnail : $('#audioPreview').data('thumbnail'),
@@ -207,8 +207,8 @@ function guardaAudio(){
     });
 }
 
-function guardaVideo(){
-    guardaRecurso({
+function guardarVideo(){
+    guardarRecurso({
         src : $('#videoPreview').html(),
         nombre : $('#videoPreview').data('title'),
         thumbnail : $('#videoPreview').data('thumbnail'),
@@ -216,18 +216,65 @@ function guardaVideo(){
     });
 }
 
-function guardaRecurso(media){
+function guardarRecurso(media){
     $.ajax({
         type: 'POST',
-        url: media_url,
+        url: agregarMediaUrl,
         contentType: 'application/json; charset=utf-8',
         data: $.toJSON(media),
-        dataType: 'json',
-        success: function (data) {
-            console.log("Success");
-        },
-        error: function(data) {
-            console.log("Error");
+        success: function(data) {
+            actualizarToolbar(data);
         }
     });
+}
+
+function cargarMultimedia(){
+    $.ajax({
+        type: 'GET',
+        url: mediaUrl,
+        contentType: 'text/html; charset=utf-8',
+        success: function (data) {
+            actualizarToolbar(data);
+        }
+    });
+}
+
+function actualizarToolbar(data){
+    $("#multimediaToolbar").html(data);
+    $('#multimediaModal').modal('hide');
+    activarToolbar();
+}
+
+function activarToolbar(){
+    $(".draggable").draggable({ opacity: 0.8, helper: "clone", appendTo:'body' });
+    $(".audio-video").tooltip({container: 'body'});
+}
+
+function reiniciarModal(e) {
+    $('#multimediaModal .fa-spin').hide();
+    $('#videoLoadBtn').show();
+    $('#videoInsertBtn').hide();
+    $('#videoPreview').empty();
+    $('#audioLoadBtn').show();
+    $('#audioInsertBtn').hide();
+    $('#audioPreview').empty();
+}
+
+function inicializarModalMultimedia(){
+    $("#fileUploader").fineUploader({
+        request: {
+            endpoint: imgUploadUrl,
+            forceMultipart: false,
+            paramsInBody: false,
+            customHeaders: {
+                'X-CSRFToken': csrf,
+            }
+        }
+    });
+    $("#fileUploader").on("complete", function(event, id, name, response) {
+        if (response.success) {
+            cargarMultimedia();
+        }
+    });
+    $('#multimediaModal').on('hidden.bs.modal', reiniciarModal);
 }

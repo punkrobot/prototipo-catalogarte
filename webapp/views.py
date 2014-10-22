@@ -8,7 +8,7 @@ from django.shortcuts import get_object_or_404, render
 from django.core.urlresolvers import reverse
 from django.views.generic import View, CreateView, DeleteView, DetailView, ListView, UpdateView
 
-from braces.views import LoginRequiredMixin, CsrfExemptMixin
+from braces.views import LoginRequiredMixin, CsrfExemptMixin, AjaxResponseMixin
 
 from webapp.models import Museo, Exposicion, Catalogo, Media
 from webapp.forms import ExposicionForm
@@ -109,6 +109,20 @@ class CatalogoSave(CsrfExemptMixin, View):
                 return HttpResponse('ok')
 
 
+class MediaList(LoginRequiredMixin, ListView):
+    context_object_name = 'media_list'
+    template_name = 'webapp/admin/exposicion_admin.html'
+
+    def get_queryset(self):
+        return Exposicion.objects.filter(museo__id=self.request.user.museo.id)
+
+class MediaList(CsrfExemptMixin, AjaxResponseMixin, View):
+    def get_ajax(self, request, slug):
+        context = {
+            'exposicion': get_object_or_404(Exposicion, slug=slug)
+        }
+        return render(request, 'webapp/admin/multimedia_list.html', context)
+
 class MediaCreate(CsrfExemptMixin, View):
     def post(self, request, slug):
         if request.is_ajax():
@@ -124,5 +138,9 @@ class MediaCreate(CsrfExemptMixin, View):
                     src=media_json['src'] )
                 media.save()
 
-                return HttpResponse('ok')
+                context = {
+                    'exposicion': get_object_or_404(Exposicion, slug=slug)
+                }
+
+                return render(request, 'webapp/admin/multimedia_list.html', context)
 

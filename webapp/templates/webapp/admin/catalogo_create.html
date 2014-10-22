@@ -14,10 +14,13 @@
 <script src="{% static 'webapp/js/jquery.draggableBackground.js' %}"></script>
 <script src="{% static 'webapp/js/editor.js' %}"></script>
 <script>
-	var ckeditor_configs = {{ ckeditor_configs | safe }};
-	var save_url = "{% url 'catalogo_save' exposicion.slug %}";
-	var media_url = "{% url 'media_agregar' exposicion.slug %}";
+	var ckeditorConfigs = {{ ckeditor_configs | safe }};
+	var guardarUrl = "{% url 'catalogo_save' exposicion.slug %}";
+	var agregarMediaUrl = "{% url 'media_agregar' exposicion.slug %}";
+  var mediaUrl = "{% url 'media_list' exposicion.slug %}";
+  var imgUploadUrl = "{% url 'img_agregar' exposicion.slug %}";
 	var doc = { numPaginas : {{ catalogo.contenido.numPaginas | default:"0" }}, paginas: [] };
+  var csrf = "{{ csrf_token }}";
 </script>
 
 <div class="container">
@@ -35,7 +38,7 @@
 					<a class="list-group-item">
 						<i class="fa fa-gear list-item"></i>Configuración
 					</a>
-					<a class="list-group-item" onclick="exportDocument();">
+					<a class="list-group-item" onclick="">
 						<i class="fa fa-upload list-item"></i>Exportar
 					</a>
 					<a class="list-group-item" onclick="guardar();">
@@ -67,34 +70,8 @@
 					<li><a href="#video-toolbar" role="tab" data-toggle="tab"><i class="fa fa-video-camera"></i></a></li>
 					<li><a href="#audio-toolbar" role="tab" data-toggle="tab"><i class="fa fa-music"></i></a></li>
 				</ul>
-				<div class="tab-content">
-					<div class="tab-pane active" id="img-toolbar">
-						{% for item in exposicion.get_imagenes %}
-							<div class="thumb draggable" style="background-image:url(/media/uploads/{{item.src}});"></div>
-						{% empty %}
-							<p class="text-muted text-center toolbar-help">
-								Agrega imágenes dando clic en el botón "+" de la esquina derecha.
-							</p>
-						{% endfor %}
-					</div>
-					<div class="tab-pane" id="video-toolbar">
-						{% for item in exposicion.get_videos %}
-							<div class="thumb draggable audio-video" style="background-image:url({{item.thumbnail}});" data-toggle="tooltip" data-placement="right" title="{{item.nombre}}"></div>
-						{% empty %}
-							<p class="text-muted text-center toolbar-help">
-								Agrega videos dando clic en el botón "+" de la esquina derecha.
-							</p>
-						{% endfor %}
-					</div>
-					<div class="tab-pane" id="audio-toolbar">
-						{% for item in exposicion.get_audios %}
-              <div class="thumb draggable audio-video" style="background-image:url({{item.thumbnail}});" data-toggle="tooltip" data-placement="right" title="{{item.nombre}}"></div>
-						{% empty %}
-							<p class="text-muted text-center toolbar-help">
-								Agrega clips de audio dando clic en el botón "+" de la esquina derecha.
-							</p>
-						{% endfor %}
-					</div>
+				<div id="multimediaToolbar" class="tab-content">
+					{% include "webapp/admin/multimedia_list.html" %}
 				</div>
 			</div>
 		</div>
@@ -137,10 +114,11 @@
 					</div>
 					<div class="col-md-10 tab-content">
 						<div class="tab-pane fade in active" id="img">
-							<div id="file-uploader"></div>
-							<form action="{% url 'ajax_upload' %}" id="qq-form">
+							<div id="fileUploader"></div>
+							<form action="{% url 'img_agregar' exposicion.slug %}" id="qq-form">
 								<input type="hidden" name="exposicion_id" value="{{ exposicion.pk }}">
-								<button class="btn btn-raised btn-material-teal pull-right" type="submit">Cargar</button>
+								<button id="imageLoadBtn" class="btn btn-raised btn-material-teal pull-right" type="submit">Cargar</button>
+                <i class="fa fa-circle-o-notch fa-spin pull-right"></i>
 							</form>
 						</div>
 						<div class="tab-pane pane fade" id="video">
@@ -149,10 +127,10 @@
 						    <input type="text" class="form-control" id="videoUrlInput" placeholder="Por ejemplo: https://www.youtube.com/watch?v=pjkh14h8W2g">
 						  </div>
 						  <div class="form-group">
-								<button id="videoLoadBtn" class="btn btn-default pull-right" onclick="cargaVideo();">Buscar</button>
+								<button id="videoLoadBtn" class="btn btn-default pull-right" onclick="cargarVideo();">Buscar</button>
 						  	<i class="fa fa-circle-o-notch fa-spin pull-right"></i>
 						  	<div class="center-block" id="videoPreview"></div>
-						  	<button id="videoInsertBtn" class="btn btn-material-teal pull-right" onclick="guardaVideo();">Guardar</button>
+						  	<button id="videoInsertBtn" class="btn btn-material-teal pull-right" onclick="guardarVideo();">Guardar</button>
 						  </div>
 						</div>
 						<div class="tab-pane pane fade" id="audio">
@@ -161,10 +139,10 @@
                 <input type="text" class="form-control" id="audioUrlInput" placeholder="Por ejemplo: https://soundcloud.com/inbamx/ciclos-de-musica-inba">
               </div>
               <div class="form-group">
-                <button id="audioLoadBtn" class="btn btn-default pull-right" onclick="cargaAudio();">Buscar</button>
+                <button id="audioLoadBtn" class="btn btn-default pull-right" onclick="cargarAudio();">Buscar</button>
                 <i class="fa fa-circle-o-notch fa-spin pull-right"></i>
                 <div class="center-block" id="audioPreview"></div>
-                <button id="audioInsertBtn" class="btn btn-material-teal pull-right" onclick="guardaAudio();">Guardar</button>
+                <button id="audioInsertBtn" class="btn btn-material-teal pull-right" onclick="guardarAudio();">Guardar</button>
               </div>
               <br>
 						</div>
@@ -348,31 +326,11 @@
         </div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-material-teal" data-dismiss="modal" onclick="agregaPagina();">Agregar</button>
+				<button type="button" class="btn btn-material-teal" data-dismiss="modal" onclick="agregarPagina();">Agregar</button>
 			</div>
 		</div>
 	</div>
 </div>
-
-<script>
-	$(document).ready(function () {
-		$("#file-uploader").fineUploader({
-			request: {
-				endpoint: "{% url 'ajax_upload' %}",
-				forceMultipart: false,
-				paramsInBody: false,
-				customHeaders: {
-					'X-CSRFToken': '{{ csrf_token }}',
-				}
-			}
-		});
-		$("#file-uploader").on("complete", function(event, id, name, response) {
-			if (response.success) {
-
-			}
-		});
-	});
-</script>
 
 <script type="text/template" id="qq-template">
 	<div class="qq-uploader-selector">

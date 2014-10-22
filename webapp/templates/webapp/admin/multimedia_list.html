@@ -1,0 +1,27 @@
+<div class="tab-pane active" id="img-toolbar">
+  {% for item in exposicion.get_imagenes %}
+    <div class="thumb draggable" style="background-image:url(/media/uploads/{{item.src}});"></div>
+  {% empty %}
+    <p class="text-muted text-center toolbar-help">
+      Agrega imágenes dando clic en el botón "+" de la esquina derecha.
+    </p>
+  {% endfor %}
+</div>
+<div class="tab-pane" id="video-toolbar">
+  {% for item in exposicion.get_videos %}
+    <div class="thumb draggable audio-video" style="background-image:url({{item.thumbnail}});" data-toggle="tooltip" data-placement="right" title="{{item.nombre}}"></div>
+  {% empty %}
+    <p class="text-muted text-center toolbar-help">
+      Agrega videos dando clic en el botón "+" de la esquina derecha.
+    </p>
+  {% endfor %}
+</div>
+<div class="tab-pane" id="audio-toolbar">
+  {% for item in exposicion.get_audios %}
+    <div class="thumb draggable audio-video" style="background-image:url({{item.thumbnail}});" data-toggle="tooltip" data-placement="right" title="{{item.nombre}}"></div>
+  {% empty %}
+    <p class="text-muted text-center toolbar-help">
+      Agrega clips de audio dando clic en el botón "+" de la esquina derecha.
+    </p>
+  {% endfor %}
+</div>
