@@ -20,7 +20,7 @@
 	var agregarMediaUrl = "{% url 'media_agregar' exposicion.slug %}";
   var mediaUrl = "{% url 'media_list' exposicion.slug %}";
   var imgUploadUrl = "{% url 'img_agregar' exposicion.slug %}";
-	var doc = { numPaginas : {{ catalogo.contenido.numPaginas | default:"0" }}, paginas: [] };
+	var doc = { numPaginas : {{ catalogo.contenido.numPaginas | default:"0" }} };
   var csrf = "{{ csrf_token }}";
 </script>
 
@@ -43,7 +43,7 @@
 						<i class="fa fa-upload list-item"></i>Exportar
 					</a>
 					<a class="list-group-item" onclick="guardar();">
-						<i class="fa fa-save list-item"></i>Guardar
+						<i class="fa fa-save list-item"></i>Guardar<i class="fa fa-circle-o-notch fa-spin pull-right"></i>
 					</a>
 				</div>
 			</div>

@@ -197,6 +197,10 @@
 .list-group .list-group-item i.list-item{
 	margin-right: 15px;
 }
+.list-group .list-group-item i.fa-spin{
+  display: none;
+  margin-top: 2px;
+}
 
 .toolbar-container{
 	padding: 0;
@@ -462,6 +466,21 @@
 	min-height: 466px;
 	width: 100%;
 }
+.alert-message {
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    margin-left: -150px;
+    width: 300px;
+    z-index: 9999;
+    background-color: #8bc34a;
+    padding: 10px 20px;
+    color: #FFF;
+}
+.alert-dismissable .close{
+  right: -10px;
+}
+
 
 #galeria{
 	position: fixed;

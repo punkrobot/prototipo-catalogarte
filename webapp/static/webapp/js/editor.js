@@ -102,6 +102,7 @@ function agregarIconos(area){
     area.append($("<i>", {class: "fa fa-edit fa-2x edit"}));
     area.append($("<i>", {class: "fa fa-times-circle fa-2x delete"}));
 }
+
 function generarAreaEditable(area, contenido){
     var editable = $('<div>', {class: 'editable', contenteditable: true});
     editable.html(contenido);
@@ -111,6 +112,8 @@ function generarAreaEditable(area, contenido){
 }
 
 function actualizarDocumento(){
+    doc.paginas = [];
+
     $('.page').each(function(pageIndex) {
         var page = $(this).clone();
         page.hide();
@@ -124,7 +127,7 @@ function actualizarDocumento(){
 
         var json = {
             'num': pageIndex,
-            'html': page.html()
+            'html': page.cleanWhitespace().html()
         }
         doc.paginas.push(json);
 
@@ -133,6 +136,9 @@ function actualizarDocumento(){
 }
 
 function guardar(){
+    var cargando = $(".list-group .list-group-item i.fa-spin");
+    cargando.show();
+
     actualizarDocumento();
     $.ajax({
         type: 'POST',
@@ -141,7 +147,11 @@ function guardar(){
         data: $.toJSON(doc),
         dataType: 'text',
         success: function (data) {
-            console.log("Success");
+            cargando.hide();
+            var alerta = $('<div class="alert alert-dismissable alert-success alert-message" style="display: none;">');
+            alerta.append($('<button type="button" class="close" data-dismiss="alert">&times</button>'));
+            alerta.append("Catálogo guardado correctamente");
+            alerta.appendTo($('body')).fadeIn(500).delay(2000).fadeOut(500);
         },
         error: function(data) {
             console.log("Error");
@@ -308,6 +318,18 @@ function inicializarModalMultimedia(){
 }
 
 function csrfSafeMethod(method) {
-    // these HTTP methods do not require CSRF protection
     return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+
+jQuery.fn.cleanWhitespace = function() {
+    this.contents().filter(function() {
+        if (this.nodeType != 3) {
+            $(this).cleanWhitespace();
+            return false;
+        } else {
+            this.textContent = $.trim(this.textContent);
+            return !/\S/.test(this.nodeValue);
+        }
+    }).remove();
+    return this;
 }
