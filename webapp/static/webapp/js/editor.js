@@ -6,6 +6,14 @@ $(function() {
     activarAreasDeContenido();
 
     inicializarModalMultimedia();
+
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrf);
+            }
+        }
+    });
 });
 
 function agregarPagina(){
@@ -102,7 +110,7 @@ function generarAreaEditable(area, contenido){
     CKEDITOR.inline(editable.get(0), ckeditorConfigs.default);
 }
 
-function guardar(){
+function actualizarDocumento(){
     $('.page').each(function(pageIndex) {
         var page = $(this).clone();
         page.hide();
@@ -122,10 +130,30 @@ function guardar(){
 
         page.remove();
     });
+}
 
+function guardar(){
+    actualizarDocumento();
     $.ajax({
         type: 'POST',
         url: guardarUrl,
+        contentType: 'application/json; charset=utf-8',
+        data: $.toJSON(doc),
+        dataType: 'text',
+        success: function (data) {
+            console.log("Success");
+        },
+        error: function(data) {
+            console.log("Error");
+        }
+    });
+}
+
+function exportar(){
+    actualizarDocumento();
+    $.ajax({
+        type: 'POST',
+        url: exportarUrl,
         contentType: 'application/json; charset=utf-8',
         data: $.toJSON(doc),
         dataType: 'text',
@@ -277,4 +305,9 @@ function inicializarModalMultimedia(){
         }
     });
     $('#multimediaModal').on('hidden.bs.modal', reiniciarModal);
+}
+
+function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
 }

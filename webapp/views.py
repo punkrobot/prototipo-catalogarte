@@ -1,17 +1,21 @@
+import codecs
 import json
 from datetime import datetime
+from subprocess import Popen, PIPE, STDOUT
 
 from django.conf import settings
+from django.core.files import File
+from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from django.middleware.csrf import get_token
 from django.shortcuts import get_object_or_404, render
-from django.core.urlresolvers import reverse
+from django.template.loader import render_to_string
 from django.views.generic import View, CreateView, DeleteView, DetailView, ListView, UpdateView
 
-from braces.views import LoginRequiredMixin, CsrfExemptMixin, AjaxResponseMixin
+from braces.views import LoginRequiredMixin, AjaxResponseMixin
 
-from webapp.models import Museo, Exposicion, Catalogo, Media
 from webapp.forms import ExposicionForm
+from webapp.models import Museo, Exposicion, Catalogo, Media
 
 
 class ExposicionList(ListView):
@@ -52,7 +56,7 @@ class ExposicionCreate(LoginRequiredMixin, CreateView):
         return reverse('catalogo_create', args=(self.object.slug))
 
 
-class ExposicionUpdate(UpdateView):
+class ExposicionUpdate(LoginRequiredMixin, UpdateView):
     model = Exposicion
     form_class = ExposicionForm
     template_name = 'webapp/admin/exposicion_form.html'
@@ -97,50 +101,61 @@ class CatalogoCreate(LoginRequiredMixin, View):
         return render(request, 'webapp/admin/catalogo_create.html', context)
 
 
-class CatalogoSave(CsrfExemptMixin, View):
-    def post(self, request, slug):
-        if request.is_ajax():
-            if request.method == 'POST':
-                exposicion = get_object_or_404(Exposicion, slug=slug)
-                catalogo = exposicion.catalogo_set.first()
-                catalogo.contenido = json.loads(request.body)
-                catalogo.save()
+class CatalogoSave(LoginRequiredMixin, AjaxResponseMixin, View):
+    def post_ajax(self, request, slug):
+        exposicion = get_object_or_404(Exposicion, slug=slug)
+        catalogo = exposicion.catalogo_set.first()
+        catalogo.contenido = json.loads(request.body)
+        catalogo.save()
 
-                return HttpResponse('ok')
+        return HttpResponse('ok')
 
 
-class MediaList(LoginRequiredMixin, ListView):
-    context_object_name = 'media_list'
-    template_name = 'webapp/admin/exposicion_admin.html'
+class CatalogoExport(LoginRequiredMixin, AjaxResponseMixin, View):
+    def post_ajax(self, request):
+        template = 'webapp/admin/print.html'
+        context = { "document" : json.loads(request.body) }
 
-    def get_queryset(self):
-        return Exposicion.objects.filter(museo__id=self.request.user.museo.id)
+        codecs.open("webapp/static/temp.html", 'w', 'utf-8').write(render_to_string(template, context))
 
-class MediaList(CsrfExemptMixin, AjaxResponseMixin, View):
+        address = 'http://localhost:8000/static/temp.html'
+        pdf_file = 'temp.pdf'
+        external_process = Popen(["phantomjs", "phantom.js", address, pdf_file], stdout=PIPE, stderr=STDOUT)
+
+        return_file = File(open(pdf_file, 'r'))
+        response = HttpResponse(return_file, content_type='application/pdf')
+        response['Content-Length'] = len(response.content)
+        response['Content-Disposition'] = 'attachment; filename=catalogo.pdf'
+
+        return response
+
+
+class MediaList(LoginRequiredMixin, AjaxResponseMixin, View):
     def get_ajax(self, request, slug):
         context = {
             'exposicion': get_object_or_404(Exposicion, slug=slug)
         }
         return render(request, 'webapp/admin/multimedia_toolbar.html', context)
 
-class MediaCreate(CsrfExemptMixin, View):
-    def post(self, request, slug):
-        if request.is_ajax():
-            if request.method == 'POST':
-                exposicion = get_object_or_404(Exposicion, slug=slug)
-                media_json = json.loads(request.body)
 
-                media = Media(
-                    exposicion=exposicion,
-                    thumbnail=media_json['thumbnail'],
-                    nombre=media_json['nombre'],
-                    tipo=media_json['tipo'],
-                    src=media_json['src'] )
-                media.save()
+class MediaCreate(LoginRequiredMixin, AjaxResponseMixin, View):
+    def post_ajax(self, request, slug):
+        exposicion = get_object_or_404(Exposicion, slug=slug)
+        media_json = json.loads(request.body)
 
-                context = {
-                    'exposicion': get_object_or_404(Exposicion, slug=slug)
-                }
+        media = Media(
+            exposicion=exposicion,
+            thumbnail=media_json['thumbnail'],
+            nombre=media_json['nombre'],
+            tipo=media_json['tipo'],
+            src=media_json['src'] )
+        media.save()
 
-                return render(request, 'webapp/admin/multimedia_toolbar.html', context)
+        context = {
+            'exposicion': get_object_or_404(Exposicion, slug=slug)
+        }
+
+        return render(request, 'webapp/admin/multimedia_toolbar.html', context)
+
+
 

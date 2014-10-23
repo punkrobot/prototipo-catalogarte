@@ -1,0 +1,28 @@
+{% load bootstrap3 %}
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  {% bootstrap_css %}
+  <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+  <link href="{% static "webapp/css/style.css" %}" rel="stylesheet">
+</head>
+
+<body>
+  <div class="row">
+    <div class="col-xs-12" id="workspace">
+      {% for pagina in document.paginas %}
+        <div class="page">
+          {{ pagina.html | safe }}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</body>
+
+</html>
