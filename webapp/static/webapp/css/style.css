@@ -265,6 +265,7 @@
 }
 .content{
 	height: 100%;
+  overflow: hidden;
 }
 .area{
   height: 100%;
@@ -411,17 +412,19 @@
   background-position: center;
   background-repeat: no-repeat;
   height: 85%;
+  margin-bottom: 4px;
 }
-.video i{
+.video i,
+.audio i{
   color: #444;
   margin-right: 5px;
 }
-.video .footer{
+.video .footer,
+.audio .footer{
   color: #444;
   height: 15%;
-  font-size: .9em;
+  font-size: .85em;
   font-style: italic;
-  padding: 5px 0;
 }
 
 .thumb{
@@ -501,10 +504,19 @@
 	box-shadow: 0 3px 6px rgba(0,0,0,.16),0 3px 6px rgba(0,0,0,.23);
 }
 .galeria .text,
-.galeria .video{
+.galeria .video,
+.galeria .audio{
   background-color: #FFF;
 }
+.galeria .video,
+.galeria .audio{
+  padding: 0;
+}
 
+.galeria .video .footer,
+.galeria .audio .footer{
+  padding: 0 5px;
+}
 
 .frame {
   height: 560px;

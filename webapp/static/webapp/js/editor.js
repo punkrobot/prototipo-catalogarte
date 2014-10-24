@@ -44,7 +44,7 @@ function activarAreasDeContenido(){
     $(".content").droppable({
       hoverClass: "drop-active",
       drop: function( event, ui ) {
-        if($(ui.draggable).hasClass("audio-video")){
+        if($(ui.draggable).hasClass("pre-video")){
             $(this).removeClass("area").addClass("video");
 
             var link = $('<a>', {href: $(ui.draggable).data('url'), target: '_blank'});
@@ -60,6 +60,17 @@ function activarAreasDeContenido(){
             link.append(thumbnail);
             $(this).append(link);
             $(this).append(footer);
+
+        }else if($(ui.draggable).hasClass("pre-audio")){
+            $(this).removeClass("area").addClass("audio");
+            $(this).append($(ui.draggable).data('html'));
+
+            var footer = $('<div>', {class: 'footer'});
+            footer.append($('<i>', {class: 'fa fa-music'}));
+            footer.append($(ui.draggable).attr("data-original-title"));
+
+            $(this).append(footer);
+
         } else {
             $(this).removeClass("area").addClass("photo");
             $(this).css('background-image', $(ui.draggable).css('background-image'));
@@ -91,6 +102,10 @@ function eliminarContenido(){
         content.find('a').remove();
         content.find('.footer').remove();
         content.removeClass('video').addClass('area');
+    } else if(content.hasClass('audio')){
+        content.find('iframe').remove();
+        content.find('.footer').remove();
+        content.removeClass('audio').addClass('area');
     }
 }
 
@@ -221,7 +236,7 @@ function cargarAudio(){
         $('#audioLoadBtn').hide();
         $('#audio i').show();
 
-        var oembed = 'https://soundcloud.com/oembed?format=json&maxheight=200&maxwidth=300&url=' + url;
+        var oembed = 'https://soundcloud.com/oembed?format=json&maxheight=230&url=' + url;
         $.ajax({
             url: oembed,
             dataType: "json",
@@ -292,7 +307,8 @@ function actualizarToolbar(data){
 
 function activarToolbar(){
     $(".draggable").draggable({ opacity: 0.8, helper: "clone", appendTo:'body' });
-    $(".audio-video").tooltip({container: 'body'});
+    $(".pre-video").tooltip({container: 'body'});
+    $(".pre-audio").tooltip({container: 'body'});
 }
 
 function reiniciarModal(e) {
