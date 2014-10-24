@@ -111,7 +111,8 @@ class Media(models.Model):
 
     exposicion = models.ForeignKey(Exposicion)
 
-    src = models.TextField()
+    url = models.TextField()
+    embed = models.TextField()
     thumbnail = models.URLField(max_length=255, blank=True)
     nombre = models.CharField(max_length=100, blank=True)
     tipo = models.CharField(max_length=3, choices=TIPOS, default=IMAGEN)
@@ -119,5 +120,5 @@ class Media(models.Model):
 
 @receiver(file_uploaded, sender=AjaxFileUploader)
 def on_upload(sender, backend, request, **kwargs):
-    Media.objects.create(src=request.GET['qqfilename'], exposicion_id=request.GET['exposicion_id'], tipo=Media.IMAGEN)
+    Media.objects.create(url=request.GET['qqfilename'], exposicion_id=request.GET['exposicion_id'], tipo=Media.IMAGEN)
 

@@ -47,6 +47,8 @@ function activarAreasDeContenido(){
         if($(ui.draggable).hasClass("audio-video")){
             $(this).removeClass("area").addClass("video");
 
+            var link = $('<a>', {href: $(ui.draggable).data('url'), target: '_blank'});
+
             var thumbnail = $('<div>', {class: 'video-thumbnail'});
             thumbnail.css('background-image', $(ui.draggable).css('background-image'));
             thumbnail.append('<div class="video-overlay"></div>');
@@ -55,7 +57,8 @@ function activarAreasDeContenido(){
             footer.append($('<i>', {class: 'fa fa-video-camera'}));
             footer.append($(ui.draggable).attr("data-original-title"));
 
-            $(this).append(thumbnail);
+            link.append(thumbnail);
+            $(this).append(link);
             $(this).append(footer);
         } else {
             $(this).removeClass("area").addClass("photo");
@@ -85,7 +88,7 @@ function eliminarContenido(){
         content.find('.editable').remove();
         content.removeClass("text").addClass("area");
     } else if(content.hasClass('video')){
-        content.find('.video-thumbnail').remove();
+        content.find('a').remove();
         content.find('.footer').remove();
         content.removeClass('video').addClass('area');
     }
@@ -196,6 +199,7 @@ function cargarVideo(){
             success: function (data) {
                 $('#video i').hide();
                 $('#videoInsertBtn').show();
+                $('#videoPreview').data('url', 'https://www.youtube.com/watch?v='+url.split("v=")[1].substring(0, 11));
                 $('#videoPreview').data('title', data.query.results.json.title);
                 $('#videoPreview').data('thumbnail', data.query.results.json.thumbnail_url);
                 $('#videoPreview').html(data.query.results.json.html);
@@ -224,6 +228,7 @@ function cargarAudio(){
             success: function (data) {
                 $('#audio i').hide();
                 $('#audioInsertBtn').show();
+                $('#audioPreview').data('url', url);
                 $('#audioPreview').data('title', data.title);
                 $('#audioPreview').data('thumbnail', data.thumbnail_url);
                 $('#audioPreview').html(data.html);
@@ -238,7 +243,8 @@ function cargarAudio(){
 
 function guardarAudio(){
     guardarRecurso({
-        src : $('#audioPreview').html(),
+        url : $('#audioPreview').data('url'),
+        embed : $('#audioPreview').html(),
         nombre : $('#audioPreview').data('title'),
         thumbnail : $('#audioPreview').data('thumbnail'),
         tipo : 'AUD'
@@ -247,7 +253,8 @@ function guardarAudio(){
 
 function guardarVideo(){
     guardarRecurso({
-        src : $('#videoPreview').html(),
+        url : $('#videoPreview').data('url'),
+        embed : $('#videoPreview').html(),
         nombre : $('#videoPreview').data('title'),
         thumbnail : $('#videoPreview').data('thumbnail'),
         tipo : 'VID'

@@ -11,7 +11,7 @@
 <div class="tab-content">
   <div class="tab-pane active" id="img-toolbar">
     {% for item in exposicion.get_imagenes %}
-      <div class="thumb draggable" style="background-image:url(/media/uploads/{{item.src}});"></div>
+      <div class="thumb draggable" style="background-image:url(/media/uploads/{{item.url}});"></div>
     {% empty %}
       <p class="text-muted text-center toolbar-help">
         Agrega imágenes dando clic en el botón "+" de la esquina derecha.
@@ -20,7 +20,7 @@
   </div>
   <div class="tab-pane" id="video-toolbar">
     {% for item in exposicion.get_videos %}
-      <div class="thumb draggable audio-video" style="background-image:url({{item.thumbnail}});" data-toggle="tooltip" data-placement="right" title="{{item.nombre}}"></div>
+      <div class="thumb draggable audio-video" style="background-image:url({{item.thumbnail}});" data-toggle="tooltip" data-placement="right" title="{{item.nombre}}" data-url="{{item.url}}"></div>
     {% empty %}
       <p class="text-muted text-center toolbar-help">
         Agrega videos dando clic en el botón "+" de la esquina derecha.

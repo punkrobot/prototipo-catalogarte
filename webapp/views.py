@@ -148,7 +148,8 @@ class MediaCreate(LoginRequiredMixin, AjaxResponseMixin, View):
             thumbnail=media_json['thumbnail'],
             nombre=media_json['nombre'],
             tipo=media_json['tipo'],
-            src=media_json['src'] )
+            url=media_json['url'],
+            embed=media_json['embed'] )
         media.save()
 
         context = {
