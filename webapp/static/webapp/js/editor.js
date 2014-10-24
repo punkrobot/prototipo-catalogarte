@@ -148,7 +148,7 @@ function guardar(){
         dataType: 'text',
         success: function (data) {
             cargando.hide();
-            var alerta = $('<div class="alert alert-dismissable alert-success alert-message" style="display: none;">');
+            var alerta = $('<div class="alert alert-dismissable alert-message" style="display: none;">');
             alerta.append($('<button type="button" class="close" data-dismiss="alert">&times</button>'));
             alerta.append("Catálogo guardado correctamente");
             alerta.appendTo($('body')).fadeIn(500).delay(2000).fadeOut(500);
