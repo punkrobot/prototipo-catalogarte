@@ -7,17 +7,55 @@ $(function() {
 
     inicializarModalMultimedia();
 
-    $.ajaxSetup({
-        beforeSend: function(xhr, settings) {
-            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                xhr.setRequestHeader("X-CSRFToken", csrf);
-            }
-        }
-    });
+    cargaDocumento();
+
+    $('body').scrollspy({ target: '#toolbar-documento', offset: 150 });
 });
 
+function cargaDocumento(){
+    if(doc.numPaginas > 0){
+        var lista = $('#toolbar-documento ul');
+
+        for(i=0; i<doc.numPaginas; i++){
+            agregarPaginaNav(i, "", lista)
+        }
+    }
+}
+
+function agregarPaginaNav(index, titulo, container){
+    if(index == 0){
+        container.empty();
+    }
+
+    var li = $('<li>', {class: index == 0 ? 'active' : ''});
+    li.data('src', '#pagina' + index);
+    var pagina = $('<a>', {href: '#pagina' + index});
+    li.append(pagina);
+
+    var nombre = $('<span>');
+    nombre.html(titulo != "" ? titulo : 'Página '+ (index+1));
+    nombre.editable({ container: 'body', title: 'Nombre de la hoja:', placement: 'right', toggle: 'manual' });
+    pagina.append(nombre);
+
+    var eliminarIcono = $('<i>', {class: 'fa fa-remove pull-right'});
+    eliminarIcono.click(function(e){
+        alert("¿Estás seguro de eliminar la hoja?");
+        e.preventDefault();
+    });
+    var editarIcono = $('<i>', {class: 'fa fa-pencil pull-right'});
+    editarIcono.click(function(e){
+        e.stopPropagation();
+        e.preventDefault();
+        $(e.target).prev().prev().editable('toggle');
+    });
+    pagina.append(eliminarIcono);
+    pagina.append(editarIcono);
+
+    container.append(li);
+}
+
 function agregarPagina(){
-    var page = $("<div>", {class: "page"});
+    var page = $("<div>", {class: "page", id: 'pagina'+ doc.numPaginas});
     var sel = $('input[type=radio]:checked').val();
     layout = $(sel).clone();
     layout.find('.area').addClass('content');
@@ -29,9 +67,16 @@ function agregarPagina(){
     } else {
         $("#workspace").append(page);
     }
-    doc.numPaginas++;
 
     activarAreasDeContenido();
+
+    agregarPaginaNav(doc.numPaginas, "", $('#toolbar-documento ul'));
+
+    $('[data-spy="scroll"]').each(function () {
+      var $spy = $(this).scrollspy('refresh')
+    });
+
+    doc.numPaginas++;
 }
 
 function activarAreasDeTexto(){
@@ -96,7 +141,7 @@ function eliminarContenido(){
         content.removeClass('photo').addClass('area');
         content.find('.video-overlay').remove();
     } else if(content.hasClass('text')){
-        content.find('.editable').remove();
+        content.find('.text-editable').remove();
         content.removeClass("text").addClass("area");
     } else if(content.hasClass('video')){
         content.find('a').remove();
@@ -122,7 +167,7 @@ function agregarIconos(area){
 }
 
 function generarAreaEditable(area, contenido){
-    var editable = $('<div>', {class: 'editable', contenteditable: true});
+    var editable = $('<div>', {class: 'text-editable', contenteditable: true});
     editable.html(contenido);
     area.html(editable);
 
@@ -356,3 +401,11 @@ jQuery.fn.cleanWhitespace = function() {
     }).remove();
     return this;
 }
+
+$.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrf);
+        }
+    }
+});

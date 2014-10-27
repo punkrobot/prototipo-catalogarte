@@ -10,6 +10,7 @@
 {% endblock %}
 
 {% block content %}
+<script src="{% static 'webapp/js/bootstrap-editable.min.js' %}"></script>
 <script src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
 <script src="{% static 'webapp/js/jquery.draggableBackground.js' %}"></script>
 <script src="{% static 'webapp/js/editor.js' %}"></script>
@@ -30,14 +31,11 @@
 			<div class="toolbar" data-spy="affix" data-offset-top="65">
 				<h4 class="text-center">Herramientas</h4>
 				<div class="list-group">
-					<a class="list-group-item" data-toggle="modal" data-target="#agregaPaginaModal">
-						<i class="fa fa-file-o list-item"></i>Agregar hoja
-					</a>
+          <a class="list-group-item">
+            <i class="fa fa-gear list-item"></i>Configuración
+          </a>
 					<a class="list-group-item">
 						<i class="fa fa-search list-item"></i>Vista previa
-					</a>
-					<a class="list-group-item">
-						<i class="fa fa-gear list-item"></i>Configuración
 					</a>
 					<a class="list-group-item" onclick="exportar();">
 						<i class="fa fa-upload list-item"></i>Exportar
@@ -47,11 +45,27 @@
 					</a>
 				</div>
 			</div>
+      <div class="toolbar documento" data-spy="affix" data-offset-top="65">
+        <h4 class="text-center">Documento
+          <a class="toolbar-btn pull-right" data-toggle="modal" data-target="#agregaPaginaModal">
+            <i class="fa fa-plus list-item"></i>
+          </a>
+        </h4>
+        <div id="toolbar-documento" class="list-group">
+          <ul class="nav nav-pills nav-stacked">
+            <li class="text-muted text-center toolbar-help">
+              <p>
+                Agrega páginas dando clic en el botón "+" de la esquina derecha.
+              </p>
+            </li>
+          </ul>
+        </div>
+      </div>
 		</div>
 		<div class="col-md-8" id="workspace">
 			{% if catalogo.contenido %}
 				{% for pagina in catalogo.contenido.paginas %}
-					<div class="page">
+					<div class="page" id="pagina{{pagina.num}}">
             {{ pagina.html | safe }}
 					</div>
 				{% endfor %}

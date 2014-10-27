@@ -133,6 +133,10 @@
 	background-color: #009688;
 }
 
+body{
+  position: relative;
+  height: 100%;
+}
 .workspace{
 	margin: 20px 0;
 }
@@ -182,7 +186,7 @@
 	color: #5DA30C;
 }
 .list-group{
-	margin-top: 5px;
+	margin-top: 0;
 	margin-bottom: 0;
 }
 .toolbar h4{
@@ -193,6 +197,9 @@
 .list-group .list-group-item{
 	padding: 10px 20px;
 	cursor: pointer;
+}
+.list-group .list-group-item:hover{
+  background-color: #EEE !important;
 }
 .list-group .list-group-item i.list-item{
 	margin-right: 15px;
@@ -219,9 +226,33 @@
 .toolbar.affix{
 	top: 20px;
 }
-.toolbar .nav>li{
+.toolbar.documento{
+  margin-top: 20px;
+}
+.toolbar.documento.affix{
+  top: 227px;
+}
+#toolbar-documento ul{
+  max-height: 344px;
+  overflow-y: auto;
+}
+#toolbar-documento li i{
+  display: none;
+}
+#toolbar-documento li.active i{
+  padding: 2px 5px;
+  display: block;
+}
+#multimediaToolbar .nav>li{
 	text-align: center;
 	width: 33%;
+}
+.nav-pills>li>a {
+  border-radius: none;
+  color: #444;
+}
+.nav-pills>li.active>a, .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus{
+  background-color: #009688;
 }
 .toolbar .tab-content{
 	height: 530px;
@@ -239,6 +270,18 @@
 }
 .toolbar-help{
 	padding: 20px;
+}
+.popover{
+  background-color: #FFF;
+  color: #444;
+  max-width: none;
+  padding: 5px 5px 10px 5px;
+}
+.popover.right .arrow:after{
+  border-right-color: #FFF;
+}
+.popover .btn-primary{
+  float: right;
 }
 
 .placeholder{
@@ -294,12 +337,12 @@
 	-o-filter: brightness(80%);
 	-ms-filter: brightness(80%);
 }
-.editable{
+.text-editable{
 	border: 2px dashed #CCC;
 	height: 100%;
 	padding: 5px;
 }
-.editable:hover{
+.text-editable:hover{
 	background-color: #EEE;
 }
 
