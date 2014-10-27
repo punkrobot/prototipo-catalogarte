@@ -13,6 +13,7 @@
 <script src="{% static 'webapp/js/bootstrap-editable.min.js' %}"></script>
 <script src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
 <script src="{% static 'webapp/js/jquery.draggableBackground.js' %}"></script>
+<script src="{% static 'webapp/js/bootbox.min.js' %}"></script>
 <script src="{% static 'webapp/js/editor.js' %}"></script>
 <script>
 	var ckeditorConfigs = {{ ckeditor_configs | safe }};
@@ -21,7 +22,7 @@
 	var agregarMediaUrl = "{% url 'media_agregar' exposicion.slug %}";
   var mediaUrl = "{% url 'media_list' exposicion.slug %}";
   var imgUploadUrl = "{% url 'img_agregar' exposicion.slug %}";
-	var doc = { numPaginas : {{ catalogo.contenido.numPaginas | default:"0" }} };
+	var doc = { numPaginas : {{ catalogo.contenido.numPaginas | default:"0" }}, sigId : {{ catalogo.contenido.sigId | default:"1" }} };
   var csrf = "{{ csrf_token }}";
 </script>
 
@@ -65,7 +66,7 @@
 		<div class="col-md-8" id="workspace">
 			{% if catalogo.contenido %}
 				{% for pagina in catalogo.contenido.paginas %}
-					<div class="page" id="pagina{{pagina.num}}">
+					<div class="page" id="{{pagina.id}}" title="{{pagina.nombre}}">
             {{ pagina.html | safe }}
 					</div>
 				{% endfor %}

@@ -16,30 +16,44 @@ function cargaDocumento(){
     if(doc.numPaginas > 0){
         var lista = $('#toolbar-documento ul');
 
+        actualizarDocumento();
+
         for(i=0; i<doc.numPaginas; i++){
-            agregarPaginaNav(i, "", lista)
+            agregarPaginaNav(i, doc.paginas[i].id, doc.paginas[i].nombre, lista);
         }
     }
 }
 
-function agregarPaginaNav(index, titulo, container){
+function agregarPaginaNav(index, id, titulo, container){
     if(index == 0){
         container.empty();
     }
 
     var li = $('<li>', {class: index == 0 ? 'active' : ''});
-    li.data('src', '#pagina' + index);
-    var pagina = $('<a>', {href: '#pagina' + index});
+    li.data('src', '#' + id);
+    var pagina = $('<a>', {href: '#' + id});
     li.append(pagina);
 
     var nombre = $('<span>');
-    nombre.html(titulo != "" ? titulo : 'Página '+ (index+1));
-    nombre.editable({ container: 'body', title: 'Nombre de la hoja:', placement: 'right', toggle: 'manual' });
+    nombre.html(titulo);
+    nombre.editable({ container: 'body', title: 'Nombre de la hoja:', placement: 'right', toggle: 'manual', defaultValue: '', emptytext: '&nbsp;' });
+    nombre.on('save', function(e, params) {
+        var id = $(e.target).parent().attr('href');
+        $(id).attr('title', params.newValue);
+    });
     pagina.append(nombre);
 
     var eliminarIcono = $('<i>', {class: 'fa fa-remove pull-right'});
     eliminarIcono.click(function(e){
-        alert("¿Estás seguro de eliminar la hoja?");
+        bootbox.confirm("¿Estás seguro de borrar la página?", function(result) {
+            if(result){
+                var id = $(e.target).parent().attr('href');
+                $(id).remove();
+                $(e.target).parent().parent().remove();
+                doc.numPaginas--;
+            }
+        });
+
         e.preventDefault();
     });
     var editarIcono = $('<i>', {class: 'fa fa-pencil pull-right'});
@@ -55,7 +69,11 @@ function agregarPaginaNav(index, titulo, container){
 }
 
 function agregarPagina(){
-    var page = $("<div>", {class: "page", id: 'pagina'+ doc.numPaginas});
+    var idPagina = 'pag'+ doc.sigId;
+    var nombrePagina = 'Página '+ (doc.numPaginas+1);
+
+    var page = $("<div>", {class: "page", id: idPagina, title: nombrePagina});
+
     var sel = $('input[type=radio]:checked').val();
     layout = $(sel).clone();
     layout.find('.area').addClass('content');
@@ -70,12 +88,13 @@ function agregarPagina(){
 
     activarAreasDeContenido();
 
-    agregarPaginaNav(doc.numPaginas, "", $('#toolbar-documento ul'));
+    agregarPaginaNav(doc.numPaginas, "pag"+doc.sigId, nombrePagina, $('#toolbar-documento ul'));
 
     $('[data-spy="scroll"]').each(function () {
       var $spy = $(this).scrollspy('refresh')
     });
 
+    doc.sigId++;
     doc.numPaginas++;
 }
 
@@ -189,7 +208,8 @@ function actualizarDocumento(){
         });
 
         var json = {
-            'num': pageIndex,
+            'id': page.attr('id'),
+            'nombre': page.attr('title'),
             'html': page.cleanWhitespace().html()
         }
         doc.paginas.push(json);
