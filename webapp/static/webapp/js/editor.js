@@ -219,7 +219,7 @@ function actualizarDocumento(){
 }
 
 function guardar(){
-    var cargando = $(".list-group .list-group-item i.fa-spin");
+    var cargando = $("#guardarBtn i.fa-spin");
     cargando.show();
 
     actualizarDocumento();
@@ -243,6 +243,9 @@ function guardar(){
 }
 
 function exportar(){
+    var cargando = $("#exportarBtn i.fa-spin");
+    cargando.show();
+
     actualizarDocumento();
     $.ajax({
         type: 'POST',
@@ -251,13 +254,12 @@ function exportar(){
         data: $.toJSON(doc),
         dataType: 'json',
         success: function (data) {
-            setTimeout(function(){
-                bootbox.dialog({
-                  title: "Exportar PDF",
-                  message: '<iframe style="width:100%;height:500px;" src="'+ data.file +'"/>',
-                  size: 'large'
-                });
-            }, 2500);
+            cargando.hide();
+            bootbox.dialog({
+              title: "Exportar PDF",
+              message: '<iframe style="width:100%;height:500px;" src="'+ data.file +'"/>',
+              size: 'large'
+            });
         },
         error: function(data) {
             console.log("Error");

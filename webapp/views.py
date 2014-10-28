@@ -126,6 +126,7 @@ class CatalogoExport(LoginRequiredMixin, AjaxResponseMixin, View):
         address = 'http://localhost:8000/' + path + 'catalogo.html'
         pdf_file = path + 'catalogo.pdf'
         external_process = Popen(["phantomjs", "phantom.js", address, pdf_file], stdout=PIPE, stderr=STDOUT)
+        external_process.communicate()
 
         response_data = {
             'file': '/' + pdf_file
