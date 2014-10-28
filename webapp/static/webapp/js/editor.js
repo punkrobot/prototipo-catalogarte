@@ -10,6 +10,25 @@ $(function() {
     cargaDocumento();
 
     $('body').scrollspy({ target: '#toolbar-documento', offset: 150 });
+
+    $(document).on('click', function(e) {
+        if(!$(e.target).closest('.photo').length && !$(e.target).closest('.toolbar.imagen').length) {
+            $('.photo').removeClass('active');
+            $('.toolbar.imagen').hide();
+            $('.toolbar.documento').show();
+            fotoSeleccionada = null;
+        }
+    });
+
+    $("#slider").slider({ step: 25, min: 100, max: 650, value: 300,
+        slide: function(event, ui) {
+            var ratio = fotoSeleccionada.width() / fotoSeleccionada.height();
+            var size = ui.value + "px";
+            fotoSeleccionada.stop(true).animate({width: size, height: size / ratio}, 250);
+        }
+    });
+
+    fotoSeleccionada = null;
 });
 
 function cargaDocumento(){
@@ -106,41 +125,62 @@ function activarAreasDeTexto(){
 
 function activarAreasDeContenido(){
     $(".content").droppable({
-      hoverClass: "drop-active",
-      drop: function( event, ui ) {
-        if($(ui.draggable).hasClass("pre-video")){
-            $(this).removeClass("area").addClass("video");
+        hoverClass: "drop-active",
+        accept: ".thumb",
+        drop: function( event, ui ) {
+            if($(this).hasClass("libre")){
+                var url = /^url\((['"]?)(.*)\1\)$/.exec($(ui.draggable).css('background-image'));
+                url = url ? url[2] : "";
+                var img = $('<img>', { class: "photo", src: url });
+                $(this).append(img);
 
-            var link = $('<a>', {href: $(ui.draggable).data('url'), target: '_blank'});
+                img.draggable({ containment: "parent", helper: "original" }).click(function(e){
+                    if($(this).is('.ui-draggable-dragging')) return;
 
-            var thumbnail = $('<div>', {class: 'video-thumbnail'});
-            thumbnail.css('background-image', $(ui.draggable).css('background-image'));
-            thumbnail.append('<div class="video-overlay"></div>');
+                    fotoSeleccionada = $(this);
 
-            var footer = $('<div>', {class: 'footer'});
-            footer.append($('<i>', {class: 'fa fa-video-camera'}));
-            footer.append($(ui.draggable).attr("data-original-title"));
+                    $('.photo').removeClass('active');
+                    fotoSeleccionada.addClass('active');
+                    $('.toolbar.imagen').show();
+                    $('.toolbar.documento').hide();
 
-            link.append(thumbnail);
-            $(this).append(link);
-            $(this).append(footer);
+                    $("#slider").slider("value", fotoSeleccionada.width());
+                });
+            } else {
+                if($(ui.draggable).hasClass("pre-video")){
+                    $(this).removeClass("area").addClass("video");
 
-        }else if($(ui.draggable).hasClass("pre-audio")){
-            $(this).removeClass("area").addClass("audio");
-            $(this).append($(ui.draggable).data('html'));
+                    var link = $('<a>', {href: $(ui.draggable).data('url'), target: '_blank'});
 
-            var footer = $('<div>', {class: 'footer'});
-            footer.append($('<i>', {class: 'fa fa-music'}));
-            footer.append($(ui.draggable).attr("data-original-title"));
+                    var thumbnail = $('<div>', {class: 'video-thumbnail'});
+                    thumbnail.css('background-image', $(ui.draggable).css('background-image'));
+                    thumbnail.append('<div class="video-overlay"></div>');
 
-            $(this).append(footer);
+                    var footer = $('<div>', {class: 'footer'});
+                    footer.append($('<i>', {class: 'fa fa-video-camera'}));
+                    footer.append($(ui.draggable).attr("data-original-title"));
 
-        } else {
-            $(this).removeClass("area").addClass("photo");
-            $(this).css('background-image', $(ui.draggable).css('background-image'));
-            $(this).backgroundDraggable();
+                    link.append(thumbnail);
+                    $(this).append(link);
+                    $(this).append(footer);
+
+                } else if($(ui.draggable).hasClass("pre-audio")) {
+                    $(this).removeClass("area").addClass("audio");
+                    $(this).append($(ui.draggable).data('html'));
+
+                    var footer = $('<div>', {class: 'footer'});
+                    footer.append($('<i>', {class: 'fa fa-music'}));
+                    footer.append($(ui.draggable).attr("data-original-title"));
+
+                    $(this).append(footer);
+
+                } else {
+                    $(this).removeClass("area").addClass("img");
+                    $(this).css('background-image', $(ui.draggable).css('background-image'));
+                    $(this).backgroundDraggable();
+                }
+            }
         }
-      }
     });
 
     $('.content').on("click", ".delete", eliminarContenido);
@@ -150,14 +190,27 @@ function activarAreasDeContenido(){
         agregarIconos($(this));
     });
 
-    $('.photo').backgroundDraggable();
+    $('.img').backgroundDraggable();
+}
+
+function eliminarFoto(){
+    if(fotoSeleccionada == null) return;
+
+    bootbox.confirm("¿Estás seguro de borrar la imagen seleccionada?", function(result) {
+        if(result){
+            fotoSeleccionada.remove();
+            $('.photo').removeClass('active');
+            $('.toolbar.imagen').hide();
+            $('.toolbar.documento').show();
+        }
+    });
 }
 
 function eliminarContenido(){
     var content = $(this).parent();
-    if(content.hasClass('photo')){
+    if(content.hasClass('img')){
         content.removeAttr('style');
-        content.removeClass('photo').addClass('area');
+        content.removeClass('img').addClass('area');
         content.find('.video-overlay').remove();
     } else if(content.hasClass('text')){
         content.find('.text-editable').remove();

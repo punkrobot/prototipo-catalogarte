@@ -65,6 +65,18 @@
           </ul>
         </div>
       </div>
+      <div class="toolbar imagen" data-spy="affix" data-offset-top="65">
+        <h4 class="text-center">Imagen</h4>
+        <div class="list-group">
+          <div class="list-group-item">
+            <i class="fa fa-search list-item"></i>Tamaño
+            <div id="slider"></div>
+          </div>
+          <a class="list-group-item" onclick="eliminarFoto();">
+            <i class="fa fa-remove list-item"></i>Eliminar imagen
+          </a>
+        </div>
+      </div>
 		</div>
 		<div class="col-md-8" id="workspace">
 			{% if catalogo.contenido %}
@@ -180,6 +192,18 @@
 			</div>
 			<div class="modal-body">
 				<div class="row">
+          <div class="col-md-3">
+            <label for="layout-sel0">
+              <div id="layout0" class="layout">
+                <div class="r h100">
+                  <div class="c col-xs-12">
+                    <div class="area libre"></div>
+                  </div>
+                </div>
+              </div>
+            </label>
+            <input class="layout-radio" type="radio" name="layout-sel" id="layout-sel0" value="#layout0" checked>
+          </div>
 					<div class="col-md-3">
 						<label for="layout-sel1">
               <div id="layout1" class="layout">
@@ -190,7 +214,7 @@
                 </div>
               </div>
             </label>
-            <input class="layout-radio" type="radio" name="layout-sel" id="layout-sel1" value="#layout1" checked>
+            <input class="layout-radio" type="radio" name="layout-sel" id="layout-sel1" value="#layout1">
 					</div>
 					<div class="col-md-3">
 						<label for="layout-sel2">
@@ -226,6 +250,8 @@
             </label>
             <input class="layout-radio" type="radio" name="layout-sel" id="layout-sel3" value="#layout3">
 					</div>
+        </div><br><br>
+        <div class="row">
 					<div class="col-md-3">
 						<label for="layout-sel4">
               <div id="layout4" class="layout">
@@ -241,8 +267,6 @@
             </label>
             <input class="layout-radio" type="radio" name="layout-sel" id="layout-sel4" value="#layout4">
 					</div>
-				</div><br><br>
-        <div class="row">
           <div class="col-md-3">
             <label for="layout-sel5">
               <div id="layout5" class="layout">
@@ -300,35 +324,6 @@
               </div>
             </label>
             <input class="layout-radio" type="radio" name="layout-sel" id="layout-sel7" value="#layout7">
-          </div>
-          <div class="col-md-3">
-            <label for="layout-sel8">
-              <div id="layout8" class="layout">
-                <div class="r h75">
-                  <div class="c col-xs-4">
-                    <div class="area"></div>
-                  </div>
-                  <div class="c col-xs-4">
-                    <div class="area"></div>
-                  </div>
-                  <div class="c col-xs-4">
-                    <div class="area"></div>
-                  </div>
-                </div>
-                <div class="r h25">
-                  <div class="c col-xs-4">
-                    <div class="area"></div>
-                  </div>
-                  <div class="c col-xs-4">
-                    <div class="area"></div>
-                  </div>
-                  <div class="c col-xs-4">
-                    <div class="area"></div>
-                  </div>
-                </div>
-              </div>
-            </label>
-            <input class="layout-radio" type="radio" name="layout-sel" id="layout-sel8" value="#layout8">
           </div>
         </div>
 			</div>
