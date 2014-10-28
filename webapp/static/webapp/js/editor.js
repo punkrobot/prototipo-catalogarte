@@ -249,9 +249,15 @@ function exportar(){
         url: exportarUrl,
         contentType: 'application/json; charset=utf-8',
         data: $.toJSON(doc),
-        dataType: 'text',
+        dataType: 'json',
         success: function (data) {
-            console.log("Success");
+            setTimeout(function(){
+                bootbox.dialog({
+                  title: "Exportar PDF",
+                  message: '<iframe style="width:100%;height:500px;" src="'+ data.file +'"/>',
+                  size: 'large'
+                });
+            }, 2500);
         },
         error: function(data) {
             console.log("Error");

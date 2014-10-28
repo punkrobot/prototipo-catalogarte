@@ -14,8 +14,8 @@ urlpatterns = patterns('',
     url(r'^admin/exposicion/(?P<slug>[\w-]+)/$', views.ExposicionUpdate.as_view(), name='exposicion_actualizar'),
 
     url(r'^admin/catalogo/(?P<slug>[\w-]+)/$', views.CatalogoCreate.as_view(), name='catalogo_create'),
-    url(r'^admin/catalogo/save/(?P<slug>[\w-]+)/$', views.CatalogoSave.as_view(), name='catalogo_save'),
-    url(r'^admin/catalogo/export$', views.CatalogoExport.as_view(), name='catalogo_export'),
+    url(r'^admin/catalogo/(?P<slug>[\w-]+)/save/$', views.CatalogoSave.as_view(), name='catalogo_save'),
+    url(r'^admin/catalogo/(?P<slug>[\w-]+)/export/$', views.CatalogoExport.as_view(), name='catalogo_export'),
 
     url(r'^admin/exposicion/(?P<slug>[\w-]+)/media/img$', AjaxFileUploader(), name='img_agregar'),
     url(r'^admin/exposicion/(?P<slug>[\w-]+)/media/agregar$', views.MediaCreate.as_view(), name='media_agregar'),

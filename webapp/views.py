@@ -8,7 +8,7 @@ from django.core.files import File
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from django.middleware.csrf import get_token
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 from django.template.loader import render_to_string
 from django.views.generic import View, CreateView, DeleteView, DetailView, ListView, UpdateView
 
@@ -112,22 +112,26 @@ class CatalogoSave(LoginRequiredMixin, AjaxResponseMixin, View):
 
 
 class CatalogoExport(LoginRequiredMixin, AjaxResponseMixin, View):
-    def post_ajax(self, request):
+    def post_ajax(self, request, slug):
+        exposicion = get_object_or_404(Exposicion, slug=slug)
+        catalogo = exposicion.catalogo_set.first()
+
         template = 'webapp/admin/print.html'
-        context = { "document" : json.loads(request.body) }
+        context = { 'document' : json.loads(request.body) }
 
-        codecs.open("webapp/static/temp.html", 'w', 'utf-8').write(render_to_string(template, context))
+        path = 'media/' + request.user.museo.slug + '/' + exposicion.slug + '/';
 
-        address = 'http://localhost:8000/static/temp.html'
-        pdf_file = 'temp.pdf'
+        codecs.open(path + 'catalogo.html', 'w', 'utf-8').write(render_to_string(template, context))
+
+        address = 'http://localhost:8000/' + path + 'catalogo.html'
+        pdf_file = path + 'catalogo.pdf'
         external_process = Popen(["phantomjs", "phantom.js", address, pdf_file], stdout=PIPE, stderr=STDOUT)
 
-        return_file = File(open(pdf_file, 'r'))
-        response = HttpResponse(return_file, content_type='application/pdf')
-        response['Content-Length'] = len(response.content)
-        response['Content-Disposition'] = 'attachment; filename=catalogo.pdf'
+        response_data = {
+            'file': '/' + pdf_file
+        }
 
-        return response
+        return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 
 class MediaList(LoginRequiredMixin, AjaxResponseMixin, View):

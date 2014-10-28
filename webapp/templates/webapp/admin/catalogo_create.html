@@ -18,7 +18,7 @@
 <script>
 	var ckeditorConfigs = {{ ckeditor_configs | safe }};
 	var guardarUrl = "{% url 'catalogo_save' exposicion.slug %}";
-  var exportarUrl = "{% url 'catalogo_export' %}";
+  var exportarUrl = "{% url 'catalogo_export' exposicion.slug %}";
 	var agregarMediaUrl = "{% url 'media_agregar' exposicion.slug %}";
   var mediaUrl = "{% url 'media_list' exposicion.slug %}";
   var imgUploadUrl = "{% url 'img_agregar' exposicion.slug %}";

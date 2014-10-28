@@ -67,6 +67,8 @@ CKEDITOR_CONFIGS = {
 
 BOOTSTRAP3 = {
     'theme_url': '/static/webapp/css/material.min.css',
+    'css_url': '/static/webapp/css/bootstrap.css',
+    'javascript_url': '/static/webapp/js/bootstrap.min.js',
 }
 
 LOGIN_URL = "/login/"
