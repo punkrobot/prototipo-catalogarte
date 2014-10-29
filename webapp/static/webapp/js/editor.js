@@ -99,7 +99,7 @@ function agregarPagina(){
 }
 
 function activarAreasDeTexto(){
-    $('.text').each(function() {
+    $('.texto').each(function() {
         generarAreaEditable($(this), $(this).html());
     });
 }
@@ -286,9 +286,9 @@ function establecerFondo(area, url){
 
 function eliminarContenido(){
     var content = $(this).parent();
-    if(content.hasClass('text')){
+    if(content.hasClass('texto')){
         content.find('.text-editable').remove();
-        content.removeClass("text").addClass("area");
+        content.removeClass("texto").addClass("area");
     } else if(content.hasClass('video')){
         content.find('a').remove();
         content.find('.footer').remove();
@@ -302,7 +302,7 @@ function eliminarContenido(){
 
 function editarContenido() {
     var area = $(this).parent();
-    area.removeClass("area").addClass("text");
+    area.removeClass("area").addClass("texto");
     generarAreaEditable(area, '<h3>Encabezado</h3><p>Clic para editar el texto...</p>');
     agregarIconos(area);
 }
@@ -328,7 +328,7 @@ function actualizarDocumento(){
         page.hide();
 
         page.find('.edit, .delete').remove();
-        page.find('.text').each(function() {
+        page.find('.texto').each(function() {
             var editor = $(this).children(":first");
             $(this).html(editor.html());
         });

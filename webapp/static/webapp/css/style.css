@@ -371,12 +371,12 @@
 	display: none;
 }
 .area:hover .edit,
-.text:hover .delete,
+.texto:hover .delete,
 .audio:hover .delete,
 .video:hover .delete{
 	display: block;
 }
-.text:hover .delete:hover,
+.texto:hover .delete:hover,
 .audio:hover .delete:hover,
 .video:hover .delete:hover,
 .area:hover .edit:hover{
@@ -549,11 +549,8 @@
 .galeria{
   padding: 20px;
 }
-.galeria .item{
-
-}
-.galeria .item .foto:hover,
-.galeria .item .fondo:hover {
+.galeria .foto img:hover,
+.galeria .fondo:hover {
   cursor: zoom-in;
 
   filter: none;
@@ -562,20 +559,22 @@
   -o-filter: none;
   -ms-filter: none;
 }
-.galeria .content{
-	padding: 10px;
+.galeria .fondo,
+.galeria .texto,
+.galeria .video,
+.galeria .audio,
+.galeria .foto img{
+	padding: 0;
 	box-shadow: 0 3px 6px rgba(0,0,0,.16),0 3px 6px rgba(0,0,0,.23);
 }
-.galeria .text,
+.galeria .texto{
+  padding: 20px;
+}
+.galeria .texto,
 .galeria .video,
 .galeria .audio{
   background-color: #FFF;
 }
-.galeria .video,
-.galeria .audio{
-  padding: 0;
-}
-
 .galeria .video .footer,
 .galeria .audio .footer{
   padding: 0 5px;
