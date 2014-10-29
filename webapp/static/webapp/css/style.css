@@ -358,11 +358,9 @@
 .area:hover .edit,
 .text:hover .delete,
 .audio:hover .delete,
-.video:hover .delete,
-.fondo:hover .delete{
+.video:hover .delete{
 	display: block;
 }
-.fondo:hover .delete:hover,
 .text:hover .delete:hover,
 .audio:hover .delete:hover,
 .video:hover .delete:hover,

@@ -13,8 +13,7 @@ $(function() {
 
     $(document).on('click', function(e) {
         if(!$(e.target).closest('.photo').length && !$(e.target).closest('.fondo').length && !$(e.target).closest('.toolbar.imagen').length) {
-            $('.photo').removeClass('active');
-            $('.fondo').removeClass('active');
+            $('.photo, .fondo').removeClass('active');
             $('.toolbar.imagen').hide();
             $('.toolbar.documento').show();
             fotoSeleccionada = null;
@@ -185,8 +184,7 @@ function activarAreasDeContenido(){
 function verPropiedadesImagen(){
     if($(this).is('.ui-draggable-dragging')) return;
 
-    $('.photo').removeClass('active');
-    $('.fondo').removeClass('active');
+    $('.photo, .fondo').removeClass('active');
 
     fotoSeleccionada = $(this);
 
@@ -302,8 +300,7 @@ function actualizarDocumento(){
         var page = $(this).clone();
         page.hide();
 
-        page.find('.edit').remove();
-        page.find('.delete').remove();
+        page.find('.edit, .delete').remove();
         page.find('.text').each(function() {
             var editor = $(this).children(":first");
             $(this).html(editor.html());
@@ -482,18 +479,13 @@ function actualizarToolbar(data){
 
 function activarToolbar(){
     $(".draggable").draggable({ opacity: 0.8, helper: "clone", appendTo:'body' });
-    $(".pre-video").tooltip({container: 'body'});
-    $(".pre-audio").tooltip({container: 'body'});
+    $(".pre-video, .pre-audio").tooltip({container: 'body'});
 }
 
 function reiniciarModal(e) {
-    $('#multimediaModal .fa-spin').hide();
-    $('#videoLoadBtn').show();
-    $('#videoInsertBtn').hide();
-    $('#videoPreview').empty();
-    $('#audioLoadBtn').show();
-    $('#audioInsertBtn').hide();
-    $('#audioPreview').empty();
+    $('#videoLoadBtn, #audioLoadBtn').show();
+    $('#multimediaModal .fa-spin, #videoInsertBtn, #audioInsertBtn').hide();
+    $('#videoPreview, #audioPreview').empty();
 }
 
 function inicializarModalMultimedia(){

@@ -33,12 +33,19 @@
     };
     var frame = new Sly('.frame', options).init();
 
-    $('.photo').click(function() {
+    $('.photo, .content.fondo').click(function() {
       var img = $(this);
+      var url = '';
+      if(img.hasClass('fondo')){
+        url = /^url\((['"]?)(.*)\1\)$/.exec(img.css('background-image'));
+        url = url ? url[2] : '';
+      } else {
+        url = img.attr('src');
+      }
 
       $.magnificPopup.open({
         items: {
-          src: img.css('background-image').replace('url(','').replace(')','')
+          src: url
         },
         type: 'image',
         mainClass: 'mfp-no-margins mfp-with-zoom',
