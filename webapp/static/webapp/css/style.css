@@ -342,7 +342,7 @@
 .txt{
   background: #FEFEFE;
 }
-.foto:hover,
+.foto img:hover,
 .fondo:hover {
   cursor: move;
 
@@ -427,7 +427,7 @@
 	height: 33%;
 }
 
-.page h1, h2, h3, h4,h5, h6 {
+.content h1, .content h2, .content h3, .content h4, .content h5, .content h6 {
   margin-top: 0;
 }
 
@@ -561,19 +561,15 @@
 }
 .galeria .fondo,
 .galeria .texto,
-.galeria .video,
-.galeria .audio,
+.galeria .video-thumbnail,
+.galeria .audio iframe,
 .galeria .foto img{
 	padding: 0;
 	box-shadow: 0 3px 6px rgba(0,0,0,.16),0 3px 6px rgba(0,0,0,.23);
 }
 .galeria .texto{
-  padding: 20px;
-}
-.galeria .texto,
-.galeria .video,
-.galeria .audio{
   background-color: #FFF;
+  padding: 20px;
 }
 .galeria .video .footer,
 .galeria .audio .footer{

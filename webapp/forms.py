@@ -11,16 +11,16 @@ class ExposicionForm(forms.ModelForm):
 
     class Meta:
         model = Exposicion
-        fields = ['titulo', 'autor', 'fecha_inicial', 'fecha_final', 'descripcion', 'creditos', \
-                  'informacion', 'actividades', 'categorias', 'website', 'portada']
+        fields = ['titulo', 'subtitulo', 'fecha_inicial', 'fecha_final', 'descripcion', 'creditos', \
+                  'informacion', 'actividades', 'categorias', 'website', 'hashtag', 'portada']
 
         success_url = '/admin'
 
     def __init__(self, *args, **kwargs):
         super(ExposicionForm, self).__init__(*args, **kwargs)
 
-        self.fields['titulo'].widget.attrs = {'placeholder': ''}
-        self.fields['autor'].widget.attrs = {'placeholder': ''}
+        self.fields['titulo'].widget.attrs = {'placeholder': 'Nombre de la exposición'}
+        self.fields['subtitulo'].widget.attrs = {'placeholder': 'Subtitulo o autor de la exposición'}
         self.fields['fecha_inicial'].widget = DateTimeWidget(usel10n=True, bootstrap_version=3)
         self.fields['fecha_final'].widget = DateTimeWidget(usel10n=True, bootstrap_version=3)
         self.fields['descripcion'].widget.attrs = {'placeholder': 'Descripción corta de la exposición...', 'rows': 4}
@@ -31,3 +31,4 @@ class ExposicionForm(forms.ModelForm):
         self.fields['actividades'].widget = CKEditorWidget()
         self.fields['actividades'].initial = '<h3>Actividades</h3><ul><li></li><li></li></ul><hr><h3>Talleres</h3><ul><li></li><li></li></ul>'
         self.fields['website'].widget.attrs = {'placeholder': ''}
+        self.fields['hashtag'].widget.attrs = {'placeholder': '#HastagDeLaExposicion'}

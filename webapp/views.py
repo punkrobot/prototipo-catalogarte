@@ -52,8 +52,7 @@ class ExposicionCreate(LoginRequiredMixin, CreateView):
         return super(ExposicionCreate, self).form_valid(form)
 
     def get_success_url(self):
-        # TODO: Revisar error
-        return reverse('catalogo_create', args=(self.object.slug))
+        return reverse('catalogo_create', kwargs={'slug' : self.object.slug } )
 
 
 class ExposicionUpdate(LoginRequiredMixin, UpdateView):

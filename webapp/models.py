@@ -47,12 +47,13 @@ class Exposicion(models.Model):
     fecha_final = models.DateTimeField(null=True, blank=True)
 
     titulo = models.CharField(max_length=100)
-    autor = models.CharField(max_length=100, blank=True)
+    subtitulo = models.CharField(max_length=100, blank=True)
     creditos = models.TextField(blank=True)
     descripcion = models.TextField(blank=True)
     informacion = models.TextField(blank=True)
     actividades = models.TextField(blank=True)
     website = models.URLField(max_length=255, blank=True)
+    hashtag = models.CharField(max_length=255, blank=True)
 
     slug = AutoSlugField(unique=True, populate_from='titulo')
     categorias = models.ManyToManyField("Categoria")
