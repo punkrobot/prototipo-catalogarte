@@ -213,7 +213,9 @@ function verPropiedadesImagen(){
 function activarImagen(imagen){
     imagen.unbind().on('click', verPropiedadesImagen);
 
-    if(!imagen.hasClass("fondo")){
+    if(imagen.hasClass("fondo")){
+        imagen.backgroundDraggable();
+    } else {
         imagen.find('img').draggable({ containment: "parent", helper: "original" });
     }
 }
@@ -253,7 +255,6 @@ function expandirFoto(){
 function establecerFondo(area, url){
     area.removeClass("area").addClass("fondo");
     area.css('background-image', url);
-    area.backgroundDraggable();
 }
 
 function eliminarContenido(){
