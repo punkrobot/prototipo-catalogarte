@@ -235,7 +235,13 @@
 }
 .toolbar.imagen,
 .toolbar.documento.affix{
-  top: 227px;
+  top: 187px;
+}
+.toolbar.imagen textarea{
+  display: none;
+  margin-top: 5px;
+  font-size: .85em;
+  color: #777;
 }
 #toolbar-documento ul{
   max-height: 344px;

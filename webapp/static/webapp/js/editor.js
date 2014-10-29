@@ -29,6 +29,11 @@ $(function() {
         }
     });
 
+    $('.toolbar.imagen textarea').focusout(function() {
+        fotoSeleccionada.attr('title', $(this).val());
+    });
+
+
     fotoSeleccionada = null;
 });
 
@@ -145,8 +150,7 @@ function activarAreasDeContenido(){
                 footer.append($(ui.draggable).attr("data-original-title"));
 
                 link.append(thumbnail);
-                $(this).append(link);
-                $(this).append(footer);
+                $(this).append(link).append(footer);
 
             } else if($(ui.draggable).hasClass("pre-audio")) {
                 $(this).removeClass("area").addClass("audio");
@@ -191,11 +195,20 @@ function verPropiedadesImagen(){
     $('.toolbar.imagen').show();
     $('.toolbar.documento').hide();
 
+    var title = fotoSeleccionada.attr('title');
+    if(title){
+        $('.toolbar.imagen #pieFotoChk').prop('checked', true);
+        $('.toolbar.imagen textarea').val(title).show();
+    } else {
+        $('.toolbar.imagen #pieFotoChk').prop('checked', false);
+        $('.toolbar.imagen textarea').val('').hide();
+    }
+
     if(fotoSeleccionada.hasClass("fondo")){
         fotoSeleccionada.addClass('active');
 
         $("#slider").parent().hide();
-        $('.toolbar.imagen input').prop('checked', true);
+        $('.toolbar.imagen #expandirChk').prop('checked', true);
 
     } else {
         var img = fotoSeleccionada.find('img');
@@ -204,7 +217,7 @@ function verPropiedadesImagen(){
         $("#slider").parent().show();
         $("#slider").slider("value", img.width());
 
-        $('.toolbar.imagen input').prop('checked', false);
+        $('.toolbar.imagen #expandirChk').prop('checked', false);
     }
 }
 
@@ -223,10 +236,8 @@ function eliminarFoto(){
 
     bootbox.confirm("¿Estás seguro de borrar la imagen seleccionada?", function(result) {
         if(result){
-            fotoSeleccionada.find("img").remove();
-            fotoSeleccionada.find('.video-overlay').remove();
-            fotoSeleccionada.removeAttr('style');
-            fotoSeleccionada.removeClass('fondo active').addClass('area');
+            fotoSeleccionada.find("img, .video-overlay").remove();
+            fotoSeleccionada.removeAttr('style').removeClass('fondo active').addClass('area');
             $('.toolbar.imagen').hide();
             $('.toolbar.documento').show();
         }
@@ -234,7 +245,7 @@ function eliminarFoto(){
 }
 
 function expandirFoto(){
-    if($('.toolbar.imagen input').prop('checked')){
+    if($('.toolbar.imagen #expandirChk').prop('checked')){
         img = fotoSeleccionada.find('img');
         var url = 'url(' + img.attr('src') + ')';
         img.remove();
@@ -250,6 +261,15 @@ function expandirFoto(){
     }
 
     activarImagen(fotoSeleccionada);
+}
+
+function pieFoto(){
+    if($('.toolbar.imagen #pieFotoChk').prop('checked')){
+        $('.toolbar.imagen textarea').show().focus();
+    } else {
+        $('.toolbar.imagen textarea').val('').hide();
+        fotoSeleccionada.removeAttr('title');
+    }
 }
 
 function establecerFondo(area, url){

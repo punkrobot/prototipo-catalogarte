@@ -38,9 +38,6 @@
           <a class="list-group-item">
             <i class="fa fa-gear list-item"></i>Configuración
           </a>
-					<a class="list-group-item">
-						<i class="fa fa-search list-item"></i>Vista previa
-					</a>
 					<a id="exportarBtn" class="list-group-item" onclick="exportar();">
 						<i class="fa fa-upload list-item"></i>Exportar<i class="fa fa-circle-o-notch fa-spin pull-right"></i>
 					</a>
@@ -70,12 +67,23 @@
         <div class="list-group">
           <div class="list-group-item">
             <i class="fa fa-expand list-item"></i>Llenar el área
-            <input class="pull-right" onclick="expandirFoto();" type="checkbox">
+            <input id="expandirChk" class="pull-right" onclick="expandirFoto();" type="checkbox">
           </div>
           <div class="list-group-item">
             <i class="fa fa-search list-item"></i>Tamaño
             <div id="slider"></div>
           </div>
+          <a class="list-group-item">
+            <i class="fa fa-crop list-item"></i>Recortar
+          </a>
+          <a class="list-group-item">
+            <i class="fa fa-instagram list-item"></i>Filtros
+          </a>
+          <a class="list-group-item">
+            <i class="fa fa-font list-item"></i>Pie
+            <input id="pieFotoChk" class="pull-right" onclick="pieFoto();" type="checkbox">
+            <textarea class="form-control" rows="3" ></textarea>
+          </a>
           <a class="list-group-item" onclick="eliminarFoto();">
             <i class="fa fa-remove list-item"></i>Eliminar imagen
           </a>
