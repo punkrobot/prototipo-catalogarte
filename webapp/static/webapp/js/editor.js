@@ -12,8 +12,9 @@ $(function() {
     $('body').scrollspy({ target: '#toolbar-documento', offset: 150 });
 
     $(document).on('click', function(e) {
-        if(!$(e.target).closest('.photo').length && !$(e.target).closest('.toolbar.imagen').length) {
+        if(!$(e.target).closest('.photo').length && !$(e.target).closest('.fondo').length && !$(e.target).closest('.toolbar.imagen').length) {
             $('.photo').removeClass('active');
+            $('.fondo').removeClass('active');
             $('.toolbar.imagen').hide();
             $('.toolbar.documento').show();
             fotoSeleccionada = null;
@@ -22,9 +23,10 @@ $(function() {
 
     $("#slider").slider({ step: 25, min: 100, max: 650, value: 300,
         slide: function(event, ui) {
-            var ratio = fotoSeleccionada.width() / fotoSeleccionada.height();
+            var img = fotoSeleccionada.find('img');
+            var ratio = img.width() / img.height();
             var size = ui.value + "px";
-            fotoSeleccionada.stop(true).animate({width: size, height: size / ratio}, 250);
+            img.stop(true).animate({width: size, height: size / ratio}, 250);
         }
     });
 
@@ -128,57 +130,38 @@ function activarAreasDeContenido(){
         hoverClass: "drop-active",
         accept: ".thumb",
         drop: function( event, ui ) {
-            if($(this).hasClass("libre")){
-                var url = /^url\((['"]?)(.*)\1\)$/.exec($(ui.draggable).css('background-image'));
-                url = url ? url[2] : "";
-                var img = $('<img>', { class: "photo", src: url });
-                $(this).append(img);
+            $(this).droppable("disable");
 
-                img.draggable({ containment: "parent", helper: "original" }).click(function(e){
-                    if($(this).is('.ui-draggable-dragging')) return;
+            if($(ui.draggable).hasClass("pre-video")){
+                $(this).removeClass("area").addClass("video");
 
-                    fotoSeleccionada = $(this);
+                var link = $('<a>', {href: $(ui.draggable).data('url'), target: '_blank'});
 
-                    $('.photo').removeClass('active');
-                    fotoSeleccionada.addClass('active');
-                    $('.toolbar.imagen').show();
-                    $('.toolbar.documento').hide();
+                var thumbnail = $('<div>', {class: 'video-thumbnail'});
+                thumbnail.css('background-image', $(ui.draggable).css('background-image'));
+                thumbnail.append('<div class="video-overlay"></div>');
 
-                    $("#slider").slider("value", fotoSeleccionada.width());
-                });
+                var footer = $('<div>', {class: 'footer'});
+                footer.append($('<i>', {class: 'fa fa-video-camera'}));
+                footer.append($(ui.draggable).attr("data-original-title"));
+
+                link.append(thumbnail);
+                $(this).append(link);
+                $(this).append(footer);
+
+            } else if($(ui.draggable).hasClass("pre-audio")) {
+                $(this).removeClass("area").addClass("audio");
+                $(this).append($(ui.draggable).data('html'));
+
+                var footer = $('<div>', {class: 'footer'});
+                footer.append($('<i>', {class: 'fa fa-music'}));
+                footer.append($(ui.draggable).attr("data-original-title"));
+
+                $(this).append(footer);
+
             } else {
-                if($(ui.draggable).hasClass("pre-video")){
-                    $(this).removeClass("area").addClass("video");
-
-                    var link = $('<a>', {href: $(ui.draggable).data('url'), target: '_blank'});
-
-                    var thumbnail = $('<div>', {class: 'video-thumbnail'});
-                    thumbnail.css('background-image', $(ui.draggable).css('background-image'));
-                    thumbnail.append('<div class="video-overlay"></div>');
-
-                    var footer = $('<div>', {class: 'footer'});
-                    footer.append($('<i>', {class: 'fa fa-video-camera'}));
-                    footer.append($(ui.draggable).attr("data-original-title"));
-
-                    link.append(thumbnail);
-                    $(this).append(link);
-                    $(this).append(footer);
-
-                } else if($(ui.draggable).hasClass("pre-audio")) {
-                    $(this).removeClass("area").addClass("audio");
-                    $(this).append($(ui.draggable).data('html'));
-
-                    var footer = $('<div>', {class: 'footer'});
-                    footer.append($('<i>', {class: 'fa fa-music'}));
-                    footer.append($(ui.draggable).attr("data-original-title"));
-
-                    $(this).append(footer);
-
-                } else {
-                    $(this).removeClass("area").addClass("img");
-                    $(this).css('background-image', $(ui.draggable).css('background-image'));
-                    $(this).backgroundDraggable();
-                }
+                establecerFondo($(this), $(ui.draggable).css('background-image'));
+                activarImagen($(this));
             }
         }
     });
@@ -186,11 +169,53 @@ function activarAreasDeContenido(){
     $('.content').on("click", ".delete", eliminarContenido);
     $('.content').on("click", ".edit", editarContenido);
 
+    $('.fondo').each(function() {
+        activarImagen($(this));
+    });
+    $('.content img').each(function() {
+        activarImagen($(this).parent());
+    });
     $('.content').each(function() {
         agregarIconos($(this));
     });
 
-    $('.img').backgroundDraggable();
+    $('.fondo').backgroundDraggable();
+}
+
+function verPropiedadesImagen(){
+    if($(this).is('.ui-draggable-dragging')) return;
+
+    $('.photo').removeClass('active');
+    $('.fondo').removeClass('active');
+
+    fotoSeleccionada = $(this);
+
+    $('.toolbar.imagen').show();
+    $('.toolbar.documento').hide();
+
+    if(fotoSeleccionada.hasClass("fondo")){
+        fotoSeleccionada.addClass('active');
+
+        $("#slider").parent().hide();
+        $('.toolbar.imagen input').prop('checked', true);
+
+    } else {
+        var img = fotoSeleccionada.find('img');
+        img.addClass('active');
+
+        $("#slider").parent().show();
+        $("#slider").slider("value", img.width());
+
+        $('.toolbar.imagen input').prop('checked', false);
+    }
+}
+
+function activarImagen(imagen){
+    imagen.unbind().on('click', verPropiedadesImagen);
+
+    if(!imagen.hasClass("fondo")){
+        imagen.find('img').draggable({ containment: "parent", helper: "original" });
+    }
 }
 
 function eliminarFoto(){
@@ -206,11 +231,36 @@ function eliminarFoto(){
     });
 }
 
+function expandirFoto(){
+    if($('.toolbar.imagen input').prop('checked')){
+        img = fotoSeleccionada.find('img');
+        var url = 'url(' + img.attr('src') + ')';
+        img.remove();
+        establecerFondo(fotoSeleccionada, url);
+        fotoSeleccionada.click();
+
+    } else {
+        var url = /^url\((['"]?)(.*)\1\)$/.exec(fotoSeleccionada.css('background-image'));
+        var img = $('<img>', { class: "photo", src: url ? url[2] : "" });
+
+        fotoSeleccionada.removeAttr("style").removeClass("fondo").removeClass("active").append(img);
+        img.click();
+    }
+
+    activarImagen(fotoSeleccionada);
+}
+
+function establecerFondo(area, url){
+    area.removeClass("area").addClass("fondo");
+    area.css('background-image', url);
+    area.backgroundDraggable();
+}
+
 function eliminarContenido(){
     var content = $(this).parent();
     if(content.hasClass('img')){
         content.removeAttr('style');
-        content.removeClass('img').addClass('area');
+        content.removeClass('fondo').addClass('area');
         content.find('.video-overlay').remove();
     } else if(content.hasClass('text')){
         content.find('.text-editable').remove();

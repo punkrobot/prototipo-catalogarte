@@ -322,17 +322,18 @@
 .area:hover{
 	background-color: #EEE;
 }
-.img{
+.fondo{
 	background-size: cover;
   background-repeat: no-repeat;
 }
-.photo.active{
+.photo.active,
+.fondo.active{
   border: 2px solid #5677fc;
 }
 .txt{
   background: #FEFEFE;
 }
-.img:hover {
+.fondo:hover {
   cursor: move;
 
 	filter: brightness(80%);
@@ -358,10 +359,10 @@
 .text:hover .delete,
 .audio:hover .delete,
 .video:hover .delete,
-.img:hover .delete{
+.fondo:hover .delete{
 	display: block;
 }
-.img:hover .delete:hover,
+.fondo:hover .delete:hover,
 .text:hover .delete:hover,
 .audio:hover .delete:hover,
 .video:hover .delete:hover,
@@ -538,7 +539,8 @@
 .galeria .item{
 
 }
-.galeria .item .img:hover {
+.galeria .item .photo:hover,
+.galeria .item .fondo:hover {
   cursor: zoom-in;
 
   filter: none;
