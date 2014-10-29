@@ -1,55 +1,31 @@
 $(function() {
     CKEDITOR.disableAutoInline = true;
+    fotoSeleccionada = null;
 
     activarToolbar();
     activarAreasDeTexto();
     activarAreasDeContenido();
 
+    cargaPaginasDocumento();
     inicializarModalMultimedia();
-
-    cargaDocumento();
+    inicializarBarraPropiedades();
 
     $('body').scrollspy({ target: '#toolbar-documento', offset: 150 });
-
-    $(document).on('click', function(e) {
-        if(!$(e.target).closest('.photo').length && !$(e.target).closest('.fondo').length && !$(e.target).closest('.toolbar.imagen').length) {
-            $('.photo, .fondo').removeClass('active');
-            $('.toolbar.imagen').hide();
-            $('.toolbar.documento').show();
-            fotoSeleccionada = null;
-        }
-    });
-
-    $("#slider").slider({ step: 25, min: 100, max: 650, value: 300,
-        slide: function(event, ui) {
-            var img = fotoSeleccionada.find('img');
-            var ratio = img.width() / img.height();
-            var size = ui.value + "px";
-            img.stop(true).animate({width: size, height: size / ratio}, 250);
-        }
-    });
-
-    $('.toolbar.imagen textarea').focusout(function() {
-        fotoSeleccionada.attr('title', $(this).val());
-    });
-
-
-    fotoSeleccionada = null;
 });
 
-function cargaDocumento(){
+function cargaPaginasDocumento(){
     if(doc.numPaginas > 0){
         var lista = $('#toolbar-documento ul');
 
         actualizarDocumento();
 
         for(i=0; i<doc.numPaginas; i++){
-            agregarPaginaNav(i, doc.paginas[i].id, doc.paginas[i].nombre, lista);
+            agregarPaginaDocumento(i, doc.paginas[i].id, doc.paginas[i].nombre, lista);
         }
     }
 }
 
-function agregarPaginaNav(index, id, titulo, container){
+function agregarPaginaDocumento(index, id, titulo, container){
     if(index == 0){
         container.empty();
     }
@@ -61,7 +37,7 @@ function agregarPaginaNav(index, id, titulo, container){
 
     var nombre = $('<span>');
     nombre.html(titulo);
-    nombre.editable({ container: 'body', title: 'Nombre de la hoja:', placement: 'right', toggle: 'manual', defaultValue: '', emptytext: '&nbsp;' });
+    nombre.editable({ container: 'body', title: 'Nombre de la página:', placement: 'right', toggle: 'manual', defaultValue: '', emptytext: '&nbsp;' });
     nombre.on('save', function(e, params) {
         var id = $(e.target).parent().attr('href');
         $(id).attr('title', params.newValue);
@@ -78,7 +54,6 @@ function agregarPaginaNav(index, id, titulo, container){
                 doc.numPaginas--;
             }
         });
-
         e.preventDefault();
     });
     var editarIcono = $('<i>', {class: 'fa fa-pencil pull-right'});
@@ -113,7 +88,7 @@ function agregarPagina(){
 
     activarAreasDeContenido();
 
-    agregarPaginaNav(doc.numPaginas, "pag"+doc.sigId, nombrePagina, $('#toolbar-documento ul'));
+    agregarPaginaDocumento(doc.numPaginas, "pag"+doc.sigId, nombrePagina, $('#toolbar-documento ul'));
 
     $('[data-spy="scroll"]').each(function () {
       var $spy = $(this).scrollspy('refresh')
@@ -169,13 +144,12 @@ function activarAreasDeContenido(){
         }
     });
 
-    $('.content').on("click", ".delete", eliminarContenido);
-    $('.content').on("click", ".edit", editarContenido);
+    $('.content').on("click", ".delete", eliminarContenido).on("click", ".edit", editarContenido);
 
     $('.fondo').each(function() {
         activarImagen($(this));
     });
-    $('.content img').each(function() {
+    $('.content .foto').each(function() {
         activarImagen($(this).parent());
     });
     $('.content').each(function() {
@@ -185,10 +159,37 @@ function activarAreasDeContenido(){
     $('.fondo').backgroundDraggable();
 }
 
+function inicializarBarraPropiedades(){
+    $(document).on('click', function(e) {
+        if(!$(e.target).closest('.foto').length && !$(e.target).closest('.fondo').length && !$(e.target).closest('.toolbar.imagen').length) {
+            $('.foto, .fondo').removeClass('active');
+            $('.toolbar.imagen').hide();
+            $('.toolbar.documento').show();
+            fotoSeleccionada = null;
+        }
+    });
+
+    $("#slider").slider({ step: 25, min: 100, max: 650, value: 300,
+        slide: function(event, ui) {
+            var img = fotoSeleccionada.find('img');
+            var ratio = img.width() / img.height();
+            var size = ui.value + "px";
+            img.stop(true).animate({width: size, height: size / ratio}, 250);
+        }
+    });
+
+    $('.toolbar.imagen textarea').focusout(function() {
+        fotoSeleccionada.attr('title', $(this).val());
+        if(!fotoSeleccionada.hasClass('fondo')){
+            fotoSeleccionada.find('span').html($(this).val());
+        }
+    });
+}
+
 function verPropiedadesImagen(){
     if($(this).is('.ui-draggable-dragging')) return;
 
-    $('.photo, .fondo').removeClass('active');
+    $('.foto, .fondo').removeClass('active');
 
     fotoSeleccionada = $(this);
 
@@ -212,22 +213,12 @@ function verPropiedadesImagen(){
 
     } else {
         var img = fotoSeleccionada.find('img');
-        img.addClass('active');
+        fotoSeleccionada.find('.foto').addClass('active');
 
         $("#slider").parent().show();
         $("#slider").slider("value", img.width());
 
         $('.toolbar.imagen #expandirChk').prop('checked', false);
-    }
-}
-
-function activarImagen(imagen){
-    imagen.unbind().on('click', verPropiedadesImagen);
-
-    if(imagen.hasClass("fondo")){
-        imagen.backgroundDraggable();
-    } else {
-        imagen.find('img').draggable({ containment: "parent", helper: "original" });
     }
 }
 
@@ -248,27 +239,43 @@ function expandirFoto(){
     if($('.toolbar.imagen #expandirChk').prop('checked')){
         img = fotoSeleccionada.find('img');
         var url = 'url(' + img.attr('src') + ')';
-        img.remove();
+        fotoSeleccionada.find('.foto').remove();
         establecerFondo(fotoSeleccionada, url);
         fotoSeleccionada.click();
 
     } else {
+        var foto = $('<div>', { class: "foto"});
         var url = /^url\((['"]?)(.*)\1\)$/.exec(fotoSeleccionada.css('background-image'));
-        var img = $('<img>', { class: "photo", src: url ? url[2] : "" });
+        var img = $('<img>', { src: url ? url[2] : "" });
+        foto.append(img);
 
-        fotoSeleccionada.removeAttr("style").removeClass("fondo active").append(img);
-        img.click();
+        fotoSeleccionada.removeAttr("style").removeClass("fondo active").append(foto);
+        foto.click();
     }
 
     activarImagen(fotoSeleccionada);
 }
 
+function activarImagen(imagen){
+    imagen.unbind().on('click', verPropiedadesImagen);
+
+    if(imagen.hasClass("fondo")){
+        imagen.backgroundDraggable();
+    } else {
+        imagen.find('.foto').draggable({ containment: "parent", helper: "original" });
+    }
+}
+
 function pieFoto(){
     if($('.toolbar.imagen #pieFotoChk').prop('checked')){
         $('.toolbar.imagen textarea').show().focus();
+        if(!fotoSeleccionada.hasClass('fondo')){
+            fotoSeleccionada.find('.foto').append($('<span>', {class: 'pie-foto'} ));
+        }
     } else {
         $('.toolbar.imagen textarea').val('').hide();
         fotoSeleccionada.removeAttr('title');
+        fotoSeleccionada.find('span').remove();
     }
 }
 
@@ -405,12 +412,11 @@ function cargarVideo(){
             dataType: "jsonp",
             success: function (data) {
                 $('#video i').hide();
-                $('#videoInsertBtn').show();
                 $('#videoPreview').data('url', 'https://www.youtube.com/watch?v='+url.split("v=")[1].substring(0, 11));
                 $('#videoPreview').data('title', data.query.results.json.title);
                 $('#videoPreview').data('thumbnail', data.query.results.json.thumbnail_url);
                 $('#videoPreview').html(data.query.results.json.html);
-                $('#videoPreview').show();
+                $('#videoPreview, #videoInsertBtn').show();
             },
             error: function (result) {
                 console.log("Error", result);
@@ -434,12 +440,11 @@ function cargarAudio(){
             dataType: "json",
             success: function (data) {
                 $('#audio i').hide();
-                $('#audioInsertBtn').show();
                 $('#audioPreview').data('url', url);
                 $('#audioPreview').data('title', data.title);
                 $('#audioPreview').data('thumbnail', data.thumbnail_url);
                 $('#audioPreview').html(data.html);
-                $('#audioPreview').show();
+                $('#audioInsertBtn, #audioPreview').show();
             },
             error: function (result) {
                 console.log("Error", result);

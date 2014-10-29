@@ -332,13 +332,17 @@
 	background-size: cover;
   background-repeat: no-repeat;
 }
-.photo.active,
+.foto{
+  display: inline-block;
+}
+.foto.active,
 .fondo.active{
   border: 2px solid #5677fc;
 }
 .txt{
   background: #FEFEFE;
 }
+.foto:hover,
 .fondo:hover {
   cursor: move;
 
@@ -347,6 +351,11 @@
 	-moz-filter: brightness(80%);
 	-o-filter: brightness(80%);
 	-ms-filter: brightness(80%);
+}
+.pie-foto{
+  margin-top: 5px;
+  color: #666;
+  display: table;
 }
 .text-editable{
 	border: 2px dashed #CCC;
@@ -543,7 +552,7 @@
 .galeria .item{
 
 }
-.galeria .item .photo:hover,
+.galeria .item .foto:hover,
 .galeria .item .fondo:hover {
   cursor: zoom-in;
 
