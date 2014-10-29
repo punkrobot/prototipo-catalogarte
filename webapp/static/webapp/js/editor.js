@@ -225,8 +225,10 @@ function eliminarFoto(){
 
     bootbox.confirm("¿Estás seguro de borrar la imagen seleccionada?", function(result) {
         if(result){
-            fotoSeleccionada.remove();
-            $('.photo').removeClass('active');
+            fotoSeleccionada.find("img").remove();
+            fotoSeleccionada.find('.video-overlay').remove();
+            fotoSeleccionada.removeAttr('style');
+            fotoSeleccionada.removeClass('fondo active').addClass('area');
             $('.toolbar.imagen').hide();
             $('.toolbar.documento').show();
         }
@@ -245,7 +247,7 @@ function expandirFoto(){
         var url = /^url\((['"]?)(.*)\1\)$/.exec(fotoSeleccionada.css('background-image'));
         var img = $('<img>', { class: "photo", src: url ? url[2] : "" });
 
-        fotoSeleccionada.removeAttr("style").removeClass("fondo").removeClass("active").append(img);
+        fotoSeleccionada.removeAttr("style").removeClass("fondo active").append(img);
         img.click();
     }
 
@@ -259,11 +261,7 @@ function establecerFondo(area, url){
 
 function eliminarContenido(){
     var content = $(this).parent();
-    if(content.hasClass('img')){
-        content.removeAttr('style');
-        content.removeClass('fondo').addClass('area');
-        content.find('.video-overlay').remove();
-    } else if(content.hasClass('text')){
+    if(content.hasClass('text')){
         content.find('.text-editable').remove();
         content.removeClass("text").addClass("area");
     } else if(content.hasClass('video')){
