@@ -6,11 +6,16 @@
 	<div class="row">
 		<div class="col-md-12 well catalogo">
 			<div class="row">
-				<div class="col-md-10">
+				<div class="col-md-8">
 					<h1>{{exposicion.titulo}}<small>&nbsp;{{exposicion.subtitulo}}</small></h1>
 				</div>
-				<div class="col-md-2">
-					<a href="{% url 'catalogo_detalle' exposicion.slug %}" class="btn btn-default">Ver catálogo</a>
+				<div class="col-md-4">
+          <a href="{% url 'catalogo_detalle' exposicion.slug %}" class="btn btn-sm">
+            Ver PDF<i class="fa fa-newspaper-o"></i>
+          </a>
+          <a href="{% url 'catalogo_detalle' exposicion.slug %}" class="btn btn-sm">
+            Exposición digital<i class="fa fa-chevron-right"></i>
+          </a>
 				</div>
 			</div>
 			<div class="row">
@@ -33,6 +38,9 @@
 						<li class="active"><a href="#info" role="tab" data-toggle="tab">Información</a></li>
 						<li><a href="#actividades" role="tab" data-toggle="tab">Actividades</a></li>
 						<li><a href="#creditos" role="tab" data-toggle="tab">Créditos</a></li>
+            {% if exposicion.hashtag %}
+              <li><a href="#redes" role="tab" data-toggle="tab">Redes Sociales</a></li>
+            {% endif %}
 					</ul>
 					<div class="tab-content">
 						<div class="tab-pane fade in active" id="info">
@@ -44,6 +52,13 @@
 						<div class="tab-pane fade" id="creditos">
 							<p>{{exposicion.creditos | safe}}</p>
 						</div>
+            {% if exposicion.hashtag %}
+              <div class="tab-pane fade" id="redes">
+                <a class="twitter-timeline" href="https://twitter.com/search?q=%23KusamaEnElTamayo+%2F+%23ObsesionKusama"
+                data-widget-id="527576050100748288">Tweets sobre "#KusamaEnElTamayo / #ObsesionKusama"</a>
+                <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+              </div>
+            {% endif %}
 					</div>
 				</div>
 			</div>

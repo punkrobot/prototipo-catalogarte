@@ -114,6 +114,14 @@
 .catalogo h2{
 	margin-top: 0;
 }
+.catalogo .btn{
+  margin-top: 20px;
+  margin-bottom: 0;
+  background-color: #5677fc;
+}
+.catalogo .btn i{
+  margin-left: 5px;
+}
 .catalogo .detalle{
 	padding-left: 10px;
 	margin-bottom: 20px;
@@ -123,6 +131,10 @@
 }
 .catalogo i{
 	margin-right: 5px;
+}
+.catalogo h1{
+  margin-top: 15px;
+  margin-bottom: 5px;
 }
 
 .nav-tabs{
