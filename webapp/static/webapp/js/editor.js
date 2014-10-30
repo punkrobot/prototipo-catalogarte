@@ -227,7 +227,7 @@ function eliminarFoto(){
 
     bootbox.confirm("¿Estás seguro de borrar la imagen seleccionada?", function(result) {
         if(result){
-            fotoSeleccionada.find("img, .video-overlay").remove();
+            fotoSeleccionada.find(".foto, .video-overlay").remove();
             fotoSeleccionada.removeAttr('style').removeClass('fondo active').addClass('area');
             $('.toolbar.imagen').hide();
             $('.toolbar.documento').show();

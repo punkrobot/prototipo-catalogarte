@@ -63,17 +63,19 @@ class ExposicionUpdate(LoginRequiredMixin, UpdateView):
 
 
 class CatalogoDetail(View):
-    def get(self, request, slug):
+    def get(self, request, slug, tipo):
         exposicion = get_object_or_404(Exposicion, slug=slug)
         catalogo =  exposicion.catalogo_set.first()
         contenido = json.dumps(catalogo.contenido)
+
+        template = 'webapp/catalogo_detail.html' if tipo == 'html' else 'webapp/catalogo_detail_pdf.html'
 
         context = {
             'exposicion': exposicion,
             'catalogo': catalogo,
             'contenido': contenido
         }
-        return render(request, 'webapp/catalogo_detail.html', context)
+        return render(request, template, context)
 
 
 class CatalogoCreate(LoginRequiredMixin, View):

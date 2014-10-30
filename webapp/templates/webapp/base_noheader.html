@@ -1,0 +1,33 @@
+{% load bootstrap3 %}
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>{% block title %}CatalogARTE{% endblock %}</title>
+
+  {% bootstrap_css %}
+  <link href="{% static "webapp/css/style.css" %}" rel="stylesheet">
+  <link href="{% static "webapp/css/font-awesome.min.css" %}" rel="stylesheet">
+  <link href="{% static "webapp/css/jquery-ui.min.css" %}" rel="stylesheet">
+
+  <script src="{% static "webapp/js/jquery-2.1.1.min.js" %}"></script>
+  <script src="{% static "webapp/js/jquery-ui.min.js" %}"></script>
+
+  {% bootstrap_javascript %}
+</head>
+
+<body>
+
+  {% bootstrap_messages %}
+
+  {% block content %}{% endblock %}
+
+</body>
+</html>

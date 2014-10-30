@@ -316,7 +316,7 @@
 	height: 620px;
 	width: 100%;
 }
-.page{
+.workspace .page{
 	background: #FEFEFE;
 	box-shadow: 0 3px 6px rgba(0,0,0,.16),0 3px 6px rgba(0,0,0,.23);
 	margin-bottom: 5px;
@@ -354,8 +354,8 @@
 .txt{
   background: #FEFEFE;
 }
-.foto img:hover,
-.fondo:hover {
+.workspace .foto img:hover,
+.workspace .fondo:hover {
   cursor: move;
 
 	filter: brightness(80%);
@@ -589,7 +589,7 @@
 }
 
 .frame {
-  height: 560px;
+  height: 600px;
   width: 100%;
   padding: 0;
 }
@@ -603,7 +603,7 @@
   float: left;
   margin: 0;
   padding: 0;
-  width: 690px;
+  width: 730px;
   height: 100%;
 }
 .frame ul li .content {

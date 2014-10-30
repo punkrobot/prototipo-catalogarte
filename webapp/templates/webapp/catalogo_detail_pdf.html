@@ -1,0 +1,62 @@
+{% extends "webapp/base_noheader.html" %}
+{% load staticfiles %}
+
+{% block content %}
+
+<link href="{% static "webapp/css/magnific-popup.css" %}" rel="stylesheet">
+<script src="{% static "webapp/js/turn.min.js" %}"></script>
+<script src="{% static "webapp/js/jquery.magnific-popup.min.js" %}"></script>
+
+<div class="container-fluid">
+  <div id="flipbook">
+    {% for pagina in catalogo.contenido.paginas %}
+      <div style="background-color:#FFF;" >{{ pagina.html | safe }}</div>
+    {% endfor %}
+  </div>
+</div>
+
+<script>
+  $(function() {
+    $('#flipbook').turn({width:1300, height:600, gradients: true, acceleration: true});
+
+    $('.foto img, .content.fondo').click(function() {
+      var img = $(this);
+      var url = '';
+      if(img.hasClass('fondo')){
+        url = /^url\((['"]?)(.*)\1\)$/.exec(img.css('background-image'));
+        url = url ? url[2] : '';
+      } else {
+        url = img.attr('src');
+      }
+
+      $.magnificPopup.open({
+        items: {
+          src: url
+        },
+        type: 'image',
+        mainClass: 'mfp-no-margins mfp-with-zoom',
+        closeOnContentClick: true,
+
+        zoom: {
+          enabled: true,
+          duration: 300,
+          easing: 'ease-in-out',
+
+          opener: function(openerElement) {
+            return img;
+          }
+        }
+      }, 0);
+    });
+    $('.video>a').magnificPopup({
+      disableOn: 700,
+      type: 'iframe',
+      mainClass: 'mfp-fade',
+      removalDelay: 160,
+      preloader: false,
+
+      fixedContentPos: false
+    });
+  });
+</script>
+{% endblock %}
