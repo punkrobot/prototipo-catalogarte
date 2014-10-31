@@ -561,6 +561,8 @@
 .galeria{
   padding: 20px;
 }
+.flipbook .foto img:hover,
+.flipbook .fondo:hover,
 .galeria .foto img:hover,
 .galeria .fondo:hover {
   cursor: zoom-in;
@@ -639,23 +641,21 @@
 	display: none;
 }
 
-.col{
-  width: 92%;
-  margin-left: 4%;
-}
-#flipbook{
-  width: 1200px;
+.flipbook{
+  width: 1300px;
   height: 600px;
+  margin-left: auto;
+  margin-right: auto;
 }
-#flipbook .page{
+.flipbook .page{
   background-color: #FFF;
   width: 600px;
   height: 600px;
 }
-#flipbook .shadow{
+.flipbook .shadow{
   box-shadow: 0 4px 10px #666;
 }
-#flipbook .nav{
+.flipbook .nav{
   width: 20px;
   height: 600px;
   position: absolute;
@@ -663,30 +663,52 @@
   color: transparent;
   background: transparent;
 }
-#flipbook .nav:hover{
+.flipbook .nav:hover{
   cursor: pointer;
   color: #FFF;
 }
-#flipbook .next{
+.flipbook .next{
   right: -20px;
   border-radius: 0 15px 15px 0;
 }
-#flipbook .next:hover{
+.flipbook .next:hover{
   background: #BBB;
 }
-#flipbook .prev{
+.flipbook .prev{
   left: -20px;
   border-radius: 15px 0 0 15px;
 }
-#flipbook .prev:hover{
+.flipbook .prev:hover{
   background: #BBB;
 }
-#flipbook i{
+.flipbook i{
   margin: 300px 5px 0 5px;
 }
-i{
-  margin: 15px;
+.flipbook-container{
+  width: 1300px;
+  height: 800px;
+  margin-left: auto;
+  margin-right: auto;
 }
+.encabezado{
+  padding: 20px;
+}
+.encabezado i{
+  color: #888;
+  margin: 10px 20px;
+  padding: 5px;
+}
+.encabezado i:hover{
+  color: #444;
+  cursor: pointer;
+}
+.encabezado .fa-stack i{
+  color: #CCC;
+}
+.encabezado i.fa-inverse{
+  color: #F5F5F5;
+}
+
 
 .mfp-with-zoom .mfp-container,
 .mfp-with-zoom.mfp-bg {

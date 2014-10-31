@@ -1,11 +1,11 @@
 $(function() {
-    $('#flipbook').turn({autoCenter:true, gradients: true, acceleration: true});
+    $('.flipbook').turn({autoCenter:true, gradients: true, acceleration: true});
 
-    $('#flipbook .next').click(function(){
-      $('#flipbook').turn('next');
+    $('.flipbook .next').click(function(){
+      $('.flipbook').turn('next');
     });
-    $('#flipbook .prev').click(function(){
-      $('#flipbook').turn('previous');
+    $('.flipbook .prev').click(function(){
+      $('.flipbook').turn('previous');
     });
 
     $('.foto img, .content.fondo').click(function() {
