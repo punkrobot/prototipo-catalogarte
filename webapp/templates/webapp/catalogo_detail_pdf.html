@@ -8,9 +8,20 @@
 <script src="{% static "webapp/js/jquery.magnific-popup.min.js" %}"></script>
 <script src="{% static "webapp/js/catalogo_pdf.js" %}"></script>
 
+<script>
+  var catalogo = { paginas : {{ contenido | safe }} };
+</script>
+
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-10 col-md-offset-1 text-center encabezado">
+      <div class="btn-group contenido">
+        <a href="javascript:void(0)" class="btn dropdown-toggle" data-toggle="dropdown">
+          Contenido<span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+        </ul>
+      </div>
       <i class="fa fa-file-pdf-o fa-2x"></i>
       <i class="fa fa-envelope fa-2x"></i>
       <i class="fa fa-twitter fa-2x"></i>

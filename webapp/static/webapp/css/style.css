@@ -693,6 +693,9 @@
 .encabezado{
   padding: 20px;
 }
+.encabezado .contenido{
+  display: none;
+}
 .encabezado i{
   color: #888;
   margin: 10px 20px;

@@ -1,4 +1,18 @@
 $(function() {
+    for(i=0; i<catalogo.paginas.paginas.length; i++){
+        var pagina = catalogo.paginas.paginas[i];
+        if(pagina.nombre != ''){
+            $('.contenido').css('display', 'inline-block');
+
+            var a = $('<a>', { html: pagina.nombre });
+            a.on('click', {n: i+1}, function (e) {
+                $(".flipbook").turn("page", e.data.n);
+            });
+
+            $('.contenido ul').append($('<li>').append(a));
+        }
+    }
+
     $('.flipbook').turn({autoCenter:true, gradients: true, acceleration: true});
 
     $('.flipbook .next').click(function(){
