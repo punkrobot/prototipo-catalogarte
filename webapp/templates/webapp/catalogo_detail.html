@@ -1,4 +1,4 @@
-{% extends "webapp/base.html" %}
+{% extends "webapp/base_noheader.html" %}
 {% load staticfiles %}
 
 {% block content %}
@@ -8,7 +8,30 @@
 <script src="{% static "webapp/js/jquery.magnific-popup.min.js" %}"></script>
 <script src="{% static "webapp/js/catalogo.js" %}"></script>
 
+<script>
+  var catalogo = { paginas : {{ contenido | safe }} };
+</script>
+
 <div class="container-fluid galeria">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1 text-center encabezado">
+      <div class="btn-group contenido">
+        <a href="javascript:void(0)" class="btn btn-lg btn-flat dropdown-toggle" data-toggle="dropdown">
+          Contenido<span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+        </ul>
+      </div>
+      <a href="/media/{{exposicion.museo.slug}}/{{exposicion.slug}}/catalogo.pdf" target="_blank"><i class="fa fa-file-pdf-o fa-2x"></i></a>
+      <i class="fa fa-envelope fa-2x"></i>
+      <i class="fa fa-twitter fa-2x"></i>
+      <i class="fa fa-facebook fa-2x"></i>
+      <span class="fa-stack fa-lg pull-right" onclick="history.go(-1);">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-remove fa-stack-1x fa-inverse"></i>
+      </span>
+    </div>
+  </div>
   <div class="frame">
     <ul class="slidee">
       {% for pagina in catalogo.contenido.paginas %}

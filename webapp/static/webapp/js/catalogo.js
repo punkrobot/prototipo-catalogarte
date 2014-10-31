@@ -9,7 +9,30 @@ $(function() {
         scrollBar: '.scrollbar',
     };
 
-    var frame = new Sly('.frame', options).init();
+    var frame = new Sly('.frame', options);
+
+    frame.on('active', function (eventName, itemIndex) {
+        var nombre = catalogo.paginas.paginas[itemIndex].nombre;
+        if(nombre != ''){
+            $('.contenido>a').html(nombre + '<span class="caret"></span>');
+        }
+    });
+
+    frame.init();
+
+    for(i=0; i<catalogo.paginas.paginas.length; i++){
+        var pagina = catalogo.paginas.paginas[i];
+        if(pagina.nombre != ''){
+            $('.contenido').css('display', 'inline-block');
+
+            var a = $('<a>', { html: pagina.nombre });
+            a.on('click', {n: i}, function (e) {
+                frame.toCenter(e.data.n, false);
+            });
+
+            $('.contenido ul').append($('<li>').append(a));
+        }
+    }
 
     $('.foto img, .content.fondo').click(function() {
       var img = $(this);

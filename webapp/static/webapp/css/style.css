@@ -558,8 +558,8 @@
   right: -10px;
 }
 
-.galeria{
-  padding: 20px;
+.galeria .encabezado{
+  padding: 2px;
 }
 .flipbook .foto img:hover,
 .flipbook .fondo:hover,
@@ -599,31 +599,23 @@
   margin: 0;
   padding: 0;
   height: 100%;
+  width: 2400px;
   list-style: none;
 }
 .frame .slidee li {
   float: left;
-  margin: 0;
+  margin: 0 50px 0 50px;
   padding: 0;
   width: 730px;
   height: 100%;
 }
-.frame ul li .content {
-  opacity: 0.6;
-  transform: scale(0.9);
-  transition: transform 500ms ease-out, opacity 500ms ease-out;
-}
-.frame ul li.active .content {
-  opacity: 1;
-  transform: scale(1);
-}
-
 .scrollbar {
+  background: rgba(0, 0, 0, 0.1);
   height: 5px;
   width: 100%;
 }
 .scrollbar .handle {
-  background: #222;
+  background: rgba(0, 0, 0, 0.2);
   height: 100%;
   width: 100px;
 }
