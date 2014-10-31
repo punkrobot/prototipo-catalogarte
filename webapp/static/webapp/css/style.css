@@ -639,6 +639,55 @@
 	display: none;
 }
 
+.col{
+  width: 92%;
+  margin-left: 4%;
+}
+#flipbook{
+  width: 1200px;
+  height: 600px;
+}
+#flipbook .page{
+  background-color: #FFF;
+  width: 600px;
+  height: 600px;
+}
+#flipbook .shadow{
+  box-shadow: 0 4px 10px #666;
+}
+#flipbook .nav{
+  width: 20px;
+  height: 600px;
+  position: absolute;
+  top: 0;
+  color: transparent;
+  background: transparent;
+}
+#flipbook .nav:hover{
+  cursor: pointer;
+  color: #FFF;
+}
+#flipbook .next{
+  right: -20px;
+  border-radius: 0 15px 15px 0;
+}
+#flipbook .next:hover{
+  background: #BBB;
+}
+#flipbook .prev{
+  left: -20px;
+  border-radius: 15px 0 0 15px;
+}
+#flipbook .prev:hover{
+  background: #BBB;
+}
+#flipbook i{
+  margin: 300px 5px 0 5px;
+}
+i{
+  margin: 15px;
+}
+
 .mfp-with-zoom .mfp-container,
 .mfp-with-zoom.mfp-bg {
   opacity: 0;
