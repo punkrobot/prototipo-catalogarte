@@ -143,6 +143,7 @@
 }
 .nav-tabs .active{
 	background-color: #009688;
+  width: 100%;
 }
 
 .workspace{
@@ -543,6 +544,19 @@
 	min-height: 466px;
 	width: 100%;
 }
+
+#filtrosModal .img{
+  width: 100%;
+  margin-bottom: 20px;
+}
+#filtrosModal .modal-body{
+  padding-top: 0;
+}
+#filtrosModal .thumbnails img{
+  cursor: pointer;
+  width: 16%;
+}
+
 .alert-message {
     position: fixed;
     top: 10px;
