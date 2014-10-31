@@ -695,6 +695,21 @@
 }
 .encabezado .contenido{
   display: none;
+  margin: 0 50px 7px 0;
+  box-shadow: none;
+}
+.encabezado .contenido a{
+  color: #888;
+}
+.encabezado .contenido a:hover{
+  color: #444;
+  cursor: pointer;
+}
+.encabezado .caret{
+  margin-left: 5px;
+}
+.btn-group .btn:active .caret{
+  margin-left: 5px;
 }
 .encabezado i{
   color: #888;
