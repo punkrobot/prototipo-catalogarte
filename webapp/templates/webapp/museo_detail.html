@@ -1,0 +1,65 @@
+{% extends "webapp/base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 well catalogo">
+      <div class="row">
+        <div class="col-md-10">
+          <h1>{{ museo.nombre }}</h1>
+        </div>
+        <div class="col-md-2">
+          {% if museo.website %}
+            <a href="{{ museo.website }}" class="enlace pull-right"><i class="fa fa-globe fa-2x"></i></a>
+          {% endif %}
+          {% if museo.instagram %}
+            <a href="{{ museo.instagram }}" class="enlace pull-right"><i class="fa fa-instagram fa-2x"></i></a>
+          {% endif %}
+          {% if museo.twitter %}
+            <a href="{{ museo.twitter }}" class="enlace pull-right"><i class="fa fa-twitter-square fa-2x"></i></a>
+          {% endif %}
+          {% if museo.facebook %}
+            <a href="{{ museo.facebook }}" class="enlace pull-right"><i class="fa fa-facebook-square fa-2x"></i></a>
+          {% endif %}
+          {% if museo.youtube %}
+            <a href="{{ museo.youtube }}" class="enlace pull-right"><i class="fa fa-youtube-play fa-2x"></i></a>
+          {% endif %}
+        </div>
+      </div>
+      <div class="row">
+        <hr>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <img src="{{museo.portada.url}}" class="img-thumbnail img-responsive">
+        </div>
+        <div class="col-md-6">
+          <img src="{{museo.logotipo.url}}" height="90" class="pull-right">
+          {{ museo.detalles }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <h2>Exposiciones</h2>
+    </div>
+  </div>
+
+  <div class="row">
+    {% for expo in museo.exposicion_set.all %}
+      <div class="well catalogo-card item {{ expo.get_categorias_slugs }}">
+        <div style="background-image:url({{expo.portada.url}});" class="portada"></div>
+        <a href="{% url 'exposicion_detalle' expo.slug %}"><h3>{{ expo.titulo }}</h3></a>
+        <div>{{ expo.descripcion }}</div>
+        <hr>
+        <a href="{% url 'museo_detalle' expo.museo.slug %}" class="pull-left">{{ expo.museo.nombre }}</a>
+        <span class="pull-right">Hasta el 31 de octubre</span>
+      </div>
+    {% endfor %}
+  </div>
+
+</div>
+{% endblock %}

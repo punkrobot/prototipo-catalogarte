@@ -136,6 +136,12 @@
   margin-top: 15px;
   margin-bottom: 5px;
 }
+.catalogo .enlace{
+  color: #888;
+}
+.catalogo .enlace:hover{
+  color: #444;
+}
 
 .nav-tabs{
 	background-color: #4db6ac;

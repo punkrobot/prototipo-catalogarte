@@ -136,6 +136,15 @@ class CatalogoExport(LoginRequiredMixin, AjaxResponseMixin, View):
         return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 
+class MuseoDetail(DetailView):
+    model = Museo
+    context_object_name = 'museo'
+    template_name = 'webapp/museo_detail.html'
+
+    def get_object(self):
+        return get_object_or_404(Museo, slug=self.kwargs.get('slug', None))
+
+
 class MediaList(LoginRequiredMixin, AjaxResponseMixin, View):
     def get_ajax(self, request, slug):
         context = {

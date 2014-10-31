@@ -24,4 +24,6 @@ urlpatterns = patterns('',
     url(r'^$', views.ExposicionList.as_view(), name='exposicion_lista'),
     url(r'^exposicion/(?P<slug>[\w-]+)/$', views.ExposicionDetail.as_view(), name='exposicion_detalle'),
     url(r'^exposicion/(?P<slug>[\w-]+)/catalogo/(?P<tipo>[\w-]+)$', views.CatalogoDetail.as_view(), name='catalogo_detalle'),
+
+    url(r'^museo/(?P<slug>[\w-]+)/$', views.MuseoDetail.as_view(), name='museo_detalle'),
 )

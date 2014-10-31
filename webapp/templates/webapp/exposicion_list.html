@@ -64,7 +64,7 @@
 				<a href="{% url 'exposicion_detalle' expo.slug %}"><h3>{{ expo.titulo }}</h3></a>
 				<div>{{ expo.descripcion }}</div>
 				<hr>
-				<a class="pull-left">{{ expo.museo.nombre }}</a>
+				<a href="{% url 'museo_detalle' expo.museo.slug %}" class="pull-left">{{ expo.museo.nombre }}</a>
 				<span class="pull-right">Hasta el 31 de octubre</span>
 			</div>
 		{% endfor %}
