@@ -18,6 +18,22 @@ from webapp.forms import ExposicionForm, MuseoForm
 from webapp.models import Museo, Exposicion, Catalogo, Media
 
 
+class MuseoAdmin(LoginRequiredMixin, ListView):
+    context_object_name = 'museo_list'
+    template_name = 'webapp/admin/museo_admin.html'
+
+    def get_queryset(self):
+        return Museo.objects.all()
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated():
+            return redirect('login')
+        elif request.user.is_staff:
+            return super(MuseoAdmin, self).dispatch(request, *args, **kwargs)
+        else:
+            return redirect('exposicion_admin')
+
+
 class ExposicionList(ListView):
     context_object_name = 'exposicion_list'
     template_name = 'webapp/exposicion_list.html'
