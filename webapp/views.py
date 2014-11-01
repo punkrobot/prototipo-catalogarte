@@ -14,7 +14,7 @@ from django.views.generic import View, CreateView, DeleteView, DetailView, ListV
 
 from braces.views import LoginRequiredMixin, AjaxResponseMixin
 
-from webapp.forms import ExposicionForm
+from webapp.forms import ExposicionForm, MuseoForm
 from webapp.models import Museo, Exposicion, Catalogo, Media
 
 
@@ -134,6 +134,12 @@ class CatalogoExport(LoginRequiredMixin, AjaxResponseMixin, View):
         }
 
         return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+
+class MuseoCreate(LoginRequiredMixin, CreateView):
+    form_class = MuseoForm
+    template_name = 'webapp/admin/museo_form.html'
+    success_url = '/admin'
 
 
 class MuseoDetail(DetailView):

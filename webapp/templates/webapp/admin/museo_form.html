@@ -1,0 +1,41 @@
+{% extends "webapp/base.html" %}
+{% load bootstrap3 %}
+
+{% block navbar %}
+<li>
+  <a class="avatar" href="javascript:void(0)">
+    Administrador
+  </a>
+</li>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid well">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        {% if object.pk %}
+          <h2 class="pull-left">Actualizar museo</h2>
+        {% else %}
+          <h2>Nuevo museo</h2>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-8 col-md-offset-2 well">
+    <form action="" enctype="multipart/form-data" method="post" class="form-horizontal">
+      {% csrf_token %}
+      {% bootstrap_form form layout="horizontal" label_class='col-md-2' field_class='col-md-8' %}
+      {% buttons%}
+        <div class="col-md-8 col-md-offset-2">
+          <hr>
+          <a href="{% url 'exposicion_admin' %}" class="btn btn-default pull-left">Cancelar</a>
+          <button type="submit" class="btn btn-material-teal pull-right">Guardar</button>
+        </div>
+      {% endbuttons %}
+    </form>
+  </div>
+</div>
+{% endblock %}

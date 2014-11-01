@@ -10,6 +10,7 @@ urlpatterns = patterns('',
 
     # admin urls:
     url(r'^admin$', views.ExposicionAdmin.as_view(), name='exposicion_admin'),
+    url(r'^admin/museo/nuevo$', views.MuseoCreate.as_view(), name='museo_nuevo'),
     url(r'^admin/exposicion/nueva$', views.ExposicionCreate.as_view(), name='exposicion_nueva'),
     url(r'^admin/exposicion/(?P<slug>[\w-]+)/$', views.ExposicionUpdate.as_view(), name='exposicion_actualizar'),
     url(r'^admin/exposicion/(?P<slug>[\w-]+)/media/img$', AjaxFileUploader(), name='img_agregar'),
