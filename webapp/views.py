@@ -34,6 +34,28 @@ class MuseoAdmin(LoginRequiredMixin, ListView):
             return redirect('exposicion_admin')
 
 
+class MuseoCreate(LoginRequiredMixin, CreateView):
+    form_class = MuseoForm
+    template_name = 'webapp/admin/museo_form.html'
+    success_url = '/admin'
+
+
+class MuseoDetail(DetailView):
+    model = Museo
+    context_object_name = 'museo'
+    template_name = 'webapp/museo_detail.html'
+
+    def get_object(self):
+        return get_object_or_404(Museo, slug=self.kwargs.get('slug', None))
+
+
+class MuseoUpdate(LoginRequiredMixin, UpdateView):
+    model = Museo
+    form_class = MuseoForm
+    template_name = 'webapp/admin/museo_form.html'
+    success_url = '/admin'
+
+
 class ExposicionList(ListView):
     context_object_name = 'exposicion_list'
     template_name = 'webapp/exposicion_list.html'
@@ -150,21 +172,6 @@ class CatalogoExport(LoginRequiredMixin, AjaxResponseMixin, View):
         }
 
         return HttpResponse(json.dumps(response_data), content_type="application/json")
-
-
-class MuseoCreate(LoginRequiredMixin, CreateView):
-    form_class = MuseoForm
-    template_name = 'webapp/admin/museo_form.html'
-    success_url = '/admin'
-
-
-class MuseoDetail(DetailView):
-    model = Museo
-    context_object_name = 'museo'
-    template_name = 'webapp/museo_detail.html'
-
-    def get_object(self):
-        return get_object_or_404(Museo, slug=self.kwargs.get('slug', None))
 
 
 class MediaList(LoginRequiredMixin, AjaxResponseMixin, View):

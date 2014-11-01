@@ -8,10 +8,13 @@ urlpatterns = patterns('',
     url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'webapp/auth/login.html'}, name='login'),
     url(r'^logout$', 'django.contrib.auth.views.logout', {'next_page': '/admin'}),
 
-    # admin urls:
+    # superadmin urls:
     url(r'^admin$', views.MuseoAdmin.as_view(), name='museo_admin'),
-    url(r'^admin/museo$', views.ExposicionAdmin.as_view(), name='exposicion_admin'),
     url(r'^admin/museo/nuevo$', views.MuseoCreate.as_view(), name='museo_nuevo'),
+    url(r'^admin/museo/(?P<slug>[\w-]+)/$', views.MuseoUpdate.as_view(), name='museo_actualizar'),
+
+    # admin urls:
+    url(r'^admin/museo$', views.ExposicionAdmin.as_view(), name='exposicion_admin'),
     url(r'^admin/exposicion/nueva$', views.ExposicionCreate.as_view(), name='exposicion_nueva'),
     url(r'^admin/exposicion/(?P<slug>[\w-]+)/$', views.ExposicionUpdate.as_view(), name='exposicion_actualizar'),
     url(r'^admin/exposicion/(?P<slug>[\w-]+)/media/img$', AjaxFileUploader(), name='img_agregar'),

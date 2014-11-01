@@ -51,18 +51,23 @@ class MuseoForm(forms.ModelForm):
         for field in self.fields:
             self.fields[field].widget.attrs = {'placeholder': ''}
 
+        if self.instance.pk:
+            self.fields['username'].initial = self.instance.user.username
+            self.fields['email'].initial = self.instance.user.email
+
         self.fields['username'].widget.attrs = {'placeholder': 'Nombre de usuario'}
         self.fields['detalles'].widget = CKEditorWidget()
         self.fields['detalles'].initial = '<h3>Horarios</h3><ul><li></li></ul>'
         self.fields['website'].widget.attrs = {'placeholder': 'Sitio web oficial del museo'}
 
     def clean_username(self):
-        try:
-            User.objects.get(username=self.cleaned_data['username'])
-        except User.DoesNotExist :
-            return self.cleaned_data['username']
+        if not self.instance.pk:
+            try:
+                User.objects.get(username=self.cleaned_data['username'])
+            except User.DoesNotExist :
+                return self.cleaned_data['username']
 
-        raise forms.ValidationError("El nombre de usuario ya existe.")
+            raise forms.ValidationError("El nombre de usuario ya existe.")
 
 
     def clean(self):
@@ -73,7 +78,11 @@ class MuseoForm(forms.ModelForm):
         return self.cleaned_data
 
     def save(self):
-        usuario = User.objects.create_user(self.cleaned_data['username'], self.cleaned_data['email'], self.cleaned_data['password1'])
-        self.instance.user = usuario
+        if self.instance.pk is None:
+            usuario = User.objects.create_user(self.cleaned_data['username'], self.cleaned_data['email'], self.cleaned_data['password1'])
+            self.instance.user = usuario
+        else:
+            self.instance.user.save()
+
         self.instance.save()
         return self.instance

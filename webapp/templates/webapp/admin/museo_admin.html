@@ -35,7 +35,7 @@
               <td>{{ museo.nombre }}</td>
               <td>
                 <div>
-                  <a href="" class="button" title="Editar"><i class="fa fa-pencil"></i></a>
+                  <a href="{% url 'museo_actualizar' museo.slug %}" class="button" title="Editar"><i class="fa fa-pencil"></i></a>
                   <a class="button" title="Eliminar"><i class="fa fa-trash"></i></a>
                 </div>
               </td>
