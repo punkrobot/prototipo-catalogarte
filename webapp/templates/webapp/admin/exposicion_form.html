@@ -3,7 +3,8 @@
 
 {% block navbar %}
 <li>
-	<a class="avatar" href="javascript:void(0)">
+  <a title="Cerrar sesión" class="pull-right" href="/logout"><i class="fa fa-sign-out"></i></a>
+	<a class="avatar pull-right" href="javascript:void(0)">
 		{{user.museo.nombre}}<img src="{{user.museo.logotipo.url}}">
 	</a>
 </li>

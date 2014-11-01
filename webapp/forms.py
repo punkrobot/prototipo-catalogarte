@@ -35,7 +35,7 @@ class ExposicionForm(forms.ModelForm):
 
 
 class MuseoForm(forms.ModelForm):
-    username = forms.CharField(max_length=30)
+    username = forms.CharField(max_length=30, label='Nombre de usuario')
     password1 = forms.CharField(max_length=30, widget=forms.PasswordInput(), label='Contraseña')
     password2 = forms.CharField(max_length=30, widget=forms.PasswordInput(), label='Repetir contraseña')
     email = forms.EmailField(required=False, label='Correo electrónico')
@@ -55,7 +55,6 @@ class MuseoForm(forms.ModelForm):
             self.fields['username'].initial = self.instance.user.username
             self.fields['email'].initial = self.instance.user.email
 
-        self.fields['username'].widget.attrs = {'placeholder': 'Nombre de usuario'}
         self.fields['detalles'].widget = CKEditorWidget()
         self.fields['detalles'].initial = '<h3>Horarios</h3><ul><li></li></ul>'
         self.fields['website'].widget.attrs = {'placeholder': 'Sitio web oficial del museo'}

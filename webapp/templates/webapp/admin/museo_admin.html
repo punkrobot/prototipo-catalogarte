@@ -2,10 +2,9 @@
 {% load staticfiles %}
 
 {% block navbar %}
-<li>
-  <a class="avatar" href="javascript:void(0)">
-    Administrador
-  </a>
+<li class="logout">
+  <span>Administrador</span>
+  <a title="Cerrar sesión" class="pull-right" href="/logout"><i class="fa fa-sign-out"></i></a>
 </li>
 {% endblock %}
 

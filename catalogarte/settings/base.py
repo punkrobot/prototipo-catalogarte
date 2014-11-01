@@ -72,3 +72,4 @@ BOOTSTRAP3 = {
 }
 
 LOGIN_URL = "/login/"
+LOGIN_REDIRECT_URL = '/admin'
