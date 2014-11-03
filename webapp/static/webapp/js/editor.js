@@ -233,6 +233,8 @@ function eliminarFoto(){
             $('.toolbar.documento').show();
         }
     });
+
+    activarAreasDeContenido();
 }
 
 function expandirFoto(){

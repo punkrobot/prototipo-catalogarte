@@ -135,10 +135,11 @@
   margin-bottom: 5px;
 }
 .catalogo .enlace{
-  color: #888;
+  margin: 0 1px;
+  color: #AAA;
 }
 .catalogo .enlace:hover{
-  color: #444;
+  color: #888;
 }
 
 .nav-tabs{
@@ -147,7 +148,6 @@
 }
 .nav-tabs .active{
 	background-color: #009688;
-  width: 100%;
 }
 
 .workspace{

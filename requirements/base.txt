@@ -1,6 +1,7 @@
 Django==1.7
 Pillow==2.6.0
 Unidecode==0.04.16
+ajaxuploader==0.3.8
 django-autoslug==1.7.2
 django-bootstrap3==4.11.0
 django-braces==1.4.0

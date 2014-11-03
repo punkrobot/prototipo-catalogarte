@@ -23,7 +23,6 @@ class Museo(models.Model):
 
     nombre = models.CharField(max_length=100)
     direccion = models.TextField()
-    #email = models.EmailField(blank=True)
     detalles = models.TextField(blank=True)
 
     website = models.URLField(max_length=255, blank=True)
