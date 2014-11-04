@@ -22,6 +22,7 @@ Aplicación web para la creación y consulta de catálogos digitales de las expo
 * [Video de demostración](https://www.youtube.com/watch?v=NpTzqoxBSL8)
 
 * [Instancia con datos de prueba](http://107.170.251.119/)
+* [Acceso a la administración](http://107.170.251.119/admin)
 
   Credenciales administrador
     * Usuario: admin
