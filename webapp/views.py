@@ -104,7 +104,11 @@ class CatalogoDetail(View):
     def get(self, request, slug, tipo):
         exposicion = get_object_or_404(Exposicion, slug=slug)
         catalogo =  exposicion.catalogo_set.first()
-        contenido = json.dumps(catalogo.contenido)
+
+        if catalogo and catalogo.contenido:
+            contenido = json.dumps(catalogo.contenido)
+        else:
+            contenido = {}
 
         template = 'webapp/catalogo_detail.html' if tipo == 'html' else 'webapp/catalogo_detail_pdf.html'
 

@@ -9,14 +9,19 @@
 				<div class="col-md-8">
 					<h1>{{exposicion.titulo}}<small>&nbsp;{{exposicion.subtitulo}}</small></h1>
 				</div>
-				<div class="col-md-4">
-          <a href="{% url 'catalogo_detalle' exposicion.slug 'pdf' %}" class="btn btn-sm">
-            Catálogo<i class="fa fa-newspaper-o"></i>
-          </a>
-          <a href="{% url 'catalogo_detalle' exposicion.slug 'html' %}" class="btn btn-sm">
-            Exposición digital<i class="fa fa-chevron-right"></i>
-          </a>
-				</div>
+        {% with exposicion.catalogo_set.all|first as catalogo %}
+          {% if catalogo.contenido %}
+    				<div class="col-md-4">
+              <a href="{% url 'catalogo_detalle' exposicion.slug 'pdf' %}" class="btn btn-sm hidden-xs hidden-sm visible-md-inline-block visible-lg-inline-block">
+                Catálogo<i class="fa fa-newspaper-o"></i>
+              </a>
+              <a href="{% url 'catalogo_detalle' exposicion.slug 'html' %}" class="btn btn-sm hidden-xs hidden-sm visible-md-inline-block visible-lg-inline-block">
+                Exposición digital<i class="fa fa-chevron-right"></i>
+              </a>
+              <a class="btn btn-sm visible-xs visible-sm hidden-md hidden-lg" href="/media/{{exposicion.museo.slug}}/{{exposicion.slug}}/catalogo.pdf" target="_blank">Ver catálogo<i class="fa fa-newspaper-o"></i></a>
+    				</div>
+          {% endif %}
+        {% endwith %}
 			</div>
 			<div class="row">
 				<hr>

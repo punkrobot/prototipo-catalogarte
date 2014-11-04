@@ -576,6 +576,9 @@
   right: -10px;
 }
 
+.galeria{
+  background-color: #FFF;
+}
 .galeria .encabezado{
   padding: 2px;
 }
@@ -600,8 +603,9 @@
 	box-shadow: 0 3px 6px rgba(0,0,0,.16),0 3px 6px rgba(0,0,0,.23);
 }
 .galeria .texto{
-  background-color: #FFF;
-  padding: 20px;
+  margin-top: 20px;
+  box-shadow: none;
+  overflow: visible !important;
 }
 .galeria .video .footer,
 .galeria .audio .footer{
@@ -691,7 +695,7 @@
 .flipbook .prev:hover{
   background: #BBB;
 }
-.flipbook i{
+.flipbook .nav i{
   margin: 300px 5px 0 5px;
 }
 .flipbook-container{

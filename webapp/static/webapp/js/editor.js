@@ -109,8 +109,6 @@ function activarAreasDeContenido(){
         hoverClass: "drop-active",
         accept: ".thumb",
         drop: function( event, ui ) {
-            $(this).droppable("disable");
-
             if($(ui.draggable).hasClass("pre-video")){
                 $(this).removeClass("area").addClass("video");
 
@@ -233,8 +231,6 @@ function eliminarFoto(){
             $('.toolbar.documento').show();
         }
     });
-
-    activarAreasDeContenido();
 }
 
 function expandirFoto(){
